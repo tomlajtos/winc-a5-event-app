@@ -1,27 +1,38 @@
 import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Text, Image } from "@chakra-ui/react";
+import { useRoot } from "../context/RootContext.jsx";
 
 const baseUrl = "http://localhost:3003";
 
 export const loader = async ({ params }) => {
-  console.log("event params:", params);
-
-  const users = await fetch(`${baseUrl}/users`);
-  const categories = await fetch(`${baseUrl}/categories`);
   const event = await fetch(`${baseUrl}/events/${params.eventId}`);
 
   return {
-    users: await users.json(),
-    categories: await categories.json(),
     event: await event.json(),
   };
 };
 
 export const EventPage = () => {
-  const { users, event, categories } = useLoaderData();
-  console.log("users:", users);
-  console.log("categories:", categories);
-  console.log("EVENT:", event);
-  return <Heading>Event</Heading>;
+  const { event } = useLoaderData();
+  const { users, categories } = useRoot();
+  console.log("event > users:", users);
+  console.log("event > categories:", categories);
+  return (
+    <>
+      <Heading>{event.title}</Heading>
+      <Image src={event.image} />
+      <Text>
+        {"Starts: "}
+        {event.startTime}
+      </Text>
+      <Text>
+        {"Ends: "}
+        {event.endTime}
+      </Text>
+      <Text>{event.location}</Text>
+
+      <Text>{event.description}</Text>
+    </>
+  );
 };
