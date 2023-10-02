@@ -7,7 +7,7 @@ import { RootContextProvider } from "../context/RootContext";
 export const Root = () => {
   return (
     <RootContextProvider>
-      <Box>
+      <Box bg={"gray.100"}>
         <Navigation />
         <Outlet />
       </Box>
