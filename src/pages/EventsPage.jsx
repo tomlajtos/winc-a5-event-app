@@ -14,9 +14,15 @@ export const loader = async () => {
 };
 export const EventsPage = () => {
   const { events } = useLoaderData();
-  const { categories } = useRoot();
-  console.log("events page > categories", categories);
+  const { categories, isLoadingCategories, errorCategories } = useRoot();
+  console.log("events > categories:", categories);
 
+  if (isLoadingCategories) {
+    return <Heading>Loading...</Heading>;
+  }
+  if (errorCategories) {
+    return <Heading>{errorCategories}</Heading>;
+  }
   return (
     <>
       <Heading>List of events</Heading>
