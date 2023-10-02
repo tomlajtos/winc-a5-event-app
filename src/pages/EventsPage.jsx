@@ -1,7 +1,8 @@
 import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import { Heading } from "@chakra-ui/react";
+import { SimpleGrid, Heading } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext";
+import { EventCard } from "../components/EventCard";
 
 const baseUrl = "http://localhost:3003";
 
@@ -26,11 +27,13 @@ export const EventsPage = () => {
   return (
     <>
       <Heading>List of events</Heading>
-      {events.map((event) => (
-        <div key={event.id}>
-          <Link to={`/event/${event.id}`}>{event.title}</Link>
-        </div>
-      ))}
+      <SimpleGrid spacing={4}>
+        {events.map((event) => (
+          <Link key={event.id} to={`/event/${event.id}`}>
+            <EventCard event={event} />
+          </Link>
+        ))}
+      </SimpleGrid>
     </>
   );
 };
