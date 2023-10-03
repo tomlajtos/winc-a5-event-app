@@ -1,6 +1,14 @@
 import { useRoot } from "../context/RootContext.jsx";
 import { Heading } from "@chakra-ui/react";
-import { Image, Text, Card, CardBody, CardFooter } from "@chakra-ui/react";
+import {
+  Stack,
+  Image,
+  Text,
+  Card,
+  CardBody,
+  CardFooter,
+} from "@chakra-ui/react";
+import { formatDateAndTime } from "../util/globalFunctions.js";
 
 export const EventCard = ({ event }) => {
   const startTime = new Date(event.startTime).toDateString();
@@ -12,26 +20,34 @@ export const EventCard = ({ event }) => {
   console.log(eventCategories);
 
   return (
-    <Card maxW={"sm"} variant={"elevated"}>
-      <CardBody>
-        <Heading size={"lg"} px={2} py={"4"}>
-          {event.title}
-        </Heading>
-        <Image src={event.image} />
-        <Text>
-          {"Starts at: "}
-          {startTime}
-        </Text>
-        <Text>
-          {"Ends at: "}
-          {endTime}
-        </Text>
-        <Text>{event.description}</Text>
-        <Text>
-          {"Categories: "}
-          {eventCategories}
-        </Text>
-      </CardBody>
+    <Card
+      background={"gray.50"}
+      maxW={"xl"}
+      direction={"row"}
+      variant={"outline"}
+      padding={4}
+    >
+      <Image maxW={"40%"} objectFit={"cover"} src={event.image} />
+      <Stack>
+        <CardBody>
+          <Heading size={"lg"} px={2} py={"4"}>
+            {event.title}
+          </Heading>
+          <Text>
+            {"Starts at: "}
+            {startTime}
+          </Text>
+          <Text>
+            {"Ends at: "}
+            {endTime}
+          </Text>
+          <Text>{event.description}</Text>
+          <Text>
+            {"Categories: "}
+            {eventCategories}
+          </Text>
+        </CardBody>
+      </Stack>
     </Card>
   );
 };
