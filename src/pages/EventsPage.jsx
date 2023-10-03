@@ -1,6 +1,6 @@
 import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import { SimpleGrid, Heading } from "@chakra-ui/react";
+import { Wrap, Heading } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext";
 import { EventCard } from "../components/EventCard";
 
@@ -26,14 +26,14 @@ export const EventsPage = () => {
   }
   return (
     <>
-      <Heading>List of events</Heading>
-      <SimpleGrid spacing={4}>
+      <Heading px={4}>Events</Heading>
+      <Wrap direction={"row"} spacing={4} padding={6}>
         {events.map((event) => (
           <Link key={event.id} to={`/event/${event.id}`}>
             <EventCard event={event} />
           </Link>
         ))}
-      </SimpleGrid>
+      </Wrap>
     </>
   );
 };
