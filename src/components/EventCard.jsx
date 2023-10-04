@@ -4,48 +4,55 @@ import {
   Stack,
   Image,
   Text,
+  Tag,
   Card,
   CardBody,
   CardFooter,
 } from "@chakra-ui/react";
 import { formatDateAndTime } from "../util/globalFunctions.js";
+import "../styles.css";
 
 export const EventCard = ({ event }) => {
-  const startTime = new Date(event.startTime).toDateString();
-  const endTime = new Date(event.endTime).toDateString();
+  const start = formatDateAndTime(event.startTime);
+  const end = formatDateAndTime(event.endTime);
+
   const { categories } = useRoot();
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);
-  console.log(eventCategories);
 
   return (
     <Card
       background={"gray.50"}
       maxW={"xl"}
+      maxH={"230px"}
       direction={"row"}
       variant={"outline"}
-      padding={4}
+      padding={3}
     >
       <Image maxW={"40%"} objectFit={"cover"} src={event.image} />
       <Stack>
-        <CardBody>
-          <Heading size={"lg"} px={2} py={"4"}>
-            {event.title}
-          </Heading>
+        <CardBody pt={0}>
+          <Heading size={"lg"}>{event.title}</Heading>
+          <Text pb={2}>{event.description}</Text>
+          <Heading size={"sm"}>Event start:</Heading>
           <Text>
-            {"Starts at: "}
-            {startTime}
+            <span>{start.date}</span> {"at"}{" "}
+            <span className={"bold"}>{start.time}</span>
           </Text>
+          <Heading size={"sm"}>Event ends:</Heading>
           <Text>
-            {"Ends at: "}
-            {endTime}
+            <span>{end.date}</span> {"at"}{" "}
+            <span className={"bold"}>{end.time}</span>
           </Text>
-          <Text>{event.description}</Text>
-          <Text>
-            {"Categories: "}
-            {eventCategories}
-          </Text>
+          <Text fontWeight={"semibold"}>{"Categories"}</Text>
+          <Stack direction={"row"} spacing={2} pt={1}>
+            {eventCategories.map((category) => (
+              <Tag key={category} colorScheme={"purple"}>
+                {category}
+              </Tag>
+            ))}
+          </Stack>
         </CardBody>
       </Stack>
     </Card>
