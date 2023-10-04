@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, Link as RRLink } from "react-router-dom";
 import { Wrap, Heading } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext";
 import { EventCard } from "../components/EventCard";
@@ -13,10 +13,10 @@ export const loader = async () => {
     events: await events.json(),
   };
 };
+
 export const EventsPage = () => {
   const { events } = useLoaderData();
   const { categories, isLoadingCategories, errorCategories } = useRoot();
-  console.log("events > categories:", categories);
 
   if (isLoadingCategories) {
     return <Heading>Loading...</Heading>;
@@ -26,12 +26,12 @@ export const EventsPage = () => {
   }
   return (
     <>
-      <Heading px={4}>Events</Heading>
+      <Heading px={8}>Events</Heading>
       <Wrap direction={"row"} spacing={4} padding={6}>
         {events.map((event) => (
-          <Link key={event.id} to={`/event/${event.id}`}>
+          <RRLink key={event.id} to={`/event/${event.id}`}>
             <EventCard event={event} />
-          </Link>
+          </RRLink>
         ))}
       </Wrap>
     </>
