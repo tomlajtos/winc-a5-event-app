@@ -13,7 +13,7 @@ export const formatDateAndTime = (dateStr) => {
     timeZone: "UTC",
     // timeZoneName: "shortOffset",
   };
-  console.log(date);
+
   const fullDate = date.toLocaleDateString("en-GB", dateOptions);
   const fullTime = date.toLocaleTimeString("en-GB", timeOptions);
 
