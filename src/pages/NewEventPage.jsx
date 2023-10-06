@@ -1,3 +1,4 @@
+//TODO: add `onChange` handler to checkboxes form should submit an array of categoryIds, defult option will do for now
 import { Form, redirect } from "react-router-dom";
 import { useRoot } from "../context/RootContext";
 import {
@@ -12,6 +13,22 @@ import {
   FormHelperText,
   Stack,
 } from "@chakra-ui/react";
+
+export const action = async ({ request }) => {
+  const formData = Object.fromEntries(await request.formData());
+  console.log("request.formData:", formData);
+
+  const response = await fetch("http://localhost:3003/events", {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+  });
+  const data = await response.json();
+  console.log("form post-data:", data);
+  return redirect(`/event/${data.id}`);
+};
 
 export const NewEventPage = () => {
   const { categories } = useRoot();
