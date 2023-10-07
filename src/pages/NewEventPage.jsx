@@ -1,5 +1,7 @@
-//TODO: add `onChange` handler to checkboxes form should submit an array of categoryIds, defult option will do for now
-import { Form, redirect } from "react-router-dom";
+//TODO: investigate useRoot > categories is undefined on page refresh
+// make code nicer
+import { Form, redirect, useLoaderData } from "react-router-dom";
+import { useState } from "react";
 import { useRoot } from "../context/RootContext";
 import {
   Button,
@@ -14,9 +16,16 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
+export const loader = async () => {
+  const categories = await fetch("http://localhost:3003/categories");
+  return { categories: await categories.json() };
+};
+
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
-  console.log("request.formData:", formData);
+  formData.categoryIds = formData.categoryIds
+    .split(",")
+    .map((id) => Number(id));
 
   const response = await fetch("http://localhost:3003/events", {
     method: "POST",
@@ -26,12 +35,22 @@ export const action = async ({ request }) => {
     },
   });
   const data = await response.json();
-  console.log("form post-data:", data);
+  // console.log("form post-data:", data);
   return redirect(`/event/${data.id}`);
 };
 
 export const NewEventPage = () => {
-  const { categories } = useRoot();
+  // const { categories, isErrorCategories } = useRoot();
+  const { categories } = useLoaderData();
+  // console.log("categories", categories);
+
+  const categorySelections = new Map([]);
+  categorySelections.set(1, false);
+  categorySelections.set(2, false);
+  categorySelections.set(3, false);
+
+  const [isChecked, setIsChecked] = useState(new Map([...categorySelections]));
+
   return (
     <Form method="post">
       <Stack direction="column" spacing={5} backgroundColor={"gray.400"} p={4}>
@@ -59,19 +78,27 @@ export const NewEventPage = () => {
         </FormControl>
         <FormControl>
           <FormLabel>Categories</FormLabel>
-          <CheckboxGroup colorScheme="purple" defaultValue={[3]}>
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              {categories.map((category) => (
-                <Checkbox
-                  key={category.id}
-                  name="categoryIds"
-                  value={category.id}
-                >
-                  {category.name}
-                </Checkbox>
-              ))}
-            </Stack>
-          </CheckboxGroup>
+          <Stack spacing={[1, 5]} direction={["column", "row"]}>
+            {categories.map((category, index) => (
+              <Checkbox
+                key={category.id}
+                name="categoryIds"
+                value={Array.from(isChecked).reduce(
+                  (ids, cat) =>
+                    cat[1] === true ? (ids = [...ids, cat[0]]) : ids,
+                  [],
+                )}
+                onChange={(e) => {
+                  const newSelections = new Map([...isChecked]);
+                  const chkd = categorySelections.get(Number(category.id));
+                  newSelections.set(Number(category.id), !chkd);
+                  setIsChecked(new Map([...newSelections]));
+                }}
+              >
+                {category.name}
+              </Checkbox>
+            ))}
+          </Stack>
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
         <FormControl>
