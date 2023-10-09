@@ -1,3 +1,4 @@
+// TODO: figure out a better way to implement this context
 import { createContext, useContext, useState, useEffect } from "react";
 
 export const RootContext = createContext({});
@@ -7,8 +8,10 @@ RootContext.displayName = "RootContext";
 export const RootContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
+
   const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
   const [errorUsers, setErrorUsers] = useState(null);
   const [errorCategories, setErrorCategories] = useState(null);
 
