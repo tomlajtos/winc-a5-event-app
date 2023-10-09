@@ -50,6 +50,7 @@ export const NewEventPage = () => {
   categorySelections.set(3, false);
 
   const [isChecked, setIsChecked] = useState(new Map([...categorySelections]));
+  console.log(isChecked);
 
   return (
     <Form method="post">
@@ -90,7 +91,7 @@ export const NewEventPage = () => {
                 )}
                 onChange={(e) => {
                   const newSelections = new Map([...isChecked]);
-                  const chkd = categorySelections.get(Number(category.id));
+                  const chkd = newSelections.get(Number(category.id));
                   newSelections.set(Number(category.id), !chkd);
                   setIsChecked(new Map([...newSelections]));
                 }}
