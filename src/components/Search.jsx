@@ -1,3 +1,4 @@
+// TODO: look at useSearchParams hook for using with search??
 import { Input, Stack } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext";
 
