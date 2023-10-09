@@ -6,7 +6,8 @@ import { useRoot } from "../context/RootContext";
 import {
   Button,
   Checkbox,
-  CheckboxGroup,
+  Flex,
+  Heading,
   Input,
   Textarea,
   FormControl,
@@ -14,6 +15,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 
 export const loader = async () => {
@@ -27,22 +29,39 @@ export const action = async ({ request }) => {
     .split(",")
     .map((id) => Number(id));
 
-  const response = await fetch("http://localhost:3003/events", {
+  const newEventId = await fetch("http://localhost:3003/events", {
     method: "POST",
     body: JSON.stringify(formData),
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
     },
-  });
-  const data = await response.json();
+  })
+    .then((res) => res.json())
+    .then((json) => json.id);
+  // const data = await response.json();
   // console.log("form post-data:", data);
-  return redirect(`/event/${data.id}`);
+  return redirect(`/event/${newEventId}`);
 };
+
+// generic function to handle onChange event in a group of checkboxes
+const handleCheckboxChanges = (e, checkedMap, setFn) => {
+  const id = e.target.id;
+  const newChecked = new Map([...checkedMap]);
+  const chkd = newChecked.get(Number(id));
+  newChecked.set(Number(id), !chkd);
+  setFn(new Map([...newChecked]));
+};
+
+// generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
+const createCheckedIdsArr = (checkedMap) =>
+  Array.from(checkedMap).reduce(
+    (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
+    [],
+  );
 
 export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
   const { categories } = useLoaderData();
-  // console.log("categories", categories);
 
   const categorySelections = new Map([]);
   categorySelections.set(1, false);
@@ -53,48 +72,62 @@ export const NewEventPage = () => {
   console.log(isChecked);
 
   return (
-    <Form method="post">
-      <Stack direction="column" spacing={5} backgroundColor={"gray.400"} p={4}>
+    <Flex
+      h="full"
+      as={Form}
+      method="post"
+      direction="column"
+      alignItems="center"
+      backgroundColor="white"
+    >
+      <Stack direction="column" spacing={5} minW={[300, null, 500]} p={4}>
         <FormControl>
           <FormLabel>Title</FormLabel>
           <Input type="text" name="title" />
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
+        <Stack as="fieldset" direction={["comlumn", null, "row"]} spacing={2}>
+          <Text as="legend">Date and Time</Text>
+          <FormControl
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
+            <FormLabel margin={0} px={2}>
+              Start
+            </FormLabel>
+            <Input type="datetime-local" name="startTime" />
+            <FormErrorMessage></FormErrorMessage>
+          </FormControl>
+          <FormControl
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
+            <FormLabel margin={0} px={2}>
+              End
+            </FormLabel>
+            <Input type="datetime-local" name="endTime" />
+            <FormErrorMessage></FormErrorMessage>
+          </FormControl>
+        </Stack>
         <FormControl>
-          <FormLabel>Start date and time</FormLabel>
-          <Input type="datetime-local" name="startTime" />
-          <FormHelperText>Select the date and time</FormHelperText>
-          <FormErrorMessage></FormErrorMessage>
-        </FormControl>
-        <FormControl>
-          <FormLabel>End date and time</FormLabel>
-          <Input type="datetime-local" name="endTime" />
-          <FormHelperText>Select the date and time</FormHelperText>
-          <FormErrorMessage></FormErrorMessage>
-        </FormControl>
-        <FormControl>
-          <FormLabel>Provide a short description</FormLabel>
+          <FormLabel>Description</FormLabel>
           <Textarea name="description" />
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
-        <FormControl>
-          <FormLabel>Categories</FormLabel>
+        <FormControl as={"fieldset"}>
+          <Text as="legend">Categories</Text>
           <Stack spacing={[1, 5]} direction={["column", "row"]}>
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <Checkbox
+                id={category.id}
                 key={category.id}
                 name="categoryIds"
-                value={Array.from(isChecked).reduce(
-                  (ids, cat) =>
-                    cat[1] === true ? (ids = [...ids, cat[0]]) : ids,
-                  [],
-                )}
-                onChange={(e) => {
-                  const newSelections = new Map([...isChecked]);
-                  const chkd = newSelections.get(Number(category.id));
-                  newSelections.set(Number(category.id), !chkd);
-                  setIsChecked(new Map([...newSelections]));
-                }}
+                value={createCheckedIdsArr(isChecked)}
+                onChange={(e) =>
+                  handleCheckboxChanges(e, isChecked, setIsChecked)
+                }
               >
                 {category.name}
               </Checkbox>
@@ -107,15 +140,21 @@ export const NewEventPage = () => {
           <Input type="url" name="image" />
           <FormErrorMessage></FormErrorMessage>
         </FormControl>
+        <Stack
+          w="inherit"
+          direction="row"
+          spacing={2}
+          p={4}
+          justifyContent="end"
+        >
+          <Button type="submit" variant="ghost" size="lg" colorScheme="purple">
+            Save
+          </Button>
+          <Button type="reset" variant="ghost" size="lg" colorScheme="red">
+            Cancel
+          </Button>
+        </Stack>{" "}
       </Stack>
-      <Stack spacing={2} py={4}>
-        <Button type="submit" variant={"outline"} colorScheme="purple">
-          Save
-        </Button>
-        <Button type="reset" variant={"outline"} colorScheme="red">
-          Cancel
-        </Button>
-      </Stack>
-    </Form>
+    </Flex>
   );
 };
