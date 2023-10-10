@@ -1,3 +1,12 @@
+export const getData = async (endpoint) => {
+  const baseUrl = "http://localhost:3003";
+  const events = await fetch(`${baseUrl}/${endpoint}`);
+
+  return {
+    events: await events.json(),
+  };
+};
+
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
   const dateOptions = {
