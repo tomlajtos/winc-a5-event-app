@@ -17,6 +17,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import {
+  handleCheckboxChanges,
+  initCheckedItemMap,
+} from "../util/globalFunctions";
 
 export const loader = async () => {
   const categories = await fetch("http://localhost:3003/categories");
@@ -43,15 +47,6 @@ export const action = async ({ request }) => {
   return redirect(`/event/${newEventId}`);
 };
 
-// generic function to handle onChange event in a group of checkboxes
-const handleCheckboxChanges = (e, checkedMap, setFn) => {
-  const id = e.target.id;
-  const newChecked = new Map([...checkedMap]);
-  const chkd = newChecked.get(Number(id));
-  newChecked.set(Number(id), !chkd);
-  setFn(new Map([...newChecked]));
-};
-
 // generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
 const createCheckedIdsArr = (checkedMap) =>
   Array.from(checkedMap).reduce(
@@ -63,10 +58,7 @@ export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
   const { categories } = useLoaderData();
 
-  const categorySelections = new Map([]);
-  categorySelections.set(1, false);
-  categorySelections.set(2, false);
-  categorySelections.set(3, false);
+  const categorySelections = new Map(initCheckedItemMap(categories));
 
   const [isChecked, setIsChecked] = useState(new Map([...categorySelections]));
   console.log(isChecked);
