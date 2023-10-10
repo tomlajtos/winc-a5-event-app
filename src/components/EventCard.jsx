@@ -1,16 +1,17 @@
-import { useRoot } from "../context/RootContext.jsx";
 import { Heading } from "@chakra-ui/react";
 import {
-  Stack,
-  Image,
-  Text,
-  Tag,
   Card,
   CardBody,
   CardFooter,
+  Image,
+  Stack,
+  StackDivider,
+  Text,
+  Tag,
 } from "@chakra-ui/react";
+import { useRoot } from "../context/RootContext.jsx";
 import { formatDateAndTime } from "../util/globalFunctions.js";
-import "../styles.css";
+import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
 export const EventCard = ({ event }) => {
   const start = formatDateAndTime(event.startTime);
@@ -30,22 +31,40 @@ export const EventCard = ({ event }) => {
       variant={"outline"}
       padding={3}
     >
-      <Image maxW={"40%"} objectFit={"cover"} src={event.image} />
+      <Image
+        maxW={"40%"}
+        objectFit={"cover"}
+        src={event.image}
+        fallbackSrc={placeholderImgUrl}
+      />
       <Stack>
-        <CardBody pt={0}>
+        <CardBody pt={0} pb={2}>
           <Heading size={"lg"}>{event.title}</Heading>
-          <Text pb={2}>{event.description}</Text>
-          <Heading size={"sm"}>Event start:</Heading>
-          <Text>
-            <span>{start.date}</span> {"at"}{" "}
-            <span className={"bold"}>{start.time}</span>
-          </Text>
-          <Heading size={"sm"}>Event ends:</Heading>
-          <Text>
-            <span>{end.date}</span> {"at"}{" "}
-            <span className={"bold"}>{end.time}</span>
-          </Text>
-          <Text fontWeight={"semibold"}>{"Categories"}</Text>
+          <Stack pt={4} spacing={1}>
+            <Text pb={0}>
+              <Text as="span" fontWeight={"bolder"}>
+                {"Start: "}
+              </Text>
+              <Text as="span">{`${start.shortDate} at `}</Text>
+              <Text as="span" fontWeight={"bolder"}>
+                {start.time}
+              </Text>
+            </Text>
+            <Text>
+              <Text as="span" fontWeight={"bolder"}>
+                {"End: "}
+              </Text>
+              <Text as="span">{`${end.shortDate} at `}</Text>
+              <Text as="span" fontWeight={"bolder"}>
+                {end.time}
+              </Text>
+            </Text>
+            <Text pt={3} pb={2}>
+              {event.description}
+            </Text>
+          </Stack>
+        </CardBody>
+        <CardFooter align={"start"} py={2}>
           <Stack direction={"row"} spacing={2} pt={1}>
             {eventCategories.map((category) => (
               <Tag key={category} colorScheme={"purple"}>
@@ -53,7 +72,7 @@ export const EventCard = ({ event }) => {
               </Tag>
             ))}
           </Stack>
-        </CardBody>
+        </CardFooter>
       </Stack>
     </Card>
   );
