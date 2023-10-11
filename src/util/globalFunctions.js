@@ -32,12 +32,12 @@ export const fetchData = async (
 // Categories related checkbox handler and support functions
 //
 // function to create checkedItemMap from an Array of objects
-// key: obj.id, init value: false;
+// key: obj.id, value: initValue: boolean;
 // this map can be used to track the checked state of checkbox group items
 // obj.id and e.target.id has to be the same value and type
 // i.e. event categories in nav menu filter options, and in new event form to set categories
-export const initCheckedItemMap = (objArr) =>
-  objArr.map((item) => [Number(item.id), false]);
+export const initCheckedItemMap = (objArr, initValue = true) =>
+  objArr.map((item) => [Number(item.id), initValue]);
 
 // function to handle onChange event in a group of checkboxes
 export const handleCheckboxChanges = (e, checkedMap, setFn) => {
