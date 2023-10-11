@@ -40,12 +40,19 @@ export const initCheckedItemMap = (objArr, initValue = true) =>
   objArr.map((item) => [Number(item.id), initValue]);
 
 // function to handle onChange event in a group of checkboxes
-export const handleCheckboxChanges = (e, checkedMap, setFn) => {
+export const handleCheckboxChanges = (e, checkedMap, setFn, setFn2) => {
   const id = e.target.id;
+  // create and mutate a local copy of checkedMap
   const newChecked = new Map([...checkedMap]);
   const chkd = newChecked.get(Number(id));
   newChecked.set(Number(id), !chkd);
+  // set copy as new state for checkedMap
   setFn(new Map([...newChecked]));
+
+  if (setFn2) {
+    // create an array of checked id and set it as new state with setFn2
+    setFn2(createCheckedIdsArr(newChecked));
+  }
 };
 
 // generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
