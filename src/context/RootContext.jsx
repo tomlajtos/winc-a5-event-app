@@ -1,3 +1,4 @@
+// TODO: improve state management and data fetching
 import { createContext, useContext, useState, useEffect } from "react";
 
 export const RootContext = createContext({});
@@ -14,7 +15,7 @@ export const RootContextProvider = ({ children }) => {
   const [errorCategories, setErrorCategories] = useState(null);
 
   const [searchQ, setSearchQ] = useState("");
-  const [filterQ, setFilterQ] = useState("");
+  const [filterQ, setFilterQ] = useState([1, 2, 3]);
 
   useEffect(() => {
     // setIsLoadingUsers(true);
