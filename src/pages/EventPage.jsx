@@ -3,16 +3,11 @@ import { useLoaderData, Link } from "react-router-dom";
 import { Box, Container, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext.jsx";
 import { formatDateAndTime } from "../util/globalFunctions.js";
+import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 
-const baseUrl = "http://localhost:3003";
-
-export const loader = async ({ params }) => {
-  const event = await fetch(`${baseUrl}/events/${params.eventId}`);
-
-  return {
-    event: await event.json(),
-  };
-};
+// Loader function to fetch event specific data (dynamic path)
+export const loader = async ({ params }) =>
+  fetchData([{ name: "event", path: `/events/${params.eventId}` }]);
 
 export const EventPage = () => {
   const { event } = useLoaderData();
@@ -21,7 +16,6 @@ export const EventPage = () => {
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
 
-  if (isLoadingUsers) {
     return <Heading>Loading...</Heading>;
   }
   if (errorUsers) {
