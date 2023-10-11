@@ -1,8 +1,15 @@
 import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import { Box, Container, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  Heading,
+  Text,
+  Image,
+} from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext.jsx";
-import { formatDateAndTime } from "../util/globalFunctions.js";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -16,14 +23,26 @@ export const EventPage = () => {
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
 
-    return <Heading>Loading...</Heading>;
-  }
   if (errorUsers) {
     return <Heading>{errorUsers}</Heading>;
   }
+  if (isLoadingUsers) {
+    return <Heading>Loading...</Heading>;
+  }
   return (
     <Flex direction={"column"} padding={8}>
-      <Image src={event.image} />
+      {event.image ? (
+        <Image src={event.image} />
+      ) : (
+        <Center
+          width={"full"}
+          height={"20vh"}
+          backgroundColor={"purple.800"}
+          color={"cyan.100"}
+        >
+          <Text fontSize={"2xl"}>{event.title}</Text>
+        </Center>
+      )}
       <Heading>{event.title}</Heading>
       <Heading size={"sm"}>Event date:</Heading>
       {start.date === end.date ? (
