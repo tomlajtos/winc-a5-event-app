@@ -48,6 +48,13 @@ export const handleCheckboxChanges = (e, checkedMap, setFn) => {
   setFn(new Map([...newChecked]));
 };
 
+// generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
+export const createCheckedIdsArr = (checkedMap) =>
+  Array.from(checkedMap).reduce(
+    (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
+    [],
+  );
+
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
   const dateOptions = {
