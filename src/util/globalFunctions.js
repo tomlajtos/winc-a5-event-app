@@ -1,12 +1,17 @@
 export const getData = async (endpoint) => {
   const baseUrl = "http://localhost:3003";
   const events = await fetch(`${baseUrl}/${endpoint}`);
-
+  if (!events.ok) {
+    console.warn(events);
+    throw new Error(`${events.status} (${events.statusText})`);
+  }
   return {
     events: await events.json(),
   };
 };
 
+// TODO: I'm note sure if I like this, think about a better solution
+//
 // helper function for React Router loader function
 export const fetchData = async (
   endpoints = [{ name: "categories", path: "/categories" }],
@@ -14,7 +19,19 @@ export const fetchData = async (
   const baseUrl = "http://localhost:3003";
   // reduce can't handle async
   const getFn = async (endpoint) =>
-    await fetch(`${baseUrl}${endpoint.path}`).then((r) => r.json());
+    await fetch(`${baseUrl}${endpoint.path}`).then((r) =>
+      // r.json());
+
+      // /* ?for error? */
+      {
+        if (r.ok) {
+          return r.json();
+        } else {
+          console.warn(r);
+          throw new Error(`${r.status} (${r.statusText})`);
+        }
+      },
+    );
 
   const dataObj = endpoints.reduce((obj, endpoint) => {
     Object.assign(obj, { [endpoint.name]: "" });
