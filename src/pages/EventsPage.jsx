@@ -2,17 +2,11 @@ import React from "react";
 import { useLoaderData, Link as RRLink } from "react-router-dom";
 import { Wrap, Heading } from "@chakra-ui/react";
 import { useRoot } from "../context/RootContext";
+import { fetchData } from "../util/globalFunctions";
 import { EventCard } from "../components/EventCard";
 
-const baseUrl = "http://localhost:3003";
-
-export const loader = async () => {
-  const events = await fetch(`${baseUrl}/events`);
-
-  return {
-    events: await events.json(),
-  };
-};
+export const loader = async () =>
+  fetchData([{ name: "events", path: "/events" }]);
 
 export const EventsPage = () => {
   const { events } = useLoaderData();

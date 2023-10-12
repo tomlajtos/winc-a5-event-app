@@ -20,12 +20,8 @@ import {
 import {
   handleCheckboxChanges,
   initCheckedItemMap,
+  createCheckedIdsArr,
 } from "../util/globalFunctions";
-
-export const loader = async () => {
-  const categories = await fetch("http://localhost:3003/categories");
-  return { categories: await categories.json() };
-};
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
@@ -46,13 +42,6 @@ export const action = async ({ request }) => {
   // console.log("form post-data:", data);
   return redirect(`/event/${newEventId}`);
 };
-
-// generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
-const createCheckedIdsArr = (checkedMap) =>
-  Array.from(checkedMap).reduce(
-    (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
-    [],
-  );
 
 export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
