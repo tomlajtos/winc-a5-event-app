@@ -1,17 +1,22 @@
-import { ChakraProvider } from "@chakra-ui/react";
+// Ract imports
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { EventPage, loader as eventLoader } from "./pages/EventPage";
+// React Router imports
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// Chakra-Ui imports
+import { ChakraProvider } from "@chakra-ui/react";
+// App component imports
+import { Root, loader as rootLoader } from "./components/Root";
 import { ErrorBoundry } from "./ErrorBoundaries/ErrorBoundary";
 import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
+import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Root } from "./components/Root";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    loader: rootLoader,
     errorElement: <ErrorBoundry />,
     children: [
       {
@@ -30,7 +35,6 @@ const router = createBrowserRouter([
       {
         path: "/event/new",
         element: <NewEventPage />,
-        // loader: newEventLoader,
         errorElement: <ErrorBoundry />,
         action: createEvent,
       },

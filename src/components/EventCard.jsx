@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Heading } from "@chakra-ui/react";
 import {
   Card,
@@ -9,7 +10,9 @@ import {
   Text,
   Tag,
 } from "@chakra-ui/react";
-import { useRoot } from "../context/RootContext.jsx";
+
+import { RootContext } from "../context/RootContext.jsx";
+
 import { formatDateAndTime } from "../util/globalFunctions.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
@@ -17,7 +20,7 @@ export const EventCard = ({ event }) => {
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
 
-  const { categories } = useRoot();
+  const { categories } = useContext(RootContext);
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);

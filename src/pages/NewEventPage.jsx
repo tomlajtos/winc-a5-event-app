@@ -1,8 +1,8 @@
 //TODO: investigate useRoot > categories is undefined on page refresh
 // make code nicer
+import { useState, useContext } from "react";
 import { Form, redirect, useLoaderData } from "react-router-dom";
-import { useState } from "react";
-import { useRoot } from "../context/RootContext";
+import { RootContext } from "../context/RootContext";
 import {
   Button,
   Checkbox,
@@ -45,12 +45,12 @@ export const action = async ({ request }) => {
 
 export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
-  const { categories } = useLoaderData();
-
-  const categorySelections = new Map(initCheckedItemMap(categories));
-
+  const { categories } = useContext(RootContext);
+  const categorySelections = new Map(initCheckedItemMap(categories, false));
   const [isChecked, setIsChecked] = useState(new Map([...categorySelections]));
-  console.log(isChecked);
+  // console.log(categorySelections, isChecked);
+  // console.log(isChecked);
+  // console.log(createCheckedIdsArr(isChecked));
 
   return (
     <Flex
@@ -105,6 +105,7 @@ export const NewEventPage = () => {
                 id={category.id}
                 key={category.id}
                 name="categoryIds"
+                isChecked={isChecked.get(category.id)}
                 value={createCheckedIdsArr(isChecked)}
                 onChange={(e) =>
                   handleCheckboxChanges(e, isChecked, setIsChecked)

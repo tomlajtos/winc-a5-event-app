@@ -9,7 +9,7 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
-import { useRoot } from "../context/RootContext.jsx";
+// import { useRoot } from "../context/RootContext.jsx";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 
 // Loader function to fetch event specific data (dynamic path)

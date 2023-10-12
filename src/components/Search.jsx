@@ -1,17 +1,25 @@
 // TODO: look at useSearchParams hook for using with search??
+import { useContext } from "react";
 import { Input, Stack } from "@chakra-ui/react";
-import { useRoot } from "../context/RootContext";
+import { RootContext } from "../context/RootContext";
+import { colors } from "../util/colorScheme";
 
 export const Search = () => {
-  const rootContext = useRoot();
-  console.log(rootContext);
+  const lightColors = colors.light.search;
+  const { setSearchQ } = useContext(RootContext);
+
   return (
-    <Stack backgroundColor={"red.500"} p={2}>
+    <Stack p={2} justify={"center"}>
       <Input
-        sx={{ border: "1px, solid, red" }}
-        variant={"filled"}
+        variant={"outline"}
+        outlineColor={"gray.300"}
         focusBorderColor="gray.400"
         placeholder="Search for an event..."
+        rounded={"full"}
+        backgroundColor={lightColors.inputBg}
+        onChange={(e) => {
+          setSearchQ(e.target.value);
+        }}
       />
     </Stack>
   );
