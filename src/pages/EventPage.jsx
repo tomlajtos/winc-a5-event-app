@@ -18,16 +18,13 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { users, categories, isLoadingUsers, errorUsers } = useRoot();
+  const { users, categories } = useRoot();
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
 
   if (errorUsers) {
     return <Heading>{errorUsers}</Heading>;
-  }
-  if (isLoadingUsers) {
-    return <Heading>Loading...</Heading>;
   }
   return (
     <Flex direction={"column"} padding={8}>

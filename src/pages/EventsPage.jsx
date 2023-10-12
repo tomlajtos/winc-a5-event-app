@@ -16,11 +16,7 @@ export const loader = async () => {
 
 export const EventsPage = () => {
   const { events } = useLoaderData();
-  const { categories, isLoadingCategories, errorCategories } = useRoot();
 
-  if (isLoadingCategories) {
-    return <Heading>Loading...</Heading>;
-  }
   if (errorCategories) {
     return <Heading>{errorCategories}</Heading>;
   }

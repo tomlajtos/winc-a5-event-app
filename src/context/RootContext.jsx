@@ -7,24 +7,20 @@ RootContext.displayName = "RootContext";
 
 export const RootContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [errorUsers, setErrorUsers] = useState(null);
 
   const [categories, setCategories] = useState([]);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState(null);
 
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState([1, 2, 3]);
 
   useEffect(() => {
-    // setIsLoadingUsers(true);
     const fetchUsers = async () => {
       const response = await fetch("http://localhost:3003/users");
       if (response.ok) {
         const users = await response.json();
         setUsers(users);
-        setIsLoadingUsers(false);
       } else {
         setErrorUsers(`Something went wrong: ${response.statusText}`);
       }
@@ -33,13 +29,11 @@ export const RootContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // setIsLoadingCategories(true);
     const fetchCategories = async () => {
       const response = await fetch("http://localhost:3003/categories");
       if (response.ok) {
         const categories = await response.json();
         setCategories(categories);
-        setIsLoadingCategories(false);
       } else {
         setErrorCategories(`Something went wrong: ${response.statusText}`);
       }
