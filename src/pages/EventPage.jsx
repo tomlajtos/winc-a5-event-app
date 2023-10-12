@@ -23,9 +23,6 @@ export const EventPage = () => {
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
 
-  if (errorUsers) {
-    return <Heading>{errorUsers}</Heading>;
-  }
   return (
     <Flex direction={"column"} padding={8}>
       {event.image ? (

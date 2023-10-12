@@ -7,10 +7,8 @@ RootContext.displayName = "RootContext";
 
 export const RootContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  const [errorUsers, setErrorUsers] = useState(null);
 
   const [categories, setCategories] = useState([]);
-  const [errorCategories, setErrorCategories] = useState(null);
 
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState([1, 2, 3]);
