@@ -17,7 +17,6 @@ export const loader = async () =>
 export const EventsPage = () => {
   let { events } = useLoaderData();
   const { filterQ, searchQ } = useContext(RootContext);
-  // const { categories } = useRoot();
 
   const filteredEvents = events
     .filter((event) => {

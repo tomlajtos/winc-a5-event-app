@@ -10,11 +10,7 @@ import {
   Button,
   Checkbox,
   Heading,
-  IconButton,
-  Input,
-  Link,
   Stack,
-  StackDivider,
 } from "@chakra-ui/react";
 
 import { RootContext } from "../context/RootContext";
@@ -28,7 +24,7 @@ export const Navigation = () => {
   const { categories, filterQ, setFilterQ } = useContext(RootContext);
   const checkedCategoriesMap = new Map(initCheckedItemMap(categories, true));
   const [isChecked, setIsChecked] = useState(
-    new Map([...checkedCategoriesMap]),
+    new Map([...checkedCategoriesMap])
   );
   // console.log(
   //   "nav init map\n",
@@ -101,7 +97,7 @@ export const Navigation = () => {
                       e,
                       isChecked,
                       setIsChecked,
-                      setFilterQ,
+                      setFilterQ
                     )
                   }
                   checked

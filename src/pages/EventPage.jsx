@@ -1,15 +1,6 @@
 import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import {
-  Box,
-  Center,
-  Container,
-  Flex,
-  Heading,
-  Text,
-  Image,
-} from "@chakra-ui/react";
-// import { useRoot } from "../context/RootContext.jsx";
+import { Center, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -18,7 +9,6 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { users, categories } = useRoot();
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);

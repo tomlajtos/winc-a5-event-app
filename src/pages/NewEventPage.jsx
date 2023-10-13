@@ -1,19 +1,17 @@
 //TODO: investigate useRoot > categories is undefined on page refresh
 // make code nicer
 import { useState, useContext } from "react";
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import { RootContext } from "../context/RootContext";
 import {
   Button,
   Checkbox,
   Flex,
-  Heading,
   Input,
   Textarea,
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
   Stack,
   Text,
 } from "@chakra-ui/react";

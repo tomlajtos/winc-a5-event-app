@@ -6,7 +6,6 @@ import {
   CardFooter,
   Image,
   Stack,
-  StackDivider,
   Text,
   Tag,
 } from "@chakra-ui/react";

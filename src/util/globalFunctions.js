@@ -1,20 +1,47 @@
-export const getData = async (endpoint) => {
+// TODO: refactor get data to only return promisses as obj.prop values
+// resolve the promisses in the loader function ?? maybe it is less confusing this way
+export const getData = async (
+  endpoints = [{ name: "categories", path: "/categories" }]
+) => {
+  // const baseUrl = "http://localhost:3003";
+  // const events = await fetch(`${baseUrl}/${endpoint}`);
+  // if (!events.ok) {
+  //   console.warn(events);
+  //   throw new Error(`${events.status} (${events.statusText})`);
+  // }
+  // return {
+  //   events: await events.json(),
+  // };
   const baseUrl = "http://localhost:3003";
-  const events = await fetch(`${baseUrl}/${endpoint}`);
-  if (!events.ok) {
-    console.warn(events);
-    throw new Error(`${events.status} (${events.statusText})`);
-  }
-  return {
-    events: await events.json(),
-  };
+  // reduce can't handle async
+  const getFn = async (endpoint) =>
+    await fetch(`${baseUrl}${endpoint.path}`).then((r) =>
+      // r.json());
+
+      // /* ?for error? */
+      {
+        if (r.ok) {
+          return r.json();
+        } else {
+          console.warn(r);
+          throw new Error(`${r.status} (${r.statusText})`);
+        }
+      }
+    );
+
+  const dataObj = endpoints.reduce((obj, endpoint) => {
+    Object.assign(obj, { [endpoint.name]: "" });
+    obj[endpoint.name] = getFn(endpoint);
+    return obj;
+  }, {});
+  return dataObj;
 };
 
 // TODO: I'm note sure if I like this, think about a better solution
 //
 // helper function for React Router loader function
 export const fetchData = async (
-  endpoints = [{ name: "categories", path: "/categories" }],
+  endpoints = [{ name: "categories", path: "/categories" }]
 ) => {
   const baseUrl = "http://localhost:3003";
   // reduce can't handle async
@@ -30,7 +57,7 @@ export const fetchData = async (
           console.warn(r);
           throw new Error(`${r.status} (${r.statusText})`);
         }
-      },
+      }
     );
 
   const dataObj = endpoints.reduce((obj, endpoint) => {
@@ -76,7 +103,7 @@ export const handleCheckboxChanges = (e, checkedMap, setFn, setFn2) => {
 export const createCheckedIdsArr = (checkedMap) =>
   Array.from(checkedMap).reduce(
     (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
-    [],
+    []
   );
 
 export const formatDateAndTime = (dateStr) => {

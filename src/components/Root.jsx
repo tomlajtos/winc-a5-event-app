@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { Navigation } from "./Navigation";
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Stack,
-  StackDivider,
-} from "@chakra-ui/react";
-// import { RootContextProvider } from "../context/RootContext";
+import { Box, Flex, Heading, Stack, StackDivider } from "@chakra-ui/react";
 import { RootContext } from "../context/RootContext";
 import { Search } from "../components/Search";
 import {
@@ -41,7 +33,7 @@ export const Root = () => {
 
   // states for context
   const [checkedFilters, setCheckedFilters] = useState(
-    new Map(initCheckedItemMap(categories, true)),
+    new Map(initCheckedItemMap(categories, true))
   );
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState(createCheckedIdsArr(checkedFilters));
