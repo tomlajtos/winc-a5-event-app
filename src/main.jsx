@@ -11,6 +11,7 @@ import { ErrorBoundry } from "./ErrorBoundaries/ErrorBoundary";
 import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
+import { action as deleteAction } from "./io/delete.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
         element: <NewEventPage />,
         errorElement: <ErrorBoundry />,
         action: createEvent,
+      },
+      {
+        path: "/event/:eventId/delete",
+        action: deleteAction,
       },
     ],
   },

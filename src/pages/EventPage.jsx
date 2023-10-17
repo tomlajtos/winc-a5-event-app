@@ -1,6 +1,14 @@
 import React from "react";
-import { useLoaderData, Link } from "react-router-dom";
-import { Center, Flex, Heading, Text, Image } from "@chakra-ui/react";
+import { useLoaderData, Form } from "react-router-dom";
+import {
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -41,6 +49,12 @@ export const EventPage = () => {
       <Text>{event.location}</Text>
 
       <Text>{event.description}</Text>
+
+      <Form method="post" action="delete">
+        <Stack>
+          <Button type="submit">Delete</Button>
+        </Stack>
+      </Form>
     </Flex>
   );
 };
