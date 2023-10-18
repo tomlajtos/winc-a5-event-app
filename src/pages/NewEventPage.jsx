@@ -1,5 +1,3 @@
-//TODO: investigate useRoot > categories is undefined on page refresh
-// make code nicer
 import { useState, useContext } from "react";
 import { Form, redirect } from "react-router-dom";
 import { RootContext } from "../context/RootContext";
@@ -19,6 +17,7 @@ import {
   handleCheckboxChanges,
   initCheckedItemMap,
   createCheckedIdsArr,
+  generateDateTimeStr,
 } from "../util/globalFunctions";
 
 export const action = async ({ request }) => {
@@ -75,7 +74,11 @@ export const NewEventPage = () => {
             <FormLabel margin={0} px={2}>
               Start
             </FormLabel>
-            <Input type="datetime-local" name="startTime" />
+            <Input
+              type="datetime-local"
+              name="startTime"
+              defaultValue={generateDateTimeStr(new Date())}
+            />
             <FormErrorMessage></FormErrorMessage>
           </FormControl>
           <FormControl
@@ -86,7 +89,11 @@ export const NewEventPage = () => {
             <FormLabel margin={0} px={2}>
               End
             </FormLabel>
-            <Input type="datetime-local" name="endTime" />
+            <Input
+              type="datetime-local"
+              name="endTime"
+              defaultValue={generateDateTimeStr(new Date(), { h: 1 })}
+            />
             <FormErrorMessage></FormErrorMessage>
           </FormControl>
         </Stack>
