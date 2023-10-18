@@ -1,4 +1,4 @@
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, Form, Link as RRLink } from "react-router-dom";
 import {
   useDisclosure,
   Button,
@@ -57,27 +57,31 @@ export const EventPage = () => {
       <Text>{event.location}</Text>
 
       <Text>{event.description}</Text>
-
-      <Button onClick={onOpen}>Delete</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>Delete Event</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              Are you sure that you want to delete this event?
-            </ModalBody>
-            <ModalFooter>
-              <Stack direction="row" spacing={2}>
-                <Form method="post" action="delete">
-                  <Button type="submit">Delete</Button>
-                </Form>
-                <Button onClick={onClose}>Cancel</Button>
-              </Stack>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
+      <Stack direction="row" justify="end">
+        <Button as={RRLink} to={`/event/${event.id}/edit`}>
+          Edit
+        </Button>
+        <Button onClick={onOpen}>Delete</Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay>
+            <ModalContent>
+              <ModalHeader>Delete Event</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                Are you sure that you want to delete this event?
+              </ModalBody>
+              <ModalFooter>
+                <Stack direction="row" spacing={2}>
+                  <Form method="post" action="delete">
+                    <Button type="submit">Delete</Button>
+                  </Form>
+                  <Button onClick={onClose}>Cancel</Button>
+                </Stack>
+              </ModalFooter>
+            </ModalContent>
+          </ModalOverlay>
+        </Modal>
+      </Stack>
     </Flex>
   );
 };
