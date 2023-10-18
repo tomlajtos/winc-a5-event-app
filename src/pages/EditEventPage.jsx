@@ -22,6 +22,29 @@ import {
   generateDateTimeStr,
 } from "../util/globalFunctions";
 
+export const action = async ({ request, params }) => {
+  const updates = Object.fromEntries(await request.formData());
+  updates.categoryIds = updates.categoryIds.split(",").map((id) => Number(id));
+
+  console.log(JSON.stringify(updates));
+
+  const response = await fetch(
+    `http://localhost:3003/events/${params.eventId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(updates),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    }
+  ).then((r) => {
+    console.log("response", r);
+    return r.json();
+  });
+
+  console.log("RESPONSE", response);
+  return redirect(`/event/${params.eventId}`);
+};
 export const loader = async ({ params }) =>
   fetchData([{ name: "event", path: `/events/${params.eventId}` }]);
 
