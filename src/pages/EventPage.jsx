@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
@@ -26,7 +25,6 @@ export const loader = async ({ params }) =>
 export const EventPage = () => {
   const { event } = useLoaderData();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [confirm, setConfirm] = useState(false);
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
