@@ -83,6 +83,17 @@ export const fetchData = async (
 export const initCheckedItemMap = (objArr, initValue = true) =>
   objArr.map((item) => [Number(item.id), initValue]);
 
+export const setCheckedItemMap = (map, arr) => {
+  const newMap = new Map([...map]);
+  arr.map((item) => {
+    // arr is an array of category ids
+    // no need to check if newMap has `item`, since each category is represented in map as
+    // [key: category id, value: boolian]
+    newMap.set(item, !newMap.get(item));
+  });
+  return newMap;
+};
+
 // function to handle onChange event in a group of checkboxes
 export const handleCheckboxChanges = (e, checkedMap, setFn, setFn2) => {
   const id = e.target.id;
