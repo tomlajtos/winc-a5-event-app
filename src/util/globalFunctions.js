@@ -117,6 +117,9 @@ export const createCheckedIdsArr = (checkedMap) =>
     []
   );
 
+// function to format date-time unti strings from single digit to double digit (i.e. 1 to 01)
+const addZeroToDT = (unit) => (unit < 10 ? `0${unit}` : unit);
+
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
   const dateOptions = {
