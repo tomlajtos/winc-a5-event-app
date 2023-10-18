@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLoaderData, Form } from "react-router-dom";
 import {
+  useDisclosure,
   Button,
   Center,
   Flex,
   Heading,
   Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -17,6 +25,8 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const [confirm, setConfirm] = useState(false);
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
@@ -50,11 +60,26 @@ export const EventPage = () => {
 
       <Text>{event.description}</Text>
 
-      <Form method="post" action="delete">
-        <Stack>
-          <Button type="submit">Delete</Button>
-        </Stack>
-      </Form>
+      <Button onClick={onOpen}>Delete</Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Delete Event</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Are you sure that you want to delete this event?
+            </ModalBody>
+            <ModalFooter>
+              <Stack direction="row" spacing={2}>
+                <Form method="post" action="delete">
+                  <Button type="submit">Delete</Button>
+                </Form>
+                <Button onClick={onClose}>Cancel</Button>
+              </Stack>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
     </Flex>
   );
 };
