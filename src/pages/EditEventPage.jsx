@@ -1,3 +1,4 @@
+// TODO: REFACTOR: editing should be done on the same page (EventPage), not on a new page
 import { useState, useContext } from "react";
 import { redirect, useLoaderData, Form } from "react-router-dom";
 import { RootContext } from "../context/RootContext";
