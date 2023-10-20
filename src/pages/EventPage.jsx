@@ -1,5 +1,6 @@
 // TODO: refactor: move editing functionality here, use <Modal/> (or <Editable/> ?)
-import { useLoaderData, Form, Link as RRLink } from "react-router-dom";
+import { useContext } from "react";
+import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
   Button,
@@ -18,6 +19,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
+import { RootContext } from "../context/RootContext.jsx";
+import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
 
 // Loader function to fetch event specific data (dynamic path)
 export const loader = async ({ params }) =>
@@ -25,7 +28,9 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { categories } = useContext(RootContext);
+  const editModal = useDisclosure();
+  const deleteModal = useDisclosure();
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
@@ -59,12 +64,39 @@ export const EventPage = () => {
 
       <Text>{event.description}</Text>
       <Stack direction="row" justify="end">
-        <Button as={RRLink} to={`/event/${event.id}/edit`}>
-          Edit
-        </Button>
-        <Button onClick={onOpen}>Delete</Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay>
+        <Button onClick={editModal.onOpen}>Edit</Button>
+        <Modal
+          isOpen={editModal.isOpen}
+          onClose={editModal.onClose}
+          size={["full", null, "lg"]}
+        >
+          <ModalOverlay
+            bg="blackAlpha.500"
+            backdropFilter="auto"
+            backdropBlur="5px"
+          >
+            <ModalContent backgroundColor="whiteAlpha.900">
+              <ModalHeader fontSize="2xl" background="transparent">
+                Edit event
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody background="transparent">
+                <EditEventForm
+                  event={event}
+                  categories={categories}
+                  onClose={editModal.onClose}
+                />
+              </ModalBody>
+            </ModalContent>
+          </ModalOverlay>
+        </Modal>
+        <Button onClick={deleteModal.onOpen}>Delete</Button>
+        <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
+          <ModalOverlay
+            bg="blackAlpha.500"
+            backdropFilter="auto"
+            backdropBlur="5px"
+          >
             <ModalContent>
               <ModalHeader>Delete Event</ModalHeader>
               <ModalCloseButton />
@@ -76,7 +108,7 @@ export const EventPage = () => {
                   <Form method="post" action="delete">
                     <Button type="submit">Delete</Button>
                   </Form>
-                  <Button onClick={onClose}>Cancel</Button>
+                  <Button onClick={deleteModal.onClose}>Cancel</Button>
                 </Stack>
               </ModalFooter>
             </ModalContent>
