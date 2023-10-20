@@ -12,11 +12,12 @@ import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
 import { action as deleteEvent } from "./io/delete.jsx";
-import {
-  EditEventPage,
-  loader as editEventLoader,
-  action as editEvent,
-} from "./pages/EditEventPage";
+import { action as editEvent } from "./io/edit.jsx";
+// import {
+//   EditEventPage,
+//   loader as editEventLoader,
+//   action as editEvent,
+// } from "./pages/EditEventPage";
 
 const router = createBrowserRouter([
   {
@@ -45,9 +46,9 @@ const router = createBrowserRouter([
       },
       {
         path: "/event/:eventId/edit",
-        element: <EditEventPage />,
+        // element: <EditEventPage />,
         errorElement: <ErrorBoundry />,
-        loader: editEventLoader,
+        // loader: editEventLoader,
         action: editEvent,
       },
       {
