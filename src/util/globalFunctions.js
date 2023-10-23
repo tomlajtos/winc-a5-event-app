@@ -169,6 +169,7 @@ export const generateDateTimeStr = (dateStr, dur) => {
     hour
   )}:${addZeroToDT(minute)}`;
 };
+
 // functin to intercept formData on submission, for validation of required input
 export const getFormDataOnSubmit = (e) => {
   console.log(e);
@@ -198,3 +199,50 @@ export const getFormDataOnSubmit = (e) => {
   return formData;
 };
 
+// function to
+export const checkFormDataOnSubimt = (e) => {
+  const formDataArr = getFormDataOnSubmit(e);
+  const isInvalidInput = {
+    title: false,
+    startTime: false,
+    endTime: false,
+    description: false,
+    categoryIds: false,
+    image: false,
+  };
+  const missingDataArr = formDataArr.filter((elem) => !elem.value);
+  console.log(missingDataArr);
+
+  const missingRequiredData = formDataArr.filter(
+    (elem) => elem.name !== "image" && !elem.value
+  );
+  console.log(missingRequiredData);
+
+  missingDataArr.map(
+    (elem) => (isInvalidInput[elem.name] = elem.hasMissingValue)
+  );
+  console.log(isInvalidInput);
+
+  if (missingRequiredData.length === 0 && missingDataArr.length > 0) {
+    return {
+      isRequiredOk: true,
+      isDataComplete: false,
+      missing: missingDataArr,
+      invalid: isInvalidInput,
+    };
+  } else if (missingRequiredData.length > 0) {
+    return {
+      isRequiredOk: false,
+      isDataComplete: false,
+      missing: missingDataArr,
+      invalid: isInvalidInput,
+    };
+  } else {
+    return {
+      isRequiredOk: true,
+      isDataComplete: true,
+      missing: [],
+      invalid: isInvalidInput,
+    };
+  }
+};
