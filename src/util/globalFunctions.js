@@ -145,7 +145,13 @@ export const formatDateAndTime = (dateStr) => {
   const fullDate = date.toLocaleDateString("en-GB", dateOptions);
   const fullTime = date.toLocaleTimeString("en-GB", timeOptions);
 
-  return { shortDate: shortDate, date: fullDate, time: fullTime };
+  return {
+    shortDate: shortDate,
+    date: fullDate,
+    time: fullTime,
+  };
+};
+
 // function to generate date-time str compatible with <input type=datetime-local>
 // str to be used as default value for input element
 export const generateDateTimeStr = (dateStr, dur) => {
@@ -163,3 +169,32 @@ export const generateDateTimeStr = (dateStr, dur) => {
     hour
   )}:${addZeroToDT(minute)}`;
 };
+// functin to intercept formData on submission, for validation of required input
+export const getFormDataOnSubmit = (e) => {
+  console.log(e);
+  let elements = Array.from(e.target.elements);
+  let formData = elements
+    .filter((element) => element.attributes["name"])
+    .reduce((dataArr, element, index, arr) => {
+      const name = element.attributes["name"].value;
+      const value = element.value;
+      const hasMissingValue = element.value === "";
+      const isDuplicate =
+        index - 1 >= 0
+          ? arr[index - 1].attributes["name"].value === name
+          : false;
+      if (!isDuplicate) {
+        dataArr = [
+          {
+            name,
+            value,
+            hasMissingValue,
+          },
+          ...dataArr,
+        ];
+      }
+      return dataArr;
+    }, []);
+  return formData;
+};
+
