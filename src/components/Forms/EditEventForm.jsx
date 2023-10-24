@@ -26,8 +26,42 @@ export const EditEventForm = ({ categories, event, onClose }) => {
   const [isChecked, setIsChecked] = useState(
     setCheckedItemMap(initialCheckedItemMap, event.categoryIds)
   );
-  const [invalidInput, setInvalidInput] = useState({});
-  console.log("missingInput:", invalidInput);
+
+  const [inputError, setInputError] = useState({ missing: {}, invalid: {} });
+  console.log("missingInput:", inputError);
+  const errors = new Map();
+
+  const validate = (errorMap, inputName, validityState, setFn) => {
+    const vS = validityState;
+    const eM = new Map(errorMap);
+    let input = inputName;
+    let isMissing = false;
+    let isInvalid = false;
+    let isRequired = true;
+
+    switch (inputName) {
+      case "startTime": {
+        input = "start time";
+        break;
+      }
+      case "endTime": {
+        input = "end time";
+        break;
+      }
+      case "image":
+        {
+          isRequired = false;
+        }
+        console.log(input, isMissing, isInvalid, isRequired);
+    }
+    const missingError = `Please provide an ${inputName}.`;
+    const invalidError = `Please provide a valid`;
+    if (eM.has(inputName) && !vS.badInput && !vS.valueMissing) {
+      eM.delete(inputName);
+    }
+    // if (vs)
+  };
+
   return (
     <Stack
       as={Form}
@@ -46,61 +80,84 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           onClose();
         } else {
           e.preventDefault();
-          setInvalidInput(checkFormResult.invalid);
+          checkFormResult();
+          setInputError();
         }
       }}
     >
-      <FormControl isInvalid={invalidInput.title}>
-        <FormLabel>Title</FormLabel>
-        <Input type="text" name="title" defaultValue={event.title} />
-        {invalidInput.title ? (
+      <FormControl isInvalid={inputError.missing.title}>
+        <FormLabel fontWeight="bolder">Title</FormLabel>
+        <Input
+          type="text"
+          name="title"
+          defaultValue={event.title}
+          onChange={(e) => console.log(e.target.validity)}
+        />
+        {inputError.missing.title ? (
           <FormErrorMessage>Event title is required</FormErrorMessage>
         ) : null}
       </FormControl>
 
       <Stack as="fieldset" direction="column" spacing={2}>
-        <Text as="legend">Date and Time</Text>
+        <Text as="legend" pb={1} fontWeight="bolder">
+          Date and Time
+        </Text>
         <FormControl
           display={"flex"}
-          flexDirection={"row"}
-          alignItems={"center"}
-          isInvalid={invalidInput.startTime}
+          flexDirection={"column"}
+          alignItems={"start"}
+          isInvalid={inputError.missing.startTime}
         >
-          <FormLabel margin={0} px={2}>
-            Start
-          </FormLabel>
-          <Input
-            type="datetime-local"
-            name="startTime"
-            defaultValue={generateDateTimeStr(event.startTime)}
-          />
-          {invalidInput.startTime ? (
-            <FormErrorMessage>Start time is required.</FormErrorMessage>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <FormLabel margin={0} px={2}>
+              Start
+            </FormLabel>
+            <Input
+              type="datetime-local"
+              name="startTime"
+              defaultValue={generateDateTimeStr(event.startTime)}
+              justifySelf="stretch"
+              onChange={(e) => console.log("time:", e.target.validity)}
+            />
+          </Stack>
+          {inputError.missing.startTime ? (
+            <FormErrorMessage alignSelf="end" py={1}>
+              Start time is required.
+            </FormErrorMessage>
           ) : null}
         </FormControl>
 
         <FormControl
           display={"flex"}
-          flexDirection={"row"}
-          alignItems={"center"}
+          flexDirection={"column"}
+          alignItems={"start"}
+          isInvalid={inputError.missing.endTime}
         >
-          <FormLabel margin={0} px={2}>
-            End
-          </FormLabel>
-          <Input
-            type="datetime-local"
-            name="endTime"
-            defaultValue={generateDateTimeStr(event.endTime)}
-          />
-          <FormErrorMessage>End time is required.</FormErrorMessage>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <FormLabel margin={0} px={2}>
+              End
+            </FormLabel>
+            <Input
+              type="datetime-local"
+              name="endTime"
+              defaultValue={generateDateTimeStr(event.endTime)}
+            />
+          </Stack>
+          {inputError.missing.startTime ? (
+            <FormErrorMessage alignSelf="end" py={1}>
+              End time is required.
+            </FormErrorMessage>
+          ) : null}
         </FormControl>
       </Stack>
-      <FormControl isInvalid={invalidInput.description}>
+
+      <FormControl isInvalid={inputError.missing.description}>
         <FormLabel>Description</FormLabel>
         <Textarea name="description" defaultValue={event.description} />
         <FormErrorMessage>Event description is required.</FormErrorMessage>
       </FormControl>
-      <FormControl as={"fieldset"} isInvalid={invalidInput.categoryIds}>
+
+      <FormControl as={"fieldset"} isInvalid={inputError.missing.categoryIds}>
         <Text as="legend">Categories</Text>
         <Stack spacing={[1, 5]} direction={["column", "row"]}>
           {categories.map((category) => (
@@ -120,13 +177,19 @@ export const EditEventForm = ({ categories, event, onClose }) => {
         </Stack>
         <FormErrorMessage>At least one category is required.</FormErrorMessage>
       </FormControl>
-      <FormControl isInvalid={invalidInput.image}>
+
+      <FormControl isInvalid={inputError.missing.image}>
         <FormLabel>Add an image URL</FormLabel>
         <Input
           type="url"
           name="image"
           defaultValue={event.image}
           errorBorderColor="orange.300"
+          onChange={(e) =>
+            validate(errors, e.target.name, e.target.validity, () =>
+              console.log("setting new errors")
+            )
+          }
         />
         <FormErrorMessage textColor="orange.500">
           Your event would look nicer with an image, it is not required though.
