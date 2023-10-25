@@ -18,49 +18,22 @@ import {
   setCheckedItemMap,
   createCheckedIdsArr,
   generateDateTimeStr,
-  checkFormDataOnSubimt,
+  // checkFormDataOnSubimt,
 } from "../../util/globalFunctions";
+import { validate } from "../../util/validate";
 
 export const EditEventForm = ({ categories, event, onClose }) => {
   const initialCheckedItemMap = new Map(initCheckedItemMap(categories, false));
   const [isChecked, setIsChecked] = useState(
     setCheckedItemMap(initialCheckedItemMap, event.categoryIds)
   );
+  const checkboxValues = createCheckedIdsArr(isChecked);
 
-  const [inputError, setInputError] = useState({ missing: {}, invalid: {} });
-  console.log("missingInput:", inputError);
-  const errors = new Map();
+  const [inputErrors, setInputErrors] = useState(new Map());
 
-  const validate = (errorMap, inputName, validityState, setFn) => {
-    const vS = validityState;
-    const eM = new Map(errorMap);
-    let input = inputName;
-    let isMissing = false;
-    let isInvalid = false;
-    let isRequired = true;
-
-    switch (inputName) {
-      case "startTime": {
-        input = "start time";
-        break;
-      }
-      case "endTime": {
-        input = "end time";
-        break;
-      }
-      case "image":
-        {
-          isRequired = false;
-        }
-        console.log(input, isMissing, isInvalid, isRequired);
-    }
-    const missingError = `Please provide an ${inputName}.`;
-    const invalidError = `Please provide a valid`;
-    if (eM.has(inputName) && !vS.badInput && !vS.valueMissing) {
-      eM.delete(inputName);
-    }
-    // if (vs)
-  };
+  console.log(inputErrors);
+  console.log("%checkbox value", "color:yellow", checkboxValues);
+  // NOTE: novalidate attr of form prevents the built in validation, useful when if custom validation is used
 
   return (
     <Stack
@@ -71,31 +44,24 @@ export const EditEventForm = ({ categories, event, onClose }) => {
       spacing={5}
       p={4}
       maxW="500px"
-      onSubmit={(e) => {
-        const checkFormResult = checkFormDataOnSubimt(e);
-        console.log("on submit outer:", checkFormResult);
-        if (checkFormResult.isDataComplete) {
-          onClose();
-        } else if (checkFormResult.isRequiredOk) {
-          onClose();
-        } else {
-          e.preventDefault();
-          checkFormResult();
-          setInputError();
-        }
-      }}
+      onSubmit={(e) =>
+        inputErrors.size > 0
+          ? (e.preventDefault(), console.log(inputErrors))
+          : onClose()
+      }
     >
-      <FormControl isInvalid={inputError.missing.title}>
+      <FormControl isInvalid={inputErrors.has("title")} isRequired>
         <FormLabel fontWeight="bolder">Title</FormLabel>
         <Input
           type="text"
           name="title"
           defaultValue={event.title}
-          onChange={(e) => console.log(e.target.validity)}
+          onInput={(e) => {
+            console.log("before.validate", e.target.name, e.target.validity);
+            validate(inputErrors, e.target, e.target.validity, setInputErrors);
+          }}
         />
-        {inputError.missing.title ? (
-          <FormErrorMessage>Event title is required</FormErrorMessage>
-        ) : null}
+        <FormErrorMessage>Event title is required</FormErrorMessage>
       </FormControl>
 
       <Stack as="fieldset" direction="column" spacing={2}>
@@ -106,7 +72,8 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           display={"flex"}
           flexDirection={"column"}
           alignItems={"start"}
-          isInvalid={inputError.missing.startTime}
+          isInvalid={inputErrors.has("startTime")}
+          isRequired
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <FormLabel margin={0} px={2}>
@@ -117,21 +84,21 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               name="startTime"
               defaultValue={generateDateTimeStr(event.startTime)}
               justifySelf="stretch"
-              onChange={(e) => console.log("time:", e.target.validity)}
+              onChange={(e) => console.log("time:", Object.keys(e.target))}
             />
           </Stack>
-          {inputError.missing.startTime ? (
-            <FormErrorMessage alignSelf="end" py={1}>
-              Start time is required.
-            </FormErrorMessage>
-          ) : null}
+          <FormErrorMessage alignSelf="end" py={1}>
+            Start time is required.
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl
           display={"flex"}
           flexDirection={"column"}
           alignItems={"start"}
-          isInvalid={inputError.missing.endTime}
+          isInvalid={inputErrors.has("endTime")}
+          isRequired
+          // isInvalid={inputError.missing.endTime}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <FormLabel margin={0} px={2}>
@@ -143,21 +110,23 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               defaultValue={generateDateTimeStr(event.endTime)}
             />
           </Stack>
-          {inputError.missing.startTime ? (
-            <FormErrorMessage alignSelf="end" py={1}>
-              End time is required.
-            </FormErrorMessage>
-          ) : null}
+          <FormErrorMessage alignSelf="end" py={1}>
+            End time is required.
+          </FormErrorMessage>
         </FormControl>
       </Stack>
 
-      <FormControl isInvalid={inputError.missing.description}>
+      <FormControl isInvalid={inputErrors.has("description")} isRequired>
         <FormLabel>Description</FormLabel>
         <Textarea name="description" defaultValue={event.description} />
         <FormErrorMessage>Event description is required.</FormErrorMessage>
       </FormControl>
 
-      <FormControl as={"fieldset"} isInvalid={inputError.missing.categoryIds}>
+      <FormControl
+        as={"fieldset"}
+        isInvalid={inputErrors.has("categoryIds")}
+        isRequired
+      >
         <Text as="legend">Categories</Text>
         <Stack spacing={[1, 5]} direction={["column", "row"]}>
           {categories.map((category) => (
@@ -166,9 +135,25 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               key={category.id}
               name="categoryIds"
               isChecked={isChecked.get(category.id)}
-              value={createCheckedIdsArr(isChecked)}
+              value={checkboxValues}
               onChange={(e) => {
                 handleCheckboxChanges(e, isChecked, setIsChecked);
+                console.log(
+                  "%ccheckbox required:",
+                  "color:red",
+                  e.target.required,
+                  "%ccheckbox cheked:",
+                  e.target.checked,
+                  e.target.validity,
+                  e.target.value
+                );
+
+                validate(
+                  inputErrors,
+                  e.target,
+                  e.target.validity,
+                  setInputErrors
+                );
               }}
             >
               {category.name}
@@ -178,18 +163,14 @@ export const EditEventForm = ({ categories, event, onClose }) => {
         <FormErrorMessage>At least one category is required.</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={inputError.missing.image}>
+      <FormControl isInvalid={inputErrors.has("image")}>
         <FormLabel>Add an image URL</FormLabel>
         <Input
           type="url"
           name="image"
           defaultValue={event.image}
           errorBorderColor="orange.300"
-          onChange={(e) =>
-            validate(errors, e.target.name, e.target.validity, () =>
-              console.log("setting new errors")
-            )
-          }
+          onChange={(e) => console.log(`validating '${e.target.name}' input`)}
         />
         <FormErrorMessage textColor="orange.500">
           Your event would look nicer with an image, it is not required though.
