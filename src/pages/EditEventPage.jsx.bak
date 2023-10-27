@@ -1,6 +1,11 @@
 // TODO: REFACTOR: editing should be done on the same page (EventPage), not on a new page
 import { useState, useContext } from "react";
-import { redirect, useLoaderData, Form } from "react-router-dom";
+import {
+  redirect,
+  useLoaderData,
+  Form,
+  Link as RRLink,
+} from "react-router-dom";
 import { RootContext } from "../context/RootContext";
 import {
   Button,
@@ -146,7 +151,14 @@ export const EditEventPage = () => {
           <Button type="submit" variant="ghost" size="lg" colorScheme="purple">
             Save
           </Button>
-          <Button type="reset" variant="ghost" size="lg" colorScheme="red">
+          <Button
+            as={RRLink}
+            to={`/event/${event.id}`}
+            type="button"
+            variant="ghost"
+            size="lg"
+            colorScheme="red"
+          >
             Cancel
           </Button>
         </Stack>{" "}
