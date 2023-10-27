@@ -15,6 +15,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Portal,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -65,31 +66,33 @@ export const EventPage = () => {
       <Text>{event.description}</Text>
       <Stack direction="row" justify="end">
         <Button onClick={editModal.onOpen}>Edit</Button>
-        <Modal
-          isOpen={editModal.isOpen}
-          onClose={editModal.onClose}
-          size={["full", null, "lg"]}
-        >
-          <ModalOverlay
-            bg="blackAlpha.500"
-            backdropFilter="auto"
-            backdropBlur="5px"
+        <Portal>
+          <Modal
+            isOpen={editModal.isOpen}
+            onClose={editModal.onClose}
+            size={["full", null, "lg"]}
           >
-            <ModalContent backgroundColor="whiteAlpha.900">
-              <ModalHeader fontSize="2xl" background="transparent">
-                Edit event
-              </ModalHeader>
-              <ModalCloseButton />
-              <ModalBody background="transparent">
-                <EditEventForm
-                  event={event}
-                  categories={categories}
-                  onClose={editModal.onClose}
-                />
-              </ModalBody>
-            </ModalContent>
-          </ModalOverlay>
-        </Modal>
+            <ModalOverlay
+              bg="blackAlpha.500"
+              backdropFilter="auto"
+              backdropBlur="5px"
+            >
+              <ModalContent backgroundColor="whiteAlpha.900">
+                <ModalHeader fontSize="2xl" background="transparent">
+                  Edit event
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody background="transparent">
+                  <EditEventForm
+                    event={event}
+                    categories={categories}
+                    onClose={editModal.onClose}
+                  />
+                </ModalBody>
+              </ModalContent>
+            </ModalOverlay>
+          </Modal>
+        </Portal>
         <Button onClick={deleteModal.onOpen}>Delete</Button>
         <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
           <ModalOverlay
