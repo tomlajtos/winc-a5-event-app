@@ -1,42 +1,29 @@
+// React and RRouter imports
 import React, { useState } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
-import { Navigation } from "./Navigation";
+// Chakra-ui imports
 import { Box, Flex, Heading, Stack, StackDivider } from "@chakra-ui/react";
+// Context imports
 import { RootContext } from "../context/RootContext";
+// Component imports
+import { Navigation } from "./Navigation";
 import { Search } from "../components/Search";
-import {
-  fetchData,
-  initCheckedItemMap,
-  createCheckedIdsArr,
-} from "../util/globalFunctions";
+// utils imports
+import { fetchData, initCategoryIdsArr } from "../util/globalFunctions";
 
 export const loader = async () => {
-  // console.log("ROOT");
   const res = fetchData([
     { name: "categories", path: "/categories" },
     { name: "users", path: "/users" },
   ]);
-  // console.log("rootLoader-res:", await res);
   return res;
 };
 
 export const Root = () => {
   const { categories, users } = useLoaderData();
-  // console.log(
-  //   "useLD:",
-  //   useLoaderData(),
-  //   "\n > cat:",
-  //   categories,
-  //   "\n > users:",
-  //   users,
-  // );
-
-  // states for context
-  const [checkedFilters, setCheckedFilters] = useState(
-    new Map(initCheckedItemMap(categories, true))
-  );
+  const categoryIds = initCategoryIdsArr(categories);
   const [searchQ, setSearchQ] = useState("");
-  const [filterQ, setFilterQ] = useState(createCheckedIdsArr(checkedFilters));
+  const [filterQ, setFilterQ] = useState([...categoryIds]);
 
   return (
     <Flex direction={"column"} bg={"gray.300"} minH={"100vh"}>
