@@ -7,6 +7,7 @@ import { Form } from "react-router-dom";
 
 // chakra-ui imports
 import {
+  useToast,
   Button,
   Checkbox,
   Input,
@@ -32,6 +33,7 @@ export const EditEventForm = ({ categories, event, onClose }) => {
     setCheckedStateArr(categories, categoryIds)
   );
   const [inputErrors, setInputErrors] = useState(new Map());
+  const toast = useToast();
 
   // TODO: move to utils, add jsDOC comments
   const getErrMsg = (name) => {
@@ -57,10 +59,7 @@ export const EditEventForm = ({ categories, event, onClose }) => {
       spacing={5}
       p={4}
       maxW="500px"
-        inputErrors.size > 0
-          ? (e.preventDefault(), console.log(inputErrors))
-          : onClose()
-      }
+      onSubmit={(e) => (inputErrors.size > 0 ? e.preventDefault() : onClose())}
     >
       {/* INPUT for title */}
       <FormControl isRequired isInvalid={isInvalidInput("title")}>
@@ -206,7 +205,26 @@ export const EditEventForm = ({ categories, event, onClose }) => {
 
       {/* edit form button */}
       <Stack direction="row" spacing={2} py={4} px={0} justifyContent="end">
-        <Button type="submit" variant="ghost" size="lg" colorScheme="purple">
+        <Button
+          type="submit"
+          variant="ghost"
+          size="lg"
+          colorScheme="purple"
+          onClick={(e) => {
+            if (inputErrors.size > 0) {
+              e.preventDefault();
+
+              toast({
+                title: "Editing is incomplete",
+                description: "Please complete the required fields.",
+                duration: 4000,
+                position: "top",
+                status: "error",
+                isClosable: true,
+              });
+            }
+          }}
+        >
           Save
         </Button>
         <Button
