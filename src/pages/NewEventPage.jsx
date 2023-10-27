@@ -1,3 +1,4 @@
+// TODO: get rid of isChecked state and checked map, manage checkedState via categoryIds as checkbox values
 import { useState, useContext } from "react";
 import { Form, redirect } from "react-router-dom";
 import { RootContext } from "../context/RootContext";
@@ -15,9 +16,10 @@ import {
 } from "@chakra-ui/react";
 import {
   handleCheckboxChanges,
-  initCheckedItemMap,
-  createCheckedIdsArr,
+  // initCheckedItemMap,
+  // createCheckedIdsArr,
   generateDateTimeStr,
+  initCheckedStateArr,
 } from "../util/globalFunctions";
 
 export const action = async ({ request }) => {
@@ -43,11 +45,15 @@ export const action = async ({ request }) => {
 export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
   const { categories } = useContext(RootContext);
-  const categorySelections = new Map(initCheckedItemMap(categories, false));
-  const [isChecked, setIsChecked] = useState(new Map([...categorySelections]));
+  const selectedCategories = initCheckedStateArr(categories, false);
+  const [isChecked, setIsChecked] = useState([...selectedCategories]);
+  const [categoryIds, setCategoryIds] = useState([]);
   // console.log(categorySelections, isChecked);
   // console.log(isChecked);
   // console.log(createCheckedIdsArr(isChecked));
+
+  console.log("%crender, new event form", "color:yellow");
+  console.log("new e. > catIds:", categoryIds);
 
   return (
     <Flex
@@ -110,10 +116,17 @@ export const NewEventPage = () => {
                 id={category.id}
                 key={category.id}
                 name="categoryIds"
-                isChecked={isChecked.get(category.id)}
-                value={createCheckedIdsArr(isChecked)}
+                // isChecked={isChecked.get(category.id)}
+                isChecked={categoryIds.includes(category.id)}
+                // value={createCheckedIdsArr(isChecked)}
+                value={categoryIds}
                 onChange={(e) =>
-                  handleCheckboxChanges(e, isChecked, setIsChecked)
+                  handleCheckboxChanges(
+                    e,
+                    isChecked,
+                    setIsChecked,
+                    setCategoryIds
+                  )
                 }
               >
                 {category.name}

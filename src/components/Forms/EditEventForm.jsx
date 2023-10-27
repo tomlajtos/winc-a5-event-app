@@ -1,40 +1,53 @@
+// React and RRouter imports
 import { useState } from "react";
 import { Form } from "react-router-dom";
+
+// Context imports
 // import { RootContext } from "../context/RootContext";
+
+// chakra-ui imports
 import {
   Button,
   Checkbox,
   Input,
-  Textarea,
   FormControl,
   FormLabel,
   FormErrorMessage,
   Stack,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
+
+// util imports
 import {
   handleCheckboxChanges,
-  initCheckedItemMap,
-  setCheckedItemMap,
-  createCheckedIdsArr,
+  setCheckedStateArr,
   generateDateTimeStr,
-  // checkFormDataOnSubimt,
 } from "../../util/globalFunctions";
 import { validate } from "../../util/validate";
 
 export const EditEventForm = ({ categories, event, onClose }) => {
-  const initialCheckedItemMap = new Map(initCheckedItemMap(categories, false));
+  const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [isChecked, setIsChecked] = useState(
-    setCheckedItemMap(initialCheckedItemMap, event.categoryIds)
+    setCheckedStateArr(categories, categoryIds)
   );
-  const checkboxValues = createCheckedIdsArr(isChecked);
-
   const [inputErrors, setInputErrors] = useState(new Map());
 
-  console.log(inputErrors);
-  console.log("%checkbox value", "color:yellow", checkboxValues);
-  // NOTE: novalidate attr of form prevents the built in validation, useful when if custom validation is used
+  // TODO: move to utils, add jsDOC comments
+  const getErrMsg = (name) => {
+    if (inputErrors.has(name)) {
+      const msg = inputErrors.get(name).message;
+      return msg;
+    }
+  };
 
+  // TODO: move to utils, add jsDOC comments
+  const isInvalidInput = (name) => {
+    return inputErrors.has(name);
+  };
+
+  // NOTE: 'novalidate' attr. of form prevents the built in validation, useful when custom validation is used
+  //
   return (
     <Stack
       as={Form}
@@ -44,36 +57,39 @@ export const EditEventForm = ({ categories, event, onClose }) => {
       spacing={5}
       p={4}
       maxW="500px"
-      onSubmit={(e) =>
         inputErrors.size > 0
           ? (e.preventDefault(), console.log(inputErrors))
           : onClose()
       }
     >
-      <FormControl isInvalid={inputErrors.has("title")} isRequired>
+      {/* INPUT for title */}
+      <FormControl isRequired isInvalid={isInvalidInput("title")}>
         <FormLabel fontWeight="bolder">Title</FormLabel>
         <Input
           type="text"
           name="title"
           defaultValue={event.title}
-          onInput={(e) => {
-            console.log("before.validate", e.target.name, e.target.validity);
-            validate(inputErrors, e.target, e.target.validity, setInputErrors);
+          onChange={(e) => {
+            validate(inputErrors, e.target, isChecked, setInputErrors);
           }}
+          onInvalid={(e) => e.preventDefault()}
+          isInvalid={inputErrors.has("title")}
         />
-        <FormErrorMessage>Event title is required</FormErrorMessage>
+        <FormErrorMessage>{getErrMsg("title")}</FormErrorMessage>
       </FormControl>
 
+      {/* FIELDSET for start/endTime */}
       <Stack as="fieldset" direction="column" spacing={2}>
         <Text as="legend" pb={1} fontWeight="bolder">
           Date and Time
         </Text>
+        {/* INPUT for startTime */}
         <FormControl
           display={"flex"}
           flexDirection={"column"}
           alignItems={"start"}
-          isInvalid={inputErrors.has("startTime")}
           isRequired
+          isInvalid={isInvalidInput("startTime")}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <FormLabel margin={0} px={2}>
@@ -84,21 +100,24 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               name="startTime"
               defaultValue={generateDateTimeStr(event.startTime)}
               justifySelf="stretch"
-              onChange={(e) => console.log("time:", Object.keys(e.target))}
+              onChange={(e) => {
+                validate(inputErrors, e.target, isChecked, setInputErrors);
+              }}
+              onInvalid={(e) => e.preventDefault()}
             />
           </Stack>
           <FormErrorMessage alignSelf="end" py={1}>
-            Start time is required.
+            {getErrMsg("startTime")}
           </FormErrorMessage>
         </FormControl>
 
+        {/* INPUT for endTime */}
         <FormControl
           display={"flex"}
           flexDirection={"column"}
           alignItems={"start"}
-          isInvalid={inputErrors.has("endTime")}
+          isInvalid={isInvalidInput("endTime")}
           isRequired
-          // isInvalid={inputError.missing.endTime}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <FormLabel margin={0} px={2}>
@@ -108,74 +127,84 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               type="datetime-local"
               name="endTime"
               defaultValue={generateDateTimeStr(event.endTime)}
+              onInput={(e) => {
+                validate(inputErrors, e.target, isChecked, setInputErrors);
+              }}
+              onInvalid={(e) => e.preventDefault()}
             />
           </Stack>
           <FormErrorMessage alignSelf="end" py={1}>
-            End time is required.
+            {getErrMsg("endTime")}
           </FormErrorMessage>
         </FormControl>
       </Stack>
 
-      <FormControl isInvalid={inputErrors.has("description")} isRequired>
+      {/* INPUT for description */}
+      <FormControl isRequired isInvalid={isInvalidInput("description")}>
         <FormLabel>Description</FormLabel>
-        <Textarea name="description" defaultValue={event.description} />
-        <FormErrorMessage>Event description is required.</FormErrorMessage>
+        <Textarea
+          name="description"
+          defaultValue={event.description}
+          onChange={(e) => {
+            validate(inputErrors, e.target, isChecked, setInputErrors);
+          }}
+          onInvalid={(e) => e.preventDefault()}
+        />
+        <FormErrorMessage>{getErrMsg("description")}</FormErrorMessage>
       </FormControl>
 
-      <FormControl
-        as={"fieldset"}
-        isInvalid={inputErrors.has("categoryIds")}
-        isRequired
-      >
-        <Text as="legend">Categories</Text>
+      {/* CHECKBOX GR. for categories */}
+      <FormControl as={"fieldset"} isInvalid={isInvalidInput("categoryIds")}>
+        <Text as="legend" fontWeight="bolder" pb={1}>
+          Categories
+          <Text as="span" pl={1} color="red.500">
+            *
+          </Text>
+        </Text>
         <Stack spacing={[1, 5]} direction={["column", "row"]}>
           {categories.map((category) => (
             <Checkbox
               id={category.id}
               key={category.id}
               name="categoryIds"
-              isChecked={isChecked.get(category.id)}
-              value={checkboxValues}
+              isChecked={categoryIds.includes(category.id)}
+              value={categoryIds}
               onChange={(e) => {
-                handleCheckboxChanges(e, isChecked, setIsChecked);
-                console.log(
-                  "%ccheckbox required:",
-                  "color:red",
-                  e.target.required,
-                  "%ccheckbox cheked:",
-                  e.target.checked,
-                  e.target.validity,
-                  e.target.value
+                handleCheckboxChanges(
+                  e,
+                  isChecked,
+                  setIsChecked,
+                  setCategoryIds
                 );
 
-                validate(
-                  inputErrors,
-                  e.target,
-                  e.target.validity,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, isChecked, setInputErrors);
               }}
+              onInvalid={(e) => e.preventDefault()}
             >
               {category.name}
             </Checkbox>
           ))}
         </Stack>
-        <FormErrorMessage>At least one category is required.</FormErrorMessage>
+        <FormErrorMessage>{getErrMsg("categoryIds")}</FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={inputErrors.has("image")}>
-        <FormLabel>Add an image URL</FormLabel>
+      {/* INPUT for image(url) */}
+      <FormControl isInvalid={isInvalidInput("image")}>
+        <FormLabel fontWeight="bolder">Add an image (URL)</FormLabel>
         <Input
           type="url"
           name="image"
           defaultValue={event.image}
-          errorBorderColor="orange.300"
-          onChange={(e) => console.log(`validating '${e.target.name}' input`)}
+          placeholder="https://eventimagesource.com/eventimage"
+          onChange={(e) => {
+            validate(inputErrors, e.target, isChecked, setInputErrors);
+          }}
+          onInvalid={(e) => e.preventDefault()}
         />
-        <FormErrorMessage textColor="orange.500">
-          Your event would look nicer with an image, it is not required though.
-        </FormErrorMessage>
+        <FormErrorMessage>{getErrMsg("image")}</FormErrorMessage>
       </FormControl>
+
+      {/* edit form button */}
       <Stack direction="row" spacing={2} py={4} px={0} justifyContent="end">
         <Button type="submit" variant="ghost" size="lg" colorScheme="purple">
           Save
