@@ -1,3 +1,4 @@
+// TODO: add jsDOC comments
 const formatInputName = (iN) => {
   switch (iN) {
     case "startTime": {
@@ -15,126 +16,139 @@ const formatInputName = (iN) => {
   }
 };
 
+// TODO: add jsDOC comments
 const setErrMsg = (errors, iN) => {
-  const missingErrMsg = `Please provide an ${formatInputName(iN)}.`;
+  const missingErrMsg = `Event ${formatInputName(iN)} is required.`;
   const invalidErrMsg = `Please provide a valid value for ${formatInputName(
     iN
   )}`;
-  return errors.includes("valueMissing") ? missingErrMsg : invalidErrMsg;
+  return errors.includes("valueMissing") && errors.length === 1
+    ? missingErrMsg
+    : invalidErrMsg;
 };
 
+// TODO: add jsDOC comments
 const getErrorsFromValidState = (vS) => {
   const errors = [];
   for (let key in vS) {
     if (vS[key] && key !== "valid") {
       errors.push(key);
     }
-    // } else if (vS[key]) {
-    //   isValid = true;
-    // }
   }
   return errors;
 };
 
-// TODO: tidy up, checkbox validation needs fixing too
-
-export const validate = (errorsMap, input, setFn) => {
-  // FIX: set correct e.target.required value based on checked value
-  console.log("%cR", "color:red", input.required);
+// TODO: add jsDOC comments
+export const validate = (errorsMap, input, isChecked, setFn) => {
+  console.log("%c validation START: ", "color:purple;background:#90CDF4", "\n");
 
   const vS = input.validity; // [v]alidity[S]tate
-  // LOG:
-  console.log("%cvalidation START:", "color:green", "\n");
-  console.log(
-    "state\n",
-    vS,
-    "\ninput:\n",
-    input.name,
-    "\nvalue\n",
-    input.value
-  );
   const iN = input.name; //[i]nput[N]ame
   const eM = new Map(errorsMap); // [e]rrors[M]ap
-  let isRequired = iN === "image" ? false : true;
+  let isRequired = input.required;
   const errors = getErrorsFromValidState(vS);
+  const cboxErrors = [];
   let isValid = !errors.length;
-  // LOG:
-  console.log("in validate, initial:", eM);
 
-  // LOG:
-  console.log("errors:", errors);
-  console.log("valid:", isValid);
+  // check if input is a checkbox and validate that first
+  if (iN === "categoryIds") {
+    console.log(
+      "%c VALIDATING CHEKBOX",
+      "color:yellow; font-weight:bold;background:blue"
+    );
 
-  if (isValid && eM.has(iN)) {
-    // NOTE: this might not be necessary
-    // LOG:
-    console.log(
-      iN,
-      "valid",
-      isValid,
-      "%cremoving from errorsMap",
-      "color:orange"
-    );
-    eM.delete(iN);
-  } else if (isValid) {
-    // LOG:
-    console.log("valid", isValid);
-    return;
-  } else if (!isValid && eM.has(iN)) {
-    // LOG:
-    console.log(
-      "valid",
-      isValid,
-      iN,
-      "%calready in inputErrors",
-      "color:orange"
-    );
-    // if (iN === "categoryIds" && input.value.length > 0) {
-    // LOG:
-    // console.log(iN, ">", input.value);
-    // eM.delete(iN);
-    // } else if (
-    if (
-      (eM.get(iN).errors.length === errors.length,
-      eM.get(iN).every((err) => errors.includes(err)))
-    ) {
-      // LOG:
-      console.log(eM.get(iN).errors, "===", errors);
-      console.log(
-        "%cinput errors still the same, nothing to change",
-        "color:orange"
-      );
+    const localIsChecked = [...isChecked];
+    localIsChecked[input.id - 1] = input.checked;
+
+    if (localIsChecked.includes(true)) {
+      console.log("%cCheckbox group ", "color:#38A95A", eM, cboxErrors);
+
+      eM.has(iN)
+        ? eM.delete(iN)
+        : console.log("%cCheckbox group input is valid", "color:#38A169");
+
       setFn(eM);
+    } else {
+      cboxErrors.push("valueMissing");
+
+      eM.set(iN, {
+        errors: cboxErrors,
+        message: setErrMsg(cboxErrors, iN),
+        required: true,
+      });
+
+      setFn(eM);
+    }
+    console.log("%c validation END:", "color:white;background:red");
+    return;
+  }
+
+  if (isValid) {
+    if (eM.has(iN)) {
+      console.log(
+        `%c ${iN} valid? | in errors // exp: true > `,
+        "color:#48BB78",
+        isValid
+      );
+      console.log(
+        "%c Removing from errorsMap",
+        "color:orange;font-weight:bold"
+      );
+      eM.delete(iN);
+    } else if (isValid) {
+      // LOG:
+      console.log("%c valid // exp: true > ", "color:#48BB78", isValid);
+      console.log("%cvalidation END:", "color:white;background:red");
       return;
+    }
+  } else {
+    if (eM.has(iN)) {
+      // LOG:
+      console.warn(
+        `%c${iN} valid? | in errors // exp: false > `,
+        "color:#FC8181",
+        isValid,
+        "| already in errorsMap"
+      );
+      if (
+        eM.get(iN).errors.length === errors.length &&
+        eM.get(iN).errors.every((err) => errors.includes(err))
+      ) {
+        console.warn("same error, input:", iN, eM.get(iN));
+        setFn(eM);
+        console.log("%cvalidation END:", "color:white;background:red");
+        return;
+      } else {
+        // LOG:
+        console.warn(
+          "input valid? | in errors | new error type // exp: false >",
+          isValid,
+          "errors have changed"
+        );
+        eM.set(iN, {
+          errors,
+          message: setErrMsg(errors, iN),
+          required: isRequired,
+        });
+      }
     } else {
       // LOG:
-      console.log("valid", isValid, "%cerrors have changed", "color:orange");
+      console.warn(
+        "input valid? | not in errors // exp: false >",
+        isValid,
+        "setting up inputErrors"
+      );
       eM.set(iN, {
         errors,
         message: setErrMsg(errors, iN),
         required: isRequired,
       });
     }
-  } else if (!isValid) {
-    if (iN === "categoryIds" && input.value.length > 0) {
-      // LOG:
-      console.log(iN, ">", input.value);
-      eM.delete(iN);
-      setFn(eM);
-      input.required = false;
-      return;
-    } // LOG:
-    console.log("valid", isValid, "%csetting up inputErrors", "color:orange");
-    eM.set(iN, {
-      errors,
-      message: setErrMsg(errors, iN),
-      required: isRequired,
-    });
   }
   // LOG:
-  console.log("%csetting new inputErrors state to", "color:orange", eM);
+  console.log("%csetting new inputErrors state to", "color:pink", eM);
   setFn(eM);
-  console.log("%cvalidation END:", "color:red");
+  console.log("%cvalidation END:", "color:white;background:purple");
 };
 
 // NOTE: different validation approach based on intercepting fomdata on form-submit event
@@ -159,110 +173,110 @@ export const validate = (errorsMap, input, setFn) => {
 // Validation functions:
 //
 // functin to intercept formData on submission, for validation of required input
-const validateUrl = (url) => {
-  try {
-    url = new URL(url);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch (e) {
-    return false;
-  }
-};
-
-export const getFormDataOnSubmit = (e) => {
-  console.log(e);
-  let elements = Array.from(e.target.elements);
-
-  let formData = elements
-    .filter((element) => element.attributes["name"])
-    .reduce((dataArr, element, index, arr) => {
-      const name = element.attributes["name"].value;
-      const value = element.value;
-      const hasMissingValue = element.value === "";
-      const isDuplicate =
-        index - 1 >= 0
-          ? arr[index - 1].attributes["name"].value === name
-          : false;
-      if (!isDuplicate) {
-        dataArr = [
-          {
-            name,
-            value,
-            hasMissingValue,
-          },
-          ...dataArr,
-        ];
-      }
-      return dataArr;
-    }, []);
-  return formData;
-};
-
-// function
-export const checkFormDataOnSubimt = (e) => {
-  const formDataArr = getFormDataOnSubmit(e);
-  console.log("formDataArr", formDataArr);
-  const isInvalidInput = {
-    title: false,
-    startTime: false,
-    endTime: false,
-    description: false,
-    categoryIds: false,
-    image: false,
-  };
-
-  const isMissingInput = {
-    title: false,
-    startTime: false,
-    endTime: false,
-    description: false,
-    categoryIds: false,
-    image: false,
-  };
-
-  const missingDataArr = formDataArr.filter((elem) => !elem.value);
-  console.log("missinDataArr", missingDataArr);
-
-  const invalidDataArr = formDataArr.filter(
-    (elem) =>
-      elem.name.toLowerCase().includes("time") ||
-      elem.name.toLowerCase().includes("image")
-  );
-  console.log("invalidDataArr", invalidDataArr);
-
-  const missingRequiredData = formDataArr.filter(
-    (elem) => elem.name !== "image" && !elem.value
-  );
-  console.log("missingRequiredData", missingRequiredData);
-
-  const invalidRequiredData = invalidDataArr.filter(
-    (elem) => elem.name !== "image" && !elem.value
-  );
-
-  missingDataArr.map(
-    (elem) => (isInvalidInput[elem.name] = elem.hasMissingValue)
-  );
-  // console.log(isInvalidInput);
-
-  if (missingRequiredData.length === 0 && missingDataArr.length > 0) {
-    return {
-      isRequiredOk: true,
-      isDataComplete: false,
-      dataWithError: missingDataArr,
-      invalid: isInvalidInput,
-    };
-  } else if (missingRequiredData.length > 0) {
-    return {
-      isRequiredOk: false,
-      isDataComplete: false,
-      dataWithError: missingDataArr,
-      invalid: isInvalidInput,
-    };
-  } else {
-    return {
-      isRequiredOk: true,
-      isDataComplete: true,
-      dataWithError: [],
-      invalid: isInvalidInput,
-    };
-  }
-};
+// const validateUrl = (url) => {
+//   try {
+//     url = new URL(url);
+//     return url.protocol === "http:" || url.protocol === "https:";
+//   } catch (e) {
+//     return false;
+//   }
+// };
+//
+// export const getFormDataOnSubmit = (e) => {
+//   console.log(e);
+//   let elements = Array.from(e.target.elements);
+//
+//   let formData = elements
+//     .filter((element) => element.attributes["name"])
+//     .reduce((dataArr, element, index, arr) => {
+//       const name = element.attributes["name"].value;
+//       const value = element.value;
+//       const hasMissingValue = element.value === "";
+//       const isDuplicate =
+//         index - 1 >= 0
+//           ? arr[index - 1].attributes["name"].value === name
+//           : false;
+//       if (!isDuplicate) {
+//         dataArr = [
+//           {
+//             name,
+//             value,
+//             hasMissingValue,
+//           },
+//           ...dataArr,
+//         ];
+//       }
+//       return dataArr;
+//     }, []);
+//   return formData;
+// };
+//
+// // function
+// export const checkFormDataOnSubimt = (e) => {
+//   const formDataArr = getFormDataOnSubmit(e);
+//   console.log("formDataArr", formDataArr);
+//   const isInvalidInput = {
+//     title: false,
+//     startTime: false,
+//     endTime: false,
+//     description: false,
+//     categoryIds: false,
+//     image: false,
+//   };
+//
+//   const isMissingInput = {
+//     title: false,
+//     startTime: false,
+//     endTime: false,
+//     description: false,
+//     categoryIds: false,
+//     image: false,
+//   };
+//
+//   const missingDataArr = formDataArr.filter((elem) => !elem.value);
+//   console.log("missinDataArr", missingDataArr);
+//
+//   const invalidDataArr = formDataArr.filter(
+//     (elem) =>
+//       elem.name.toLowerCase().includes("time") ||
+//       elem.name.toLowerCase().includes("image")
+//   );
+//   console.log("invalidDataArr", invalidDataArr);
+//
+//   const missingRequiredData = formDataArr.filter(
+//     (elem) => elem.name !== "image" && !elem.value
+//   );
+//   console.log("missingRequiredData", missingRequiredData);
+//
+//   const invalidRequiredData = invalidDataArr.filter(
+//     (elem) => elem.name !== "image" && !elem.value
+//   );
+//
+//   missingDataArr.map(
+//     (elem) => (isInvalidInput[elem.name] = elem.hasMissingValue)
+//   );
+//   // console.log(isInvalidInput);
+//
+//   if (missingRequiredData.length === 0 && missingDataArr.length > 0) {
+//     return {
+//       isRequiredOk: true,
+//       isDataComplete: false,
+//       dataWithError: missingDataArr,
+//       invalid: isInvalidInput,
+//     };
+//   } else if (missingRequiredData.length > 0) {
+//     return {
+//       isRequiredOk: false,
+//       isDataComplete: false,
+//       dataWithError: missingDataArr,
+//       invalid: isInvalidInput,
+//     };
+//   } else {
+//     return {
+//       isRequiredOk: true,
+//       isDataComplete: true,
+//       dataWithError: [],
+//       invalid: isInvalidInput,
+//     };
+//   }
+// };
