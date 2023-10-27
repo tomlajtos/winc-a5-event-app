@@ -82,6 +82,14 @@ export const fetchData = async (
 // i.e. event categories in nav menu filter options, and in new event form to set categories
 export const initCheckedItemMap = (objArr, initValue = true) =>
   objArr.map((item) => [Number(item.id), initValue]);
+// OR
+export const initCheckedStateArr = (template, initValue = true) => {
+  const arr = [];
+  for (let i of template) {
+    arr.push(initValue);
+  }
+  return arr;
+};
 
 export const setCheckedItemMap = (map, arr) => {
   const newMap = new Map([...map]);
@@ -94,19 +102,52 @@ export const setCheckedItemMap = (map, arr) => {
   return newMap;
 };
 
+export const setCheckedStateArr = (template, values) => {
+  const state = initCheckedStateArr(template, false);
+  values.map((e) => (state[Number(e) - 1] = true));
+  return state;
+};
+
+// TODO: get rid of isChecked state and checked map, manage checkedState via categoryIds as checkbox values
+//
 // function to handle onChange event in a group of checkboxes
-export const handleCheckboxChanges = (e, checkedMap, setFn, setFn2) => {
+export const handleCheckboxChanges = (e, checkedArr, setFn, setFn2) => {
+  console.log("%ccheckbox onChange handler", "color:#D53F8C");
+
   const id = e.target.id;
-  // create and mutate a local copy of checkedMap
-  const newChecked = new Map([...checkedMap]);
-  const chkd = newChecked.get(Number(id));
-  newChecked.set(Number(id), !chkd);
-  // set copy as new state for checkedMap
-  setFn(new Map([...newChecked]));
+  let value = e.target.value.length ? e.target.value.split(",") : [];
+
+  // console.clear();
+  console.log("prev value:", value);
+  console.log("checked", e.target.checked);
+
+  e.target.checked
+    ? (value = [id, ...value].map((v) => Number(v)))
+    : (value = value
+        .filter((id) => Number(id) !== Number(e.target.id))
+        .sort((a, b) => Number(a) - Number(b))
+        .map((v) => Number(v)));
+
+  e.target.value = value;
+
+  console.log("%cV:", "color:#76E4F7", e.target.value, value);
+  // e.target.required = !e.target.value.length;
+  console.log("%cR", "color:red", e.target.required);
+
+  const newChecked = [...checkedArr];
+  newChecked[Number(id) - 1] = e.target.checked;
+  setFn(newChecked);
+  // // create and mutate a local copy of checkedMap
+  // const newChecked = new Map([...checkedMap]);
+  // const chkd = newChecked.get(Number(id));
+  // newChecked.set(Number(id), !chkd);
+  // // set copy as new state for checkedMap
+  // setFn(new Map([...newChecked]));
 
   if (setFn2) {
     // create an array of checked id and set it as new state with setFn2
-    setFn2(createCheckedIdsArr(newChecked));
+    // setFn2(createCheckedIdsArr(newChecked));
+    setFn2(value);
   }
 };
 
