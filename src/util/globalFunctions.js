@@ -1,5 +1,4 @@
-// TODO: refactor get data to only return promisses as obj.prop values
-// resolve the promisses in the loader function ?? maybe it is less confusing this way
+// TODO: add jsDOC comments
 export const getData = async (
   endpoints = [{ name: "categories", path: "/categories" }]
 ) => {
@@ -37,8 +36,8 @@ export const getData = async (
   return dataObj;
 };
 
-// TODO: I'm note sure if I like this, think about a better solution
-//
+// TODO: Revisit: I'm note sure if I like this
+// TODO: add jsDOC comments
 // helper function for React Router loader function
 export const fetchData = async (
   endpoints = [{ name: "categories", path: "/categories" }]
@@ -73,6 +72,8 @@ export const fetchData = async (
   return dataObj;
 };
 
+// TODO: add jsDOC comments
+//
 // Categories related checkbox handler and support functions
 //
 // function to create checkedItemMap from an Array of objects
@@ -80,9 +81,10 @@ export const fetchData = async (
 // this map can be used to track the checked state of checkbox group items
 // obj.id and e.target.id has to be the same value and type
 // i.e. event categories in nav menu filter options, and in new event form to set categories
-export const initCheckedItemMap = (objArr, initValue = true) =>
-  objArr.map((item) => [Number(item.id), initValue]);
-// OR
+// export const initCheckedItemMap = (objArr, initValue = true) =>
+// objArr.map((item) => [Number(item.id), initValue]);
+
+// TODO: add jsDOC comments
 export const initCheckedStateArr = (template, initValue = true) => {
   const arr = [];
   for (let i of template) {
@@ -91,33 +93,39 @@ export const initCheckedStateArr = (template, initValue = true) => {
   return arr;
 };
 
-export const setCheckedItemMap = (map, arr) => {
-  const newMap = new Map([...map]);
-  arr.map((item) => {
-    // arr is an array of category ids
-    // no need to check if newMap has `item`, since each category is represented in map as
-    // [key: category id, value: boolian]
-    newMap.set(item, !newMap.get(item));
-  });
-  return newMap;
+export const initCategoryIdsArr = (categories) => {
+  return categories.map((category) => Number(category.id));
 };
+// TODO: add jsDOC comments
+//
+// export const setCheckedItemMap = (map, arr) => {
+//   const newMap = new Map([...map]);
+//   arr.map((item) => {
+//     // arr is an array of category ids
+//     // no need to check if newMap has `item`, since each category is represented in map as
+//     // [key: category id, value: boolian]
+//     newMap.set(item, !newMap.get(item));
+//   });
+//   return newMap;
+// };
 
+// TODO: add jsDOC comments
 export const setCheckedStateArr = (template, values) => {
   const state = initCheckedStateArr(template, false);
   values.map((e) => (state[Number(e) - 1] = true));
   return state;
 };
 
-// TODO: get rid of isChecked state and checked map, manage checkedState via categoryIds as checkbox values
-//
-// function to handle onChange event in a group of checkboxes
+// TODO: add jsDOC comments
 export const handleCheckboxChanges = (e, checkedArr, setFn, setFn2) => {
-  console.log("%ccheckbox onChange handler", "color:#D53F8C");
+  console.log("%ccheckbox onChange", "color:#D53F8C;background:white");
 
   const id = e.target.id;
+  console.log("type of values:", typeof e.target.value[0]);
   let value = e.target.value.length ? e.target.value.split(",") : [];
 
   // console.clear();
+  console.log("ID:", id);
   console.log("prev value:", value);
   console.log("checked", e.target.checked);
 
@@ -151,6 +159,8 @@ export const handleCheckboxChanges = (e, checkedArr, setFn, setFn2) => {
   }
 };
 
+// TODO: add jsDOC comments
+//
 // generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
 export const createCheckedIdsArr = (checkedMap) =>
   Array.from(checkedMap).reduce(
@@ -158,9 +168,12 @@ export const createCheckedIdsArr = (checkedMap) =>
     []
   );
 
+// TODO: add jsDOC comments
+//
 // function to format date-time unti strings from single digit to double digit (i.e. 1 to 01)
 const addZeroToDT = (unit) => (unit < 10 ? `0${unit}` : unit);
 
+// TODO: add jsDOC comments
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
   const dateOptions = {
@@ -193,6 +206,8 @@ export const formatDateAndTime = (dateStr) => {
   };
 };
 
+// TODO: add jsDOC comments
+//
 // function to generate date-time str compatible with <input type=datetime-local>
 // str to be used as default value for input element
 export const generateDateTimeStr = (dateStr, dur) => {
