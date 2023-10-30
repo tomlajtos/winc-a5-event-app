@@ -1,3 +1,5 @@
+import { createIdArrOnChange } from "./globalFunctions";
+
 // TODO: add jsDOC comments
 const formatInputName = (iN) => {
   switch (iN) {
@@ -38,8 +40,22 @@ const getErrorsFromValidState = (vS) => {
   return errors;
 };
 
+// // TODO: add jsDOC comments
+// const createIdArrOnChange = (idArr, input) => {
+//   let localIds = [...idArr];
+//   console.log("%c idArr:", "background:orange;color:navy", localIds);
+//   input.checked
+//     ? (localIds = Array.from(new Set([Number(input.id), ...localIds])))
+//     : (localIds = localIds
+//         .filter((id) => id !== Number(input.id))
+//         .map((id) => Number(id))
+//         .sort((a, b) => a - b));
+//   console.log("%c idArr:", "background:orange;color:navy", localIds);
+//   return localIds;
+// };
+
 // TODO: add jsDOC comments
-export const validate = (errorsMap, input, isChecked, setFn) => {
+export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
   console.log("%c validation START: ", "color:purple;background:#90CDF4", "\n");
 
   const vS = input.validity; // [v]alidity[S]tate
@@ -57,12 +73,15 @@ export const validate = (errorsMap, input, isChecked, setFn) => {
       "color:yellow; font-weight:bold;background:blue"
     );
 
-    const localIsChecked = [...isChecked];
-    localIsChecked[input.id - 1] = input.checked;
+    // const localIsChecked = [...isChecked];
+    // temp. hacky solution, to see how to get rid of isChecked in validation
+    // const localIsChecked = [false, false, false];
+    // idArr.map((elem) => (localIsChecked[Number(elem) - 1] = true));
+    // localIsChecked[input.id - 1] = input.checked;
 
-    if (localIsChecked.includes(true)) {
+    // if (localIsChecked.includes(true)) {
+    if (createIdArrOnChange(idArr, input).length) {
       console.log("%cCheckbox group ", "color:#38A95A", eM, cboxErrors);
-
       eM.has(iN)
         ? eM.delete(iN)
         : console.log("%cCheckbox group input is valid", "color:#38A169");
@@ -145,7 +164,6 @@ export const validate = (errorsMap, input, isChecked, setFn) => {
       });
     }
   }
-  // LOG:
   console.log("%csetting new inputErrors state to", "color:pink", eM);
   setFn(eM);
   console.log("%cvalidation END:", "color:white;background:purple");
@@ -153,7 +171,7 @@ export const validate = (errorsMap, input, isChecked, setFn) => {
 
 // NOTE: different validation approach based on intercepting fomdata on form-submit event
 // INCOMPLETE > not in use
-
+//
 // FOR the Form component:
 //
 // onSubmit={(e) => {
