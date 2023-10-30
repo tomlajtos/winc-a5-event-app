@@ -22,16 +22,16 @@ import {
 // util imports
 import {
   handleCheckboxChanges,
-  setCheckedStateArr,
+  // setCheckedStateArr,
   generateDateTimeStr,
 } from "../../util/globalFunctions";
 import { validate } from "../../util/validate";
 
 export const EditEventForm = ({ categories, event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
-  const [isChecked, setIsChecked] = useState(
-    setCheckedStateArr(categories, categoryIds)
-  );
+  // const [isChecked, setIsChecked] = useState(
+  // setCheckedStateArr(categories, categoryIds)
+  // );
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
 
@@ -69,7 +69,12 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           name="title"
           defaultValue={event.title}
           onChange={(e) => {
-            validate(inputErrors, e.target, isChecked, setInputErrors);
+            validate(
+              inputErrors,
+              e.target,
+              /*isChecked*/ categoryIds,
+              setInputErrors
+            );
           }}
           onInvalid={(e) => e.preventDefault()}
           isInvalid={inputErrors.has("title")}
@@ -100,7 +105,12 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               defaultValue={generateDateTimeStr(event.startTime)}
               justifySelf="stretch"
               onChange={(e) => {
-                validate(inputErrors, e.target, isChecked, setInputErrors);
+                validate(
+                  inputErrors,
+                  e.target,
+                  /*isChecked*/ categoryIds,
+                  setInputErrors
+                );
               }}
               onInvalid={(e) => e.preventDefault()}
             />
@@ -127,7 +137,12 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               name="endTime"
               defaultValue={generateDateTimeStr(event.endTime)}
               onInput={(e) => {
-                validate(inputErrors, e.target, isChecked, setInputErrors);
+                validate(
+                  inputErrors,
+                  e.target,
+                  /*isChecked*/ categoryIds,
+                  setInputErrors
+                );
               }}
               onInvalid={(e) => e.preventDefault()}
             />
@@ -145,7 +160,12 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           name="description"
           defaultValue={event.description}
           onChange={(e) => {
-            validate(inputErrors, e.target, isChecked, setInputErrors);
+            validate(
+              inputErrors,
+              e.target,
+              /*isChecked*/ categoryIds,
+              setInputErrors
+            );
           }}
           onInvalid={(e) => e.preventDefault()}
         />
@@ -171,12 +191,17 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               onChange={(e) => {
                 handleCheckboxChanges(
                   e,
-                  isChecked,
-                  setIsChecked,
+                  // isChecked,
+                  // setIsChecked,
                   setCategoryIds
                 );
 
-                validate(inputErrors, e.target, isChecked, setInputErrors);
+                validate(
+                  inputErrors,
+                  e.target,
+                  /*isChecked*/ categoryIds,
+                  setInputErrors
+                );
               }}
               onInvalid={(e) => e.preventDefault()}
             >
@@ -196,7 +221,12 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           defaultValue={event.image}
           placeholder="https://eventimagesource.com/eventimage"
           onChange={(e) => {
-            validate(inputErrors, e.target, isChecked, setInputErrors);
+            validate(
+              inputErrors,
+              e.target,
+              /*isChecked*/ categoryIds,
+              setInputErrors
+            );
           }}
           onInvalid={(e) => e.preventDefault()}
         />

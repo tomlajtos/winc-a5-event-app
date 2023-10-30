@@ -116,15 +116,13 @@ export const NewEventPage = () => {
                 id={category.id}
                 key={category.id}
                 name="categoryIds"
-                // isChecked={isChecked.get(category.id)}
                 isChecked={categoryIds.includes(category.id)}
-                // value={createCheckedIdsArr(isChecked)}
                 value={categoryIds}
                 onChange={(e) =>
                   handleCheckboxChanges(
                     e,
-                    isChecked,
-                    setIsChecked,
+                    // isChecked,
+                    // setIsChecked,
                     setCategoryIds
                   )
                 }
