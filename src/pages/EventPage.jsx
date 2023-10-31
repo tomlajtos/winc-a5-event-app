@@ -18,6 +18,7 @@ import {
   ModalCloseButton,
   Portal,
   Stack,
+  Tag,
   Text,
 } from "@chakra-ui/react";
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
@@ -31,6 +32,7 @@ export const loader = async ({ params }) =>
 export const EventPage = () => {
   const { event } = useLoaderData();
   const { categories, users } = useContext(RootContext);
+  console.log(categories);
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
@@ -70,6 +72,15 @@ export const EventPage = () => {
       <Text>{event.location}</Text>
 
       <Text>{event.description}</Text>
+      <Stack direction={"row"} spacing={2} pt={1}>
+        {categories.map((category) =>
+          event.categoryIds.includes(category.id) ? (
+            <Tag key={category.name} colorScheme={"purple"}>
+              {category.name}
+            </Tag>
+          ) : null
+        )}
+      </Stack>
       <Stack direction="row" justify="end">
         <Button onClick={editModal.onOpen}>Edit</Button>
         <Portal>
