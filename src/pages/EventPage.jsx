@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
+  Avatar,
   Button,
   Center,
   Flex,
@@ -29,12 +30,13 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { categories } = useContext(RootContext);
+  const { categories, users } = useContext(RootContext);
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
+  const [user] = users.filter((user) => user.id === event.createdBy);
 
   return (
     <Flex direction={"column"} padding={8}>
@@ -51,6 +53,10 @@ export const EventPage = () => {
         </Center>
       )}
       <Heading>{event.title}</Heading>
+      <Flex>
+        <Avatar name={user.name} src={user.image} />
+        <Text>{user.name}</Text>
+      </Flex>
       <Heading size={"sm"}>Event date:</Heading>
       {start.date === end.date ? (
         <Text>{start.date}</Text>
