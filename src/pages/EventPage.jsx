@@ -32,7 +32,6 @@ export const loader = async ({ params }) =>
 export const EventPage = () => {
   const { event } = useLoaderData();
   const { categories, users } = useContext(RootContext);
-  console.log(categories);
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
@@ -55,10 +54,18 @@ export const EventPage = () => {
         </Center>
       )}
       <Heading>{event.title}</Heading>
-      <Flex>
-        <Avatar name={user.name} src={user.image} />
-        <Text>{user.name}</Text>
-      </Flex>
+      <Heading size={"sm"}>Created by:</Heading>
+      {user ? (
+        <Flex>
+          <Avatar name={user.name} src={user.image} />
+          <Text>{user.name}</Text>
+        </Flex>
+      ) : (
+        <Flex py={2} direction="row" align="center" gap={2}>
+          <Avatar size="sm" name="Unknown Person" />
+          <Text>Unknown Person</Text>
+        </Flex>
+      )}
       <Heading size={"sm"}>Event date:</Heading>
       {start.date === end.date ? (
         <Text>{start.date}</Text>
