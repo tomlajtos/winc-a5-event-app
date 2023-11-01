@@ -40,23 +40,23 @@ const getErrorsFromValidState = (vS) => {
   return errors;
 };
 
-// // TODO: add jsDOC comments
-// const createIdArrOnChange = (idArr, input) => {
-//   let localIds = [...idArr];
-//   console.log("%c idArr:", "background:orange;color:navy", localIds);
-//   input.checked
-//     ? (localIds = Array.from(new Set([Number(input.id), ...localIds])))
-//     : (localIds = localIds
-//         .filter((id) => id !== Number(input.id))
-//         .map((id) => Number(id))
-//         .sort((a, b) => a - b));
-//   console.log("%c idArr:", "background:orange;color:navy", localIds);
-//   return localIds;
-// };
+// TODO: add jsDOC comments
+export const getErrMsg = (errors, name) => {
+  if (errors.has(name)) {
+    const msg = errors.get(name).message;
+    return msg;
+  }
+};
+
+// TODO: add jsDOC comments
+export const isInvalidInput = (errors, name) => {
+  return errors.has(name);
+};
 
 // TODO: add jsDOC comments
 export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
-  console.log("%c validation START: ", "color:purple;background:#90CDF4", "\n");
+  console.log("%c validation START: ", "color:white;background:green", "\n");
+  console.log("%c input_name: ", "color:navy;background:#90CDF4", input.name);
 
   const vS = input.validity; // [v]alidity[S]tate
   const iN = input.name; //[i]nput[N]ame
@@ -73,15 +73,8 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
       "color:yellow; font-weight:bold;background:blue"
     );
 
-    // const localIsChecked = [...isChecked];
-    // temp. hacky solution, to see how to get rid of isChecked in validation
-    // const localIsChecked = [false, false, false];
-    // idArr.map((elem) => (localIsChecked[Number(elem) - 1] = true));
-    // localIsChecked[input.id - 1] = input.checked;
-
-    // if (localIsChecked.includes(true)) {
     if (createIdArrOnChange(idArr, input).length) {
-      console.log("%cCheckbox group ", "color:#38A95A", eM, cboxErrors);
+      console.log("%cCheckbox group errors:", "color:#38A95A", eM, cboxErrors);
       eM.has(iN)
         ? eM.delete(iN)
         : console.log("%cCheckbox group input is valid", "color:#38A169");
@@ -98,6 +91,7 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
 
       setFn(eM);
     }
+
     console.log("%c validation END:", "color:white;background:red");
     return;
   }
@@ -115,14 +109,12 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
       );
       eM.delete(iN);
     } else if (isValid) {
-      // LOG:
       console.log("%c valid // exp: true > ", "color:#48BB78", isValid);
       console.log("%cvalidation END:", "color:white;background:red");
       return;
     }
   } else {
     if (eM.has(iN)) {
-      // LOG:
       console.warn(
         `%c${iN} valid? | in errors // exp: false > `,
         "color:#FC8181",
@@ -135,15 +127,16 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
       ) {
         console.warn("same error, input:", iN, eM.get(iN));
         setFn(eM);
+
         console.log("%cvalidation END:", "color:white;background:red");
         return;
       } else {
-        // LOG:
         console.warn(
           "input valid? | in errors | new error type // exp: false >",
           isValid,
           "errors have changed"
         );
+
         eM.set(iN, {
           errors,
           message: setErrMsg(errors, iN),
@@ -151,12 +144,12 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
         });
       }
     } else {
-      // LOG:
       console.warn(
         "input valid? | not in errors // exp: false >",
         isValid,
         "setting up inputErrors"
       );
+
       eM.set(iN, {
         errors,
         message: setErrMsg(errors, iN),
@@ -166,135 +159,20 @@ export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
   }
   console.log("%csetting new inputErrors state to", "color:pink", eM);
   setFn(eM);
-  console.log("%cvalidation END:", "color:white;background:purple");
+  console.log("%cvalidation END:", "color:white;background:red");
 };
 
-// NOTE: different validation approach based on intercepting fomdata on form-submit event
-// INCOMPLETE > not in use
-//
-// FOR the Form component:
-//
-// onSubmit={(e) => {
-//   const checkFormResult = checkFormDataOnSubimt(e);
-//   console.log("on submit outer:", checkFormResult);
-//   if (checkFormResult.isDataComplete) {
-//     onClose();
-//   } else if (checkFormResult.isRequiredOk) {
-//     onClose();
-//   } else {
-//     e.preventDefault();
-//     checkFormResult();
-//     // setInputError();
-//   }
-// }}
+export const validateAll = (idArr, setFn) => {
+  let errors = new Map();
+  const elements = Array.from(
+    document.querySelectorAll("form")[0].elements
+  ).filter((elem) => elem.attributes["name"]);
 
-// Validation functions:
-//
-// functin to intercept formData on submission, for validation of required input
-// const validateUrl = (url) => {
-//   try {
-//     url = new URL(url);
-//     return url.protocol === "http:" || url.protocol === "https:";
-//   } catch (e) {
-//     return false;
-//   }
-// };
-//
-// export const getFormDataOnSubmit = (e) => {
-//   console.log(e);
-//   let elements = Array.from(e.target.elements);
-//
-//   let formData = elements
-//     .filter((element) => element.attributes["name"])
-//     .reduce((dataArr, element, index, arr) => {
-//       const name = element.attributes["name"].value;
-//       const value = element.value;
-//       const hasMissingValue = element.value === "";
-//       const isDuplicate =
-//         index - 1 >= 0
-//           ? arr[index - 1].attributes["name"].value === name
-//           : false;
-//       if (!isDuplicate) {
-//         dataArr = [
-//           {
-//             name,
-//             value,
-//             hasMissingValue,
-//           },
-//           ...dataArr,
-//         ];
-//       }
-//       return dataArr;
-//     }, []);
-//   return formData;
-// };
-//
-// // function
-// export const checkFormDataOnSubimt = (e) => {
-//   const formDataArr = getFormDataOnSubmit(e);
-//   console.log("formDataArr", formDataArr);
-//   const isInvalidInput = {
-//     title: false,
-//     startTime: false,
-//     endTime: false,
-//     description: false,
-//     categoryIds: false,
-//     image: false,
-//   };
-//
-//   const isMissingInput = {
-//     title: false,
-//     startTime: false,
-//     endTime: false,
-//     description: false,
-//     categoryIds: false,
-//     image: false,
-//   };
-//
-//   const missingDataArr = formDataArr.filter((elem) => !elem.value);
-//   console.log("missinDataArr", missingDataArr);
-//
-//   const invalidDataArr = formDataArr.filter(
-//     (elem) =>
-//       elem.name.toLowerCase().includes("time") ||
-//       elem.name.toLowerCase().includes("image")
-//   );
-//   console.log("invalidDataArr", invalidDataArr);
-//
-//   const missingRequiredData = formDataArr.filter(
-//     (elem) => elem.name !== "image" && !elem.value
-//   );
-//   console.log("missingRequiredData", missingRequiredData);
-//
-//   const invalidRequiredData = invalidDataArr.filter(
-//     (elem) => elem.name !== "image" && !elem.value
-//   );
-//
-//   missingDataArr.map(
-//     (elem) => (isInvalidInput[elem.name] = elem.hasMissingValue)
-//   );
-//   // console.log(isInvalidInput);
-//
-//   if (missingRequiredData.length === 0 && missingDataArr.length > 0) {
-//     return {
-//       isRequiredOk: true,
-//       isDataComplete: false,
-//       dataWithError: missingDataArr,
-//       invalid: isInvalidInput,
-//     };
-//   } else if (missingRequiredData.length > 0) {
-//     return {
-//       isRequiredOk: false,
-//       isDataComplete: false,
-//       dataWithError: missingDataArr,
-//       invalid: isInvalidInput,
-//     };
-//   } else {
-//     return {
-//       isRequiredOk: true,
-//       isDataComplete: true,
-//       dataWithError: [],
-//       invalid: isInvalidInput,
-//     };
-//   }
-// };
+  elements.forEach((input) =>
+    validate(errors, input, idArr, (errMap) => (errors = new Map([...errMap])))
+  );
+
+  setFn(errors);
+
+  return { isInvalid: errors.size, errors };
+};
