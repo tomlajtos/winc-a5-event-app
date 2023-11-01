@@ -47,7 +47,7 @@ export const action = async ({ request }) => {
 
 export const NewEventPage = () => {
   // const { categories, isErrorCategories } = useRoot();
-  const { categories } = useContext(RootContext);
+  const { categories, users } = useContext(RootContext);
   // const selectedCategories = initCheckedStateArr(categories, false);
   // const [isChecked, setIsChecked] = useState([...selectedCategories]);
   const [categoryIds, setCategoryIds] = useState([]);
@@ -105,6 +105,27 @@ export const NewEventPage = () => {
           />
           <FormErrorMessage>{getErrMsg("title")}</FormErrorMessage>
         </FormControl>
+        <FormControl isRequired isInvalid={isInvalidInput("createdBy")}>
+          <FormLabel>Created by:</FormLabel>
+          <Select
+            placeholder="Select a user"
+            name="createdBy"
+            onChange={(e) => {
+              validate(
+                inputErrors,
+                e.target,
+                /*isChecked*/ categoryIds,
+                setInputErrors
+              );
+            }}
+            onInvalid={(e) => e.preventDefault()}
+          >
+            {users.map((user) => (
+              <option key={user.id} name="createdBy">
+                {user.name}
+              </option>
+            ))}
+          </Select>
         </FormControl>
         <Stack as="fieldset" direction={["comlumn", null, "row"]} spacing={2}>
           <Text as="legend">Date and Time</Text>
