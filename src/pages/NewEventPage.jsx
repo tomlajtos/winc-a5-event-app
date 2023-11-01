@@ -18,12 +18,14 @@ import {
 } from "@chakra-ui/react";
 import {
   handleCheckboxChanges,
-  // initCheckedItemMap,
-  // createCheckedIdsArr,
   generateDateTimeStr,
-  // initCheckedStateArr,
 } from "../util/globalFunctions";
-import { validate } from "../util/validate";
+import {
+  validate,
+  validateAll,
+  getErrMsg,
+  isInvalidInput,
+} from "../util/validate";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
@@ -42,38 +44,19 @@ export const action = async ({ request }) => {
     .then((json) => json.id);
   // const data = await response.json();
   // console.log("form post-data:", data);
+  console.log("new event action", newEventId);
   return redirect(`/event/${newEventId}`);
 };
 
 export const NewEventPage = () => {
-  // const { categories, isErrorCategories } = useRoot();
   const { categories, users } = useContext(RootContext);
-  // const selectedCategories = initCheckedStateArr(categories, false);
-  // const [isChecked, setIsChecked] = useState([...selectedCategories]);
   const [categoryIds, setCategoryIds] = useState([]);
-  // console.log(categorySelections, isChecked);
-  // console.log(isChecked);
-  // console.log(createCheckedIdsArr(isChecked));
-
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
 
-  // TODO: move to utils, add jsDOC comments
-  const getErrMsg = (name) => {
-    if (inputErrors.has(name)) {
-      const msg = inputErrors.get(name).message;
-      return msg;
-    }
-  };
-
-  // TODO: move to utils, add jsDOC comments
-  const isInvalidInput = (name) => {
-    return inputErrors.has(name);
-  };
-
-  console.log("%crender, new event form", "color:yellow");
-  console.log("new e. > catIds:", categoryIds);
-  console.log("new e. > inputErrors", inputErrors);
+  // console.log("%crender, new event form", "color:yellow");
+  // console.log("new e. > catIds:", categoryIds);
+  // console.log("new e. > inputErrors", inputErrors);
 
   return (
     <Flex
@@ -83,40 +66,35 @@ export const NewEventPage = () => {
       direction="column"
       alignItems="center"
       backgroundColor="white"
-      onSubmit={(e) =>
-        inputErrors.size > 0 ? e.preventDefault() : console.error(inputErrors)
-      }
     >
       <Stack direction="column" spacing={5} minW={[300, null, 500]} p={4}>
-        <FormControl isRequired isInvalid={isInvalidInput("title")}>
+        {/* INPUT for title */}
+        <FormControl
+          isRequired
+          isInvalid={isInvalidInput(inputErrors, "title")}
+        >
           <FormLabel>Title</FormLabel>
           <Input
             type="text"
             name="title"
             onChange={(e) => {
-              validate(
-                inputErrors,
-                e.target,
-                /*isChecked*/ categoryIds,
-                setInputErrors
-              );
+              validate(inputErrors, e.target, categoryIds, setInputErrors);
             }}
             onInvalid={(e) => e.preventDefault()}
           />
-          <FormErrorMessage>{getErrMsg("title")}</FormErrorMessage>
+          <FormErrorMessage>{getErrMsg(inputErrors, "title")}</FormErrorMessage>
         </FormControl>
-        <FormControl isRequired isInvalid={isInvalidInput("createdBy")}>
+        {/* SELECT for event creator(users)*/}
+        <FormControl
+          isRequired
+          isInvalid={isInvalidInput(inputErrors, "createdBy")}
+        >
           <FormLabel>Created by:</FormLabel>
           <Select
             placeholder="Select a user"
             name="createdBy"
             onChange={(e) => {
-              validate(
-                inputErrors,
-                e.target,
-                /*isChecked*/ categoryIds,
-                setInputErrors
-              );
+              validate(inputErrors, e.target, categoryIds, setInputErrors);
             }}
             onInvalid={(e) => e.preventDefault()}
           >
@@ -127,14 +105,16 @@ export const NewEventPage = () => {
             ))}
           </Select>
         </FormControl>
+        {/* FIELDSET for start/endTime */}
         <Stack as="fieldset" direction={["comlumn", null, "row"]} spacing={2}>
           <Text as="legend">Date and Time</Text>
+          {/* INPUT for startTime */}
           <FormControl
             display={"flex"}
             flexDirection={"row"}
             alignItems={"center"}
             isRequired
-            isInvalid={isInvalidInput("startTime")}
+            isInvalid={isInvalidInput(inputErrors, "startTime")}
           >
             <FormLabel margin={0} px={2}>
               Start
@@ -144,23 +124,21 @@ export const NewEventPage = () => {
               name="startTime"
               defaultValue={generateDateTimeStr(new Date())}
               onChange={(e) => {
-                validate(
-                  inputErrors,
-                  e.target,
-                  /*isChecked*/ categoryIds,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, categoryIds, setInputErrors);
               }}
               onInvalid={(e) => e.preventDefault()}
             />
-            <FormErrorMessage>{getErrMsg("startTime")}</FormErrorMessage>
+            <FormErrorMessage>
+              {getErrMsg(inputErrors, "startTime")}
+            </FormErrorMessage>
           </FormControl>
+          {/* INPUT for endTime */}
           <FormControl
             display={"flex"}
             flexDirection={"row"}
             alignItems={"center"}
             isRequired
-            isInvalid={isInvalidInput("endTime")}
+            isInvalid={isInvalidInput(inputErrors, "endTime")}
           >
             <FormLabel margin={0} px={2}>
               End
@@ -170,37 +148,36 @@ export const NewEventPage = () => {
               name="endTime"
               defaultValue={generateDateTimeStr(new Date(), { h: 1 })}
               onChange={(e) => {
-                validate(
-                  inputErrors,
-                  e.target,
-                  /*isChecked*/ categoryIds,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, categoryIds, setInputErrors);
               }}
               onInvalid={(e) => e.preventDefault()}
             />
-            <FormErrorMessage>{getErrMsg("endTime")}</FormErrorMessage>
+            <FormErrorMessage>
+              {getErrMsg(inputErrors, "endTime")}
+            </FormErrorMessage>
           </FormControl>
         </Stack>
-        <FormControl isRequired isInvalid={isInvalidInput("description")}>
+        {/* INPUT for description */}
+        <FormControl
+          isRequired
+          isInvalid={isInvalidInput(inputErrors, "description")}
+        >
           <FormLabel>Description</FormLabel>
           <Textarea
             name="description"
             onChange={(e) => {
-              validate(
-                inputErrors,
-                e.target,
-                /*isChecked*/ categoryIds,
-                setInputErrors
-              );
+              validate(inputErrors, e.target, categoryIds, setInputErrors);
             }}
             onInvalid={(e) => e.preventDefault()}
           />
-          <FormErrorMessage>{getErrMsg("description")}</FormErrorMessage>
+          <FormErrorMessage>
+            {getErrMsg(inputErrors, "description")}
+          </FormErrorMessage>
         </FormControl>
+        {/* CHECKBOX GR. for categories */}
         <FormControl
           as={"fieldset"}
-          isInvalid={isInvalidInput("categoryIds")}
+          isInvalid={isInvalidInput(inputErrors, "categoryIds")}
         >
           <Text as="legend" pb={1}>
             Categories
@@ -216,39 +193,34 @@ export const NewEventPage = () => {
                 name="categoryIds"
                 isChecked={categoryIds.includes(category.id)}
                 value={categoryIds}
-                onChange={(e) =>
-                  handleCheckboxChanges(
-                    e,
-                    // isChecked,
-                    // setIsChecked,
-                    setCategoryIds
-                  )
-                }
+                onChange={(e) => {
+                  handleCheckboxChanges(e, setCategoryIds);
+                  validate(inputErrors, e.target, categoryIds, setInputErrors);
+                }}
                 onInvalid={(e) => e.preventDefault()}
               >
                 {category.name}
               </Checkbox>
             ))}
           </Stack>
-          <FormErrorMessage>{getErrMsg("categoryIds")}</FormErrorMessage>
+          <FormErrorMessage>
+            {getErrMsg(inputErrors, "categoryIds")}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={isInvalidInput("image")}>
+        {/* INPUT for image(url) */}
+        <FormControl isInvalid={isInvalidInput(inputErrors, "image")}>
           <FormLabel>Add an image URL</FormLabel>
           <Input
             type="url"
             name="image"
             onChange={(e) => {
-              validate(
-                inputErrors,
-                e.target,
-                /*isChecked*/ categoryIds,
-                setInputErrors
-              );
+              validate(inputErrors, e.target, categoryIds, setInputErrors);
             }}
             onInvalid={(e) => e.preventDefault()}
           />
-          <FormErrorMessage>{getErrMsg("image")}</FormErrorMessage>
+          <FormErrorMessage>{getErrMsg(inputErrors, "image")}</FormErrorMessage>
         </FormControl>
+        {/* form button group */}
         <Stack
           w="inherit"
           direction="row"
@@ -262,28 +234,13 @@ export const NewEventPage = () => {
             size="lg"
             colorScheme="purple"
             onClick={(e) => {
-              let errorsOnSubmit = new Map();
-              let formElements = Array.from(
-                e.target.parentElement.parentElement.parentElement.elements
-              );
-              let inputElements = formElements.filter(
-                (element) => element.attributes["name"]
-              );
-              inputElements.forEach((input) =>
-                validate(
-                  errorsOnSubmit,
-                  input,
-                  categoryIds,
-                  (map) => (errorsOnSubmit = new Map([...map]))
-                )
-              );
-              setInputErrors(errorsOnSubmit);
-              // e.preventDefault();
-              console.log("Errors on click:", inputErrors);
-              if (inputErrors.size > 0) {
+              // get and use errors for validation that are not yet set as state
+              const validity = validateAll(categoryIds, setInputErrors);
+
+              if (validity.isInvalid) {
                 e.preventDefault();
                 toast({
-                  title: "Editing is incomplete",
+                  title: "Event information is incomplete",
                   description: "Please complete the required fields.",
                   duration: 4000,
                   position: "top",
