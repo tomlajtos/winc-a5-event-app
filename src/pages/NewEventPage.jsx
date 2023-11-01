@@ -200,7 +200,6 @@ export const NewEventPage = () => {
         </FormControl>
         <FormControl
           as={"fieldset"}
-          isRequired
           isInvalid={isInvalidInput("categoryIds")}
         >
           <Text as="legend" pb={1}>
