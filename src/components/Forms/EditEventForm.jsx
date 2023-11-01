@@ -22,31 +22,14 @@ import {
 // util imports
 import {
   handleCheckboxChanges,
-  // setCheckedStateArr,
   generateDateTimeStr,
 } from "../../util/globalFunctions";
-import { validate } from "../../util/validate";
+import { validate, getErrMsg, isInvalidInput } from "../../util/validate";
 
 export const EditEventForm = ({ categories, event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
-  // const [isChecked, setIsChecked] = useState(
-  // setCheckedStateArr(categories, categoryIds)
-  // );
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-
-  // TODO: move to utils, add jsDOC comments
-  const getErrMsg = (name) => {
-    if (inputErrors.has(name)) {
-      const msg = inputErrors.get(name).message;
-      return msg;
-    }
-  };
-
-  // TODO: move to utils, add jsDOC comments
-  const isInvalidInput = (name) => {
-    return inputErrors.has(name);
-  };
 
   // NOTE: 'novalidate' attr. of form prevents the built in validation, useful when custom validation is used
   //
@@ -62,24 +45,18 @@ export const EditEventForm = ({ categories, event, onClose }) => {
       onSubmit={(e) => (inputErrors.size > 0 ? e.preventDefault() : onClose())}
     >
       {/* INPUT for title */}
-      <FormControl isRequired isInvalid={isInvalidInput("title")}>
+      <FormControl isRequired isInvalid={isInvalidInput(inputErrors, "title")}>
         <FormLabel fontWeight="bolder">Title</FormLabel>
         <Input
           type="text"
           name="title"
           defaultValue={event.title}
           onChange={(e) => {
-            validate(
-              inputErrors,
-              e.target,
-              /*isChecked*/ categoryIds,
-              setInputErrors
-            );
+            validate(inputErrors, e.target, categoryIds, setInputErrors);
           }}
           onInvalid={(e) => e.preventDefault()}
-          isInvalid={inputErrors.has("title")}
         />
-        <FormErrorMessage>{getErrMsg("title")}</FormErrorMessage>
+        <FormErrorMessage>{getErrMsg(inputErrors, "title")}</FormErrorMessage>
       </FormControl>
 
       {/* FIELDSET for start/endTime */}
@@ -93,7 +70,7 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           flexDirection={"column"}
           alignItems={"start"}
           isRequired
-          isInvalid={isInvalidInput("startTime")}
+          isInvalid={isInvalidInput(inputErrors, "startTime")}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <FormLabel margin={0} px={2}>
@@ -105,18 +82,13 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               defaultValue={generateDateTimeStr(event.startTime)}
               justifySelf="stretch"
               onChange={(e) => {
-                validate(
-                  inputErrors,
-                  e.target,
-                  /*isChecked*/ categoryIds,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, categoryIds, setInputErrors);
               }}
               onInvalid={(e) => e.preventDefault()}
             />
           </Stack>
           <FormErrorMessage alignSelf="end" py={1}>
-            {getErrMsg("startTime")}
+            {getErrMsg(inputErrors, "startTime")}
           </FormErrorMessage>
         </FormControl>
 
@@ -125,7 +97,7 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           display={"flex"}
           flexDirection={"column"}
           alignItems={"start"}
-          isInvalid={isInvalidInput("endTime")}
+          isInvalid={isInvalidInput(inputErrors, "endTime")}
           isRequired
         >
           <Stack direction="row" spacing={2} alignItems="center">
@@ -137,43 +109,41 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               name="endTime"
               defaultValue={generateDateTimeStr(event.endTime)}
               onInput={(e) => {
-                validate(
-                  inputErrors,
-                  e.target,
-                  /*isChecked*/ categoryIds,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, categoryIds, setInputErrors);
               }}
               onInvalid={(e) => e.preventDefault()}
             />
           </Stack>
           <FormErrorMessage alignSelf="end" py={1}>
-            {getErrMsg("endTime")}
+            {getErrMsg(inputErrors, "endTime")}
           </FormErrorMessage>
         </FormControl>
       </Stack>
 
       {/* INPUT for description */}
-      <FormControl isRequired isInvalid={isInvalidInput("description")}>
+      <FormControl
+        isRequired
+        isInvalid={isInvalidInput(inputErrors, "description")}
+      >
         <FormLabel>Description</FormLabel>
         <Textarea
           name="description"
           defaultValue={event.description}
           onChange={(e) => {
-            validate(
-              inputErrors,
-              e.target,
-              /*isChecked*/ categoryIds,
-              setInputErrors
-            );
+            validate(inputErrors, e.target, categoryIds, setInputErrors);
           }}
           onInvalid={(e) => e.preventDefault()}
         />
-        <FormErrorMessage>{getErrMsg("description")}</FormErrorMessage>
+        <FormErrorMessage>
+          {getErrMsg(inputErrors, "description")}
+        </FormErrorMessage>
       </FormControl>
 
       {/* CHECKBOX GR. for categories */}
-      <FormControl as={"fieldset"} isInvalid={isInvalidInput("categoryIds")}>
+      <FormControl
+        as={"fieldset"}
+        isInvalid={isInvalidInput(inputErrors, "categoryIds")}
+      >
         <Text as="legend" fontWeight="bolder" pb={1}>
           Categories
           <Text as="span" pl={1} color="red.500">
@@ -189,19 +159,9 @@ export const EditEventForm = ({ categories, event, onClose }) => {
               isChecked={categoryIds.includes(category.id)}
               value={categoryIds}
               onChange={(e) => {
-                handleCheckboxChanges(
-                  e,
-                  // isChecked,
-                  // setIsChecked,
-                  setCategoryIds
-                );
+                handleCheckboxChanges(e, setCategoryIds);
 
-                validate(
-                  inputErrors,
-                  e.target,
-                  /*isChecked*/ categoryIds,
-                  setInputErrors
-                );
+                validate(inputErrors, e.target, categoryIds, setInputErrors);
               }}
               onInvalid={(e) => e.preventDefault()}
             >
@@ -209,11 +169,13 @@ export const EditEventForm = ({ categories, event, onClose }) => {
             </Checkbox>
           ))}
         </Stack>
-        <FormErrorMessage>{getErrMsg("categoryIds")}</FormErrorMessage>
+        <FormErrorMessage>
+          {getErrMsg(inputErrors, "categoryIds")}
+        </FormErrorMessage>
       </FormControl>
 
       {/* INPUT for image(url) */}
-      <FormControl isInvalid={isInvalidInput("image")}>
+      <FormControl isInvalid={isInvalidInput(inputErrors, "image")}>
         <FormLabel fontWeight="bolder">Add an image (URL)</FormLabel>
         <Input
           type="url"
@@ -221,19 +183,14 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           defaultValue={event.image}
           placeholder="https://eventimagesource.com/eventimage"
           onChange={(e) => {
-            validate(
-              inputErrors,
-              e.target,
-              /*isChecked*/ categoryIds,
-              setInputErrors
-            );
+            validate(inputErrors, e.target, categoryIds, setInputErrors);
           }}
           onInvalid={(e) => e.preventDefault()}
         />
-        <FormErrorMessage>{getErrMsg("image")}</FormErrorMessage>
+        <FormErrorMessage>{getErrMsg(inputErrors, "image")}</FormErrorMessage>
       </FormControl>
 
-      {/* edit form button */}
+      {/* form button group */}
       <Stack direction="row" spacing={2} py={4} px={0} justifyContent="end">
         <Button
           type="submit"
@@ -243,7 +200,6 @@ export const EditEventForm = ({ categories, event, onClose }) => {
           onClick={(e) => {
             if (inputErrors.size > 0) {
               e.preventDefault();
-
               toast({
                 title: "Editing is incomplete",
                 description: "Please complete the required fields.",
