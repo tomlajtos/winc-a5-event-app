@@ -13,11 +13,6 @@ import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
 import { action as deleteEvent } from "./io/delete.jsx";
 import { action as editEvent } from "./io/edit.jsx";
-// import {
-//   EditEventPage,
-//   loader as editEventLoader,
-//   action as editEvent,
-// } from "./pages/EditEventPage";
 
 const router = createBrowserRouter([
   {
@@ -27,33 +22,36 @@ const router = createBrowserRouter([
     errorElement: <ErrorBoundry />,
     children: [
       {
-        path: "/",
-        element: <EventsPage />,
         errorElement: <ErrorBoundry />,
-        loader: eventsLoader,
-      },
-      {
-        path: "/event/:eventId",
-        element: <EventPage />,
-        errorElement: <ErrorBoundry />,
-        loader: eventLoader,
-      },
-      {
-        path: "/event/new",
-        element: <NewEventPage />,
-        errorElement: <ErrorBoundry />,
-        action: createEvent,
-      },
-      {
-        path: "/event/:eventId/edit",
-        // element: <EditEventPage />,
-        errorElement: <ErrorBoundry />,
-        // loader: editEventLoader,
-        action: editEvent,
-      },
-      {
-        path: "/event/:eventId/delete",
-        action: deleteEvent,
+        children: [
+          {
+            path: "/",
+            element: <EventsPage />,
+            // errorElement: <ErrorBoundry />,
+            loader: eventsLoader,
+          },
+          {
+            path: "/event/:eventId",
+            element: <EventPage />,
+            // errorElement: <ErrorBoundry />,
+            loader: eventLoader,
+          },
+          {
+            path: "/event/new",
+            element: <NewEventPage />,
+            // errorElement: <ErrorBoundry />,
+            action: createEvent,
+          },
+          {
+            path: "/event/:eventId/edit",
+            // errorElement: <ErrorBoundry />,
+            action: editEvent,
+          },
+          {
+            path: "/event/:eventId/delete",
+            action: deleteEvent,
+          },
+        ],
       },
     ],
   },
