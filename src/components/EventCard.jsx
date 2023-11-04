@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   Tag,
+  Wrap,
 } from "@chakra-ui/react";
 
 import { RootContext } from "../context/RootContext.jsx";
@@ -18,6 +19,7 @@ import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 export const EventCard = ({ event }) => {
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
+  console.log(start);
 
   const { categories } = useContext(RootContext);
   const eventCategories = categories
@@ -26,50 +28,51 @@ export const EventCard = ({ event }) => {
 
   return (
     <Card
-      background={"gray.50"}
-      maxW={"xl"}
-      maxH={"230px"}
-      direction={"row"}
-      variant={"outline"}
+      background="gray.50"
+      maxW="xl"
+      height="240px"
+      direction="row"
+      variant="outline"
       padding={3}
     >
       <Image
-        maxW={"40%"}
-        objectFit={"cover"}
+        maxW="40%"
+        objectFit="cover"
         src={event.image}
         fallbackSrc={placeholderImgUrl}
       />
-      <Stack>
-        <CardBody pt={0} pb={2}>
-          <Heading size={"lg"}>{event.title}</Heading>
-          <Stack pt={4} spacing={1}>
-            <Text pb={0}>
-              <Text as="span" fontWeight={"bolder"}>
-                {"Start: "}
-              </Text>
-              <Text as="span">{`${start.shortDate} at `}</Text>
-              <Text as="span" fontWeight={"bolder"}>
+      <Stack flex={1}>
+        <CardBody pt={0} pb={2} pr={0}>
+          <Heading size="lg">{event.title}</Heading>
+          <Stack pt={0} spacing={1} w="full">
+            {start.date === end.date ? (
+              <Text py={1} maxH={14} fontSize="lg">
+                {start.date}
+                {", "}
                 {start.time}
-              </Text>
-            </Text>
-            <Text>
-              <Text as="span" fontWeight={"bolder"}>
-                {"End: "}
-              </Text>
-              <Text as="span">{`${end.shortDate} at `}</Text>
-              <Text as="span" fontWeight={"bolder"}>
+                {" - "}
                 {end.time}
               </Text>
-            </Text>
-            <Text pt={3} pb={2}>
+            ) : (
+              <Text py={1} maxH={14} fontSize="lg">
+                {start.date}
+                {", "}
+                {start.time}
+                {" - "}
+                {end.date}
+                {", "}
+                {end.time}
+              </Text>
+            )}
+            <Text pt={2} height={14} overflow="hidden">
               {event.description}
             </Text>
           </Stack>
         </CardBody>
-        <CardFooter align={"start"} py={2}>
-          <Stack direction={"row"} spacing={2} pt={1}>
+        <CardFooter align="start" pt={0} pb={2}>
+          <Stack direction="row" spacing={2} pt={1}>
             {eventCategories.map((category) => (
-              <Tag key={category} colorScheme={"purple"}>
+              <Tag key={category} colorScheme="purple">
                 {category}
               </Tag>
             ))}
