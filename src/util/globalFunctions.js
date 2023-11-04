@@ -128,14 +128,13 @@ export const handleCheckboxChanges = (e, setFn2) => {
   }
 };
 
-// TODO: add jsDOC comments
-//
-// generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
-export const createCheckedIdsArr = (checkedMap) =>
-  Array.from(checkedMap).reduce(
-    (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
-    []
-  );
+// // TODO: add jsDOC comments
+// // generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
+// export const createCheckedIdsArr = (checkedMap) =>
+//   Array.from(checkedMap).reduce(
+//     (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
+//     []
+//   );
 
 // TODO: add jsDOC comments
 //
@@ -145,18 +144,24 @@ const addZeroToDT = (unit) => (unit < 10 ? `0${unit}` : unit);
 // TODO: add jsDOC comments
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
-  const dateOptions = {
+  const longDateOpt = {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   };
-  const shortDateOptions = {
+  const shortDateOpt = {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const numericDateOpt = {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   };
-  const timeOptions = {
+  const timeOpt = {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
@@ -164,14 +169,16 @@ export const formatDateAndTime = (dateStr) => {
     // timeZoneName: "shortOffset",
   };
 
-  const shortDate = date.toLocaleDateString("en-GB", shortDateOptions);
-  const fullDate = date.toLocaleDateString("en-GB", dateOptions);
-  const fullTime = date.toLocaleTimeString("en-GB", timeOptions);
+  const numericDate = date.toLocaleDateString("en-GB", numericDateOpt);
+  const shortDate = date.toLocaleString("en-GB", shortDateOpt);
+  const longDate = date.toLocaleDateString("en-GB", longDateOpt);
+  const time = date.toLocaleTimeString("en-GB", timeOpt);
 
   return {
-    shortDate: shortDate,
-    date: fullDate,
-    time: fullTime,
+    numericDate: numericDate,
+    longDate: longDate,
+    date: shortDate,
+    time: time,
   };
 };
 
