@@ -42,9 +42,6 @@ export const action = async ({ request }) => {
   })
     .then((res) => res.json())
     .then((json) => json.id);
-  // const data = await response.json();
-  // console.log("form post-data:", data);
-  console.log("new event action", newEventId);
   return redirect(`/event/${newEventId}`);
 };
 
@@ -53,10 +50,6 @@ export const NewEventPage = () => {
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-
-  // console.log("%crender, new event form", "color:yellow");
-  // console.log("new e. > catIds:", categoryIds);
-  // console.log("new e. > inputErrors", inputErrors);
 
   return (
     <Flex
@@ -220,49 +213,37 @@ export const NewEventPage = () => {
           />
           <FormErrorMessage>{getErrMsg(inputErrors, "image")}</FormErrorMessage>
         </FormControl>
-        {/* form button group */}
-        <Stack
-          w="inherit"
-          direction="row"
-          spacing={2}
-          p={4}
-          justifyContent="end"
-        >
-          <Button
-            type="submit"
-            variant="ghost"
-            size="lg"
-            colorScheme="purple"
-            onClick={(e) => {
-              // get and use errors for validation that are not yet set as state
-              const validity = validateAll(categoryIds, setInputErrors);
-
-              if (validity.isInvalid) {
-                e.preventDefault();
-                toast({
-                  title: "Event information is incomplete",
-                  description: "Please complete the required fields.",
-                  duration: 4000,
-                  position: "top",
-                  status: "error",
-                  isClosable: true,
-                });
-              }
-            }}
-          >
-            Save
-          </Button>
-          <Button
-            as={RRLink}
-            to="/"
-            variant="ghost"
-            size="lg"
-            colorScheme="red"
-          >
-            Cancel
-          </Button>
-        </Stack>{" "}
       </Stack>
+      {/* form button group */}
+      <Stack w="full" direction="row" spacing={2} p={4} justifyContent="end">
+        <Button
+          type="submit"
+          variant="ghost"
+          size="lg"
+          colorScheme="purple"
+          onClick={(e) => {
+            // get and use errors for validation that are not yet set as state
+            const validity = validateAll(categoryIds, setInputErrors);
+
+            if (validity.isInvalid) {
+              e.preventDefault();
+              toast({
+                title: "Event information is incomplete",
+                description: "Please complete the required fields.",
+                duration: 4000,
+                position: "top",
+                status: "error",
+                isClosable: true,
+              });
+            }
+          }}
+        >
+          Save
+        </Button>
+        <Button as={RRLink} to="/" variant="ghost" size="lg" colorScheme="red">
+          Cancel
+        </Button>
+      </Stack>{" "}
     </Flex>
   );
 };
