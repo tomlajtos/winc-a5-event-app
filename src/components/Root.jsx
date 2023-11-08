@@ -1,5 +1,5 @@
 // React and RRouter imports
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 // Chakra-ui imports
 import { Box, Flex, Heading } from "@chakra-ui/react";
@@ -25,6 +25,18 @@ export const Root = () => {
   const categoryIds = initCategoryIdsArr(categories);
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState([...categoryIds]);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const header = useRef();
+
+  useEffect(() => {
+    if (header.current) {
+      setHeaderHeight(header.current.offsetHeight);
+    }
+    const setHeightOnResize = () => {
+      setHeaderHeight(header.current.offsetHeight);
+    };
+    window.onresize = setHeightOnResize;
+  }, [headerHeight]);
 
   return (
     <Flex
@@ -36,10 +48,19 @@ export const Root = () => {
       pb={8}
     >
       <RootContext.Provider
-        value={{ categories, users, filterQ, setFilterQ, searchQ, setSearchQ }}
+        value={{
+          categories,
+          users,
+          filterQ,
+          setFilterQ,
+          searchQ,
+          setSearchQ,
+          headerHeight,
+        }}
       >
         <Flex
           as="header"
+          ref={header}
           width="full"
           px={[2, 4, 8, null, 12]}
           py={6}
@@ -52,9 +73,11 @@ export const Root = () => {
           background="gray.800"
           minH={"6vh"}
           align="center"
+          onMouseOver={(e) => console.log(e)}
         >
           <Flex
             direction={["column", null, "row"]}
+            flex={1}
             justify="space-between"
           >
             <Heading
@@ -74,9 +97,12 @@ export const Root = () => {
             <Search />
           </Flex>
           <Navigation />
-          <Box flex={1}>
+        </Flex>
+        {headerHeight && (
+          <Box pt={0} backgroundColor="transparent" mx="auto">
             <Outlet />
           </Box>
+        )}
       </RootContext.Provider>
     </Flex>
   );
