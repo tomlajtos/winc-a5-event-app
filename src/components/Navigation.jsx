@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
 import { Link as RRLink } from "react-router-dom";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Box,
   Button,
   Checkbox,
   Heading,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
   Stack,
 } from "@chakra-ui/react";
 
@@ -21,107 +24,100 @@ export const Navigation = () => {
   return (
     <Stack
       as={"nav"}
-      direction={"column"}
-      display={{ base: "none", md: "flex" }}
-      p={2}
-      spacing={3}
-      minWidth={"250px"}
+      direction={["column", null, "row"]}
+      py={0}
+      px={2}
+      minWidth={"350px"}
+      alignItems="center"
     >
       <Button
         as={RRLink}
         to={"/"}
-        variant="ghost"
-        pl={2}
+        py={2}
+        px={6}
+        rounded="full"
         fontSize={"xl"}
-        width={"full"}
-        color="gray.900"
-        sx={{ _hover: { backgroundColor: "gray.800", color: "gray.50" } }}
+        variant="ghost"
+        color="gray.300"
+        colorScheme="whiteAlpha"
       >
         Events
       </Button>
 
-      <Accordion allowMultiple>
-        <AccordionItem>
-          <Heading>
-            <AccordionButton
-              variant="ghost"
-              rounded={"md"}
-              h="40px"
-              sx={{
-                _hover: { backgroundColor: "gray.800", color: "gray.100" },
-              }}
-            >
-              <Box
-                as="span"
-                flex="1"
-                textAlign="left"
-                fontSize="lg"
-                fontWeight="bolder"
-              >
-                Categories
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </Heading>
-          <AccordionPanel>
-            <Stack spacing={[1, 5]} direction="column">
-              {categories.map((category) => (
-                <Checkbox
-                  id={category.id}
-                  key={category.id}
-                  name="categoryIds"
-                  isChecked={filterQ.includes(category.id)}
-                  value={category.id}
-                  colorScheme="purple"
-                  onChange={(e) => {
-                    // TODO: move to utils, add jsDOC comments
-                    const handleFilterChange = (
-                      filters,
-                      filterInput,
-                      setFn
-                    ) => {
-                      let newFilters = [...filters];
-                      console.log(
-                        "%c onChange NAV > filter",
-                        "color:red;background:white"
-                      );
-                      console.log("newFilters before", newFilters);
-                      if (e.target.checked) {
-                        newFilters = Array.from(
-                          new Set([Number(filterInput.value), ...newFilters])
-                        );
-                      } else {
-                        newFilters = newFilters.filter(
-                          (q) => q !== Number(filterInput.value)
-                        );
-                      }
-                      console.log("newFilters after", newFilters);
-                      setFn(newFilters);
-                    };
-                    handleFilterChange(filterQ, e.target, setFilterQ);
-                  }}
-                >
-                  {category.name}
-                </Checkbox>
-              ))}
-            </Stack>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-
       <Button
         as={RRLink}
         to={"/event/new"}
-        variant={"solid"}
-        pl={2}
-        width={"full"}
+        py={2}
+        px={6}
         fontSize={"xl"}
-        backgroundColor="gray.600"
-        color="gray.50"
-        sx={{ _hover: { backgroundColor: "gray.800", color: "gray.50" } }}
+        rounded="full"
+        variant="ghost"
+        color="gray.300"
+        colorScheme="whiteAlpha"
       >
         Create new
       </Button>
+
+      <Menu closeOnSelect={false} gutter={12}>
+        <MenuButton
+          as={Button}
+          fontSize={"xl"}
+          py={2}
+          px={6}
+          rounded="full"
+          variant="ghost"
+          color="gray.300"
+          colorScheme="whiteAlpha"
+        >
+          Categories
+        </MenuButton>
+        <MenuList
+          backgroundColor="whiteAlpha.900"
+          color="gray.900"
+          border="none"
+        >
+          <MenuOptionGroup
+            type="checkbox"
+            name="categoryIds"
+            defaultValue={["1", "2", "3"]}
+          >
+            {categories.map((category) => (
+              <MenuItemOption
+                key={category.id}
+                id={`${category.id}`}
+                name="categoryIds"
+                value={`${category.id}`}
+                backgroundColor="transparent"
+                onClick={() => {
+                  // TODO: move to utils, add jsDOC comments
+                  const handleFilterChange = (filters, inputValue, setFn) => {
+                    let newFilters = [...filters];
+                    console.log(
+                      "%c onClick > filter > MenuItemOption",
+                      "color:red;background:white",
+                    );
+                    console.log("newFilters before", newFilters);
+                    if (!newFilters.includes(category.id)) {
+                      newFilters = Array.from(
+                        new Set([Number(inputValue), ...newFilters]),
+                      );
+                    } else {
+                      newFilters = newFilters.filter(
+                        (q) => q !== Number(inputValue),
+                      );
+                    }
+                    console.log("newFilters after", newFilters);
+                    setFn(newFilters);
+                  };
+                  handleFilterChange(filterQ, category.id, setFilterQ);
+                }}
+              >
+                {category.name}
+              </MenuItemOption>
+            ))}
+          </MenuOptionGroup>
+        </MenuList>
+      </Menu>
     </Stack>
   );
 };
