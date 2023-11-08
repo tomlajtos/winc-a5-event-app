@@ -16,7 +16,7 @@ export const loader = async () =>
 
 export const EventsPage = () => {
   let { events } = useLoaderData();
-  const { filterQ, searchQ } = useContext(RootContext);
+  const { filterQ, searchQ, headerHeight } = useContext(RootContext);
 
   const filteredEvents = events
     .filter((event) => {
@@ -34,12 +34,23 @@ export const EventsPage = () => {
       }
     });
 
+  console.log("header height:", headerHeight);
   return (
     <Flex direction={"column"}>
-      <Heading size={"lg"} px={8} py={3}>
+      <Heading
+        fontSize="2rem"
+        px={[2, 4, 8, null, 12]}
+        py={3}
+        position="sticky"
+        top={headerHeight}
+        zIndex="sticky"
+        backgroundColor="gray.200"
+        borderBottom="1px solid"
+        borderColor="gray.300"
+      >
         Events
       </Heading>
-      <Wrap direction={"row"} spacing={4} padding={6}>
+      <Wrap direction={"row"} justify="center" spacing={4} py={6}>
         {filteredEvents.map((event) => (
           <RRLink key={event.id} to={`/event/${event.id}`}>
             <EventCard event={event} />
