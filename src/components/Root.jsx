@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 // Chakra-ui imports
-import { Box, Flex, Heading, Stack, StackDivider } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../context/RootContext";
 // Component imports
+// import { Navigation } from "./Navigation";
 import { Navigation } from "./Navigation";
 import { Search } from "../components/Search";
 // utils imports
@@ -26,30 +27,56 @@ export const Root = () => {
   const [filterQ, setFilterQ] = useState([...categoryIds]);
 
   return (
-    <Flex direction={"column"} bg={"gray.300"} minH={"100vh"}>
+    <Flex
+      direction={"column"}
+      minH={"100vh"}
+      margin="auto"
+      background="gray.200"
+      alignItems="center"
+      pb={8}
+    >
       <RootContext.Provider
         value={{ categories, users, filterQ, setFilterQ, searchQ, setSearchQ }}
       >
-        <Stack direction={"row"} minH={"6vh"}>
-          <Heading size={"lg"} textAlign={"center"} p={4}>
-            Event App
-          </Heading>
-          <Search />
-        </Stack>
-        <Stack
-          pt={2}
-          backgroundColor={"white"}
-          direction={"row"}
-          flex={"1"}
-          divider={
-            <StackDivider orientation={"column"} borderColor={"gray.300"} />
-          }
+        <Flex
+          as="header"
+          width="full"
+          px={[2, 4, 8, null, 12]}
+          py={6}
+          position="sticky"
+          top={0}
+          zIndex="sticky"
+          wrap="wrap"
+          direction={["column", null, "row"]}
+          gap={2}
+          background="gray.800"
+          minH={"6vh"}
+          align="center"
         >
+          <Flex
+            direction={["column", null, "row"]}
+            justify="space-between"
+          >
+            <Heading
+              as="h1"
+              // NOTE: if lineH. is not def, it will change on on sm/md breakpoint for some reason
+              // lineHeight="3rem"
+              fontSize="3rem"
+              width="fit-content"
+              color="purple.200"
+              fontWeight="light"
+              fontFamily="mono"
+              pr={8}
+              pl={[8, null, 0]}
+            >
+              EventApp
+            </Heading>
+            <Search />
+          </Flex>
           <Navigation />
           <Box flex={1}>
             <Outlet />
           </Box>
-        </Stack>
       </RootContext.Provider>
     </Flex>
   );
