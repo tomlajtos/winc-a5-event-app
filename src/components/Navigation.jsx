@@ -24,11 +24,12 @@ export const Navigation = () => {
   return (
     <Stack
       as={"nav"}
-      direction={["column", null, "row"]}
+      direction={["column", "row"]}
       py={0}
       px={2}
       minWidth={"350px"}
       alignItems="center"
+      spacing={0}
     >
       <Button
         as={RRLink}
@@ -37,6 +38,7 @@ export const Navigation = () => {
         px={6}
         rounded="full"
         fontSize={"xl"}
+        fontWeight="thin"
         variant="ghost"
         color="gray.300"
         colorScheme="whiteAlpha"
@@ -50,6 +52,7 @@ export const Navigation = () => {
         py={2}
         px={6}
         fontSize={"xl"}
+        fontWeight="thin"
         rounded="full"
         variant="ghost"
         color="gray.300"
@@ -62,6 +65,7 @@ export const Navigation = () => {
         <MenuButton
           as={Button}
           fontSize={"xl"}
+          fontWeight="thin"
           py={2}
           px={6}
           rounded="full"
