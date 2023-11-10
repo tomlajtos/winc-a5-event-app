@@ -67,7 +67,7 @@ export const Navigation = () => {
           fontSize={"xl"}
           fontWeight="thin"
           py={2}
-          px={6}
+          px={3}
           rounded="full"
           variant="ghost"
           color="gray.300"
@@ -83,7 +83,7 @@ export const Navigation = () => {
           <MenuOptionGroup
             type="checkbox"
             name="categoryIds"
-            defaultValue={["1", "2", "3"]}
+            defaultValue={filterQ.map((id) => id.toString())}
           >
             {categories.map((category) => (
               <MenuItemOption
