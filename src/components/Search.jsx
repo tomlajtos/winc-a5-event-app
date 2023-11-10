@@ -1,25 +1,26 @@
 import { useContext } from "react";
-import { Input, Stack } from "@chakra-ui/react";
+import { Center, Input } from "@chakra-ui/react";
 import { RootContext } from "../context/RootContext";
-import { colors } from "../util/colorScheme";
 
-export const Search = () => {
-  const lightColors = colors.light.search;
+export const Search = ({ inputProps, props }) => {
   const { setSearchQ } = useContext(RootContext);
 
   return (
-    <Stack p={2} justify={"center"}>
+    <Center {...props}>
       <Input
         variant={"outline"}
-        outlineColor={"gray.300"}
-        focusBorderColor="gray.400"
         placeholder="Search for an event..."
         rounded={"full"}
-        backgroundColor={lightColors.inputBg}
+        minW="225px"
+        maxW="500px"
+        px={6}
+        color="gray.200"
+        focusBorderColor="purple.300"
         onChange={(e) => {
           setSearchQ(e.target.value);
         }}
+        {...inputProps}
       />
-    </Stack>
+    </Center>
   );
 };
