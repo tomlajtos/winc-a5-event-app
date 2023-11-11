@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 // Chakra-ui imports
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../context/RootContext";
 // Component imports

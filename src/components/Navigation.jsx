@@ -1,18 +1,12 @@
 import React, { useContext } from "react";
 import { Link as RRLink } from "react-router-dom";
 import {
-  Box,
   Button,
-  Checkbox,
-  Heading,
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   MenuItemOption,
-  MenuGroup,
   MenuOptionGroup,
-  MenuDivider,
   Stack,
 } from "@chakra-ui/react";
 
