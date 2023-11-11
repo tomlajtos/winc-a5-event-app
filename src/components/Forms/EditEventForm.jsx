@@ -6,31 +6,27 @@ import { Form } from "react-router-dom";
 // import { RootContext } from "../context/RootContext";
 
 // chakra-ui imports
-import {
-  useToast,
-  Button,
-  Checkbox,
-  Input,
-  Flex,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Stack,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
-
+import { useToast, Button, Flex, Stack, Text } from "@chakra-ui/react";
+// component imports
+import { TextInputControl } from "./form-controlls/TextInputControl";
+import { DateTimeControl } from "./form-controlls/DateTimeControl";
+import { TextareaControl } from "./form-controlls/TextareaControl";
+import { CheckboxGrControl } from "./form-controlls/CheckboxGrControl";
+import { UrlInputControl } from "./form-controlls/UrlInputControl";
+import { SelectControl } from "./form-controlls/SelectControl";
 // util imports
-import {
-  handleCheckboxChanges,
-  generateDateTimeStr,
-} from "../../util/globalFunctions";
-import { validate, getErrMsg, isInvalidInput } from "../../util/validate";
+import { generateDateTimeStr } from "../../util/globalFunctions";
 
-export const EditEventForm = ({ categories, event, onClose }) => {
+export const EditEventForm = ({ categories, users, event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
+  const stateProps = {
+    categoryIds: categoryIds,
+    setCategoryIds: setCategoryIds,
+    errors: inputErrors,
+    setErrors: setInputErrors,
+  };
 
   // NOTE: 'novalidate' attr. of form prevents the built in validation, useful when custom validation is used
   //
@@ -43,6 +39,7 @@ export const EditEventForm = ({ categories, event, onClose }) => {
       direction="column"
       alignItems="stretch"
       backgroundColor="transparent"
+      onSubmit={(e) => (inputErrors.size > 0 ? e.preventDefault() : onClose())}
     >
       <Stack
         direction="column"
@@ -50,157 +47,76 @@ export const EditEventForm = ({ categories, event, onClose }) => {
         // p={4}
         px={0}
         mx={0}
-        onSubmit={(e) =>
-          inputErrors.size > 0 ? e.preventDefault() : onClose()
-        }
       >
         {/* INPUT for title */}
-        <FormControl
-          isRequired
-          isInvalid={isInvalidInput(inputErrors, "title")}
-        >
-          <FormLabel fontWeight="bolder">Title</FormLabel>
-          <Input
-            type="text"
-            name="title"
-            defaultValue={event.title}
-            onChange={(e) => {
-              validate(inputErrors, e.target, categoryIds, setInputErrors);
-            }}
-            onInvalid={(e) => e.preventDefault()}
-          />
-          <FormErrorMessage>{getErrMsg(inputErrors, "title")}</FormErrorMessage>
-        </FormControl>
-
+        <TextInputControl
+          label="Title"
+          inputName="title"
+          defaultValue={event.title}
+          isRequired={true}
+          {...stateProps}
+        />
+        {/* SELECT for event creator(users)*/}
+        <SelectControl
+          lable="Created by"
+          inputName="createdBy"
+          defaultValue={event.createdBy}
+          isRequired={true}
+          users={users}
+          {...stateProps}
+        />
         {/* FIELDSET for start/endTime */}
         <Stack as="fieldset" direction="column" spacing={2}>
           <Text as="legend" pb={1} fontWeight="bolder">
             Date and Time
           </Text>
           {/* INPUT for startTime */}
-          <FormControl
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"start"}
-            isRequired
-            isInvalid={isInvalidInput(inputErrors, "startTime")}
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <FormLabel margin={0} px={2}>
-                Start
-              </FormLabel>
-              <Input
-                type="datetime-local"
-                name="startTime"
-                defaultValue={generateDateTimeStr(event.startTime)}
-                justifySelf="stretch"
-                onChange={(e) => {
-                  validate(inputErrors, e.target, categoryIds, setInputErrors);
-                }}
-                onInvalid={(e) => e.preventDefault()}
-              />
-            </Stack>
-            <FormErrorMessage alignSelf="end" py={1}>
-              {getErrMsg(inputErrors, "startTime")}
-            </FormErrorMessage>
-          </FormControl>
-
+          <DateTimeControl
+            label="Start"
+            inputName="startTime"
+            defaultValue={generateDateTimeStr(event.startTime)}
+            isRequired={true}
+            {...stateProps}
+          />
           {/* INPUT for endTime */}
-          <FormControl
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems={"start"}
-            isInvalid={isInvalidInput(inputErrors, "endTime")}
-            isRequired
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <FormLabel margin={0} px={2}>
-                End
-              </FormLabel>
-              <Input
-                type="datetime-local"
-                name="endTime"
-                defaultValue={generateDateTimeStr(event.endTime)}
-                onInput={(e) => {
-                  validate(inputErrors, e.target, categoryIds, setInputErrors);
-                }}
-                onInvalid={(e) => e.preventDefault()}
-              />
-            </Stack>
-            <FormErrorMessage alignSelf="end" py={1}>
-              {getErrMsg(inputErrors, "endTime")}
-            </FormErrorMessage>
-          </FormControl>
+          <DateTimeControl
+            label="End"
+            inputName="endTime"
+            defaultValue={generateDateTimeStr(event.endTime)}
+            isRequired={true}
+            {...stateProps}
+          />
         </Stack>
-
-        {/* INPUT for description */}
-        <FormControl
-          isRequired
-          isInvalid={isInvalidInput(inputErrors, "description")}
-        >
-          <FormLabel>Description</FormLabel>
-          <Textarea
-            name="description"
-            defaultValue={event.description}
-            onChange={(e) => {
-              validate(inputErrors, e.target, categoryIds, setInputErrors);
-            }}
-            onInvalid={(e) => e.preventDefault()}
-          />
-          <FormErrorMessage>
-            {getErrMsg(inputErrors, "description")}
-          </FormErrorMessage>
-        </FormControl>
-
+        {/* INPUT for location */}
+        <TextInputControl
+          label="Location"
+          inputName="location"
+          defaultValue={event.location}
+          isRequired={true}
+          {...stateProps}
+        />
+        <TextareaControl
+          label="Description"
+          inputName="description"
+          defaultValue={event.description}
+          isRequired={true}
+          {...stateProps}
+        />
         {/* CHECKBOX GR. for categories */}
-        <FormControl
-          as={"fieldset"}
-          isInvalid={isInvalidInput(inputErrors, "categoryIds")}
-        >
-          <Text as="legend" fontWeight="bolder" pb={1}>
-            Categories
-            <Text as="span" pl={1} color="red.500">
-              *
-            </Text>
-          </Text>
-          <Stack spacing={[1, 5]} direction={["column", "row"]}>
-            {categories.map((category) => (
-              <Checkbox
-                id={category.id}
-                key={category.id}
-                name="categoryIds"
-                isChecked={categoryIds.includes(category.id)}
-                value={categoryIds}
-                onChange={(e) => {
-                  handleCheckboxChanges(e, setCategoryIds);
-                  validate(inputErrors, e.target, categoryIds, setInputErrors);
-                }}
-                onInvalid={(e) => e.preventDefault()}
-              >
-                {category.name}
-              </Checkbox>
-            ))}
-          </Stack>
-          <FormErrorMessage>
-            {getErrMsg(inputErrors, "categoryIds")}
-          </FormErrorMessage>
-        </FormControl>
-
+        <CheckboxGrControl
+          label="Categories"
+          inputName="categoryIds"
+          categories={categories}
+          {...stateProps}
+        />
         {/* INPUT for image(url) */}
-        <FormControl isInvalid={isInvalidInput(inputErrors, "image")}>
-          <FormLabel fontWeight="bolder">Add an image (URL)</FormLabel>
-          <Input
-            type="url"
-            name="image"
-            defaultValue={event.image}
-            placeholder="https://eventimagesource.com/eventimage"
-            onChange={(e) => {
-              validate(inputErrors, e.target, categoryIds, setInputErrors);
-            }}
-            onInvalid={(e) => e.preventDefault()}
-          />
-          <FormErrorMessage>{getErrMsg(inputErrors, "image")}</FormErrorMessage>
-        </FormControl>
+        <UrlInputControl
+          label="Add an image URL"
+          inputName="image"
+          defaultValue={event.image}
+          isRequired={false}
+          {...stateProps}
+        />
       </Stack>
 
       {/* form button group */}
@@ -228,8 +144,6 @@ export const EditEventForm = ({ categories, event, onClose }) => {
                 status: "error",
                 isClosable: true,
               });
-            } else {
-              onClose();
             }
           }}
         >
