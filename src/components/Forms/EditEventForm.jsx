@@ -58,7 +58,7 @@ export const EditEventForm = ({ categories, users, event, onClose }) => {
         />
         {/* SELECT for event creator(users)*/}
         <SelectControl
-          lable="Created by"
+          label="Created by"
           inputName="createdBy"
           defaultValue={event.createdBy}
           isRequired={true}
@@ -95,6 +95,7 @@ export const EditEventForm = ({ categories, users, event, onClose }) => {
           isRequired={true}
           {...stateProps}
         />
+        {/* INPUT for description */}
         <TextareaControl
           label="Description"
           inputName="description"
