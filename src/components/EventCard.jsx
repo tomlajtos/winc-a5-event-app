@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
   Tag,
-  Wrap,
 } from "@chakra-ui/react";
 
 import { RootContext } from "../context/RootContext.jsx";
@@ -17,26 +16,24 @@ import { formatDateAndTime } from "../util/globalFunctions.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
 export const EventCard = ({ event }) => {
-  const start = formatDateAndTime(event.startTime);
-  const end = formatDateAndTime(event.endTime);
-  console.log(start);
-
   const { categories } = useContext(RootContext);
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);
+  const start = formatDateAndTime(event.startTime);
+  const end = formatDateAndTime(event.endTime);
 
   return (
     <Card
       background="gray.50"
-      maxW="xl"
+      width="lg"
       height="240px"
       direction="row"
       variant="outline"
       padding={3}
     >
       <Image
-        maxW="40%"
+        boxSize="200px"
         objectFit="cover"
         src={event.image}
         fallbackSrc={placeholderImgUrl}
@@ -64,7 +61,7 @@ export const EventCard = ({ event }) => {
                 {end.time}
               </Text>
             )}
-            <Text pt={2} height={14} overflow="hidden">
+            <Text pt={4} height={16} noOfLines={2} color="gray.700">
               {event.description}
             </Text>
           </Stack>
