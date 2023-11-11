@@ -3,11 +3,12 @@ import { Center, Input } from "@chakra-ui/react";
 import { RootContext } from "../context/RootContext";
 
 export const Search = ({ inputProps, props }) => {
-  const { setSearchQ } = useContext(RootContext);
+  const { searchQ, setSearchQ } = useContext(RootContext);
 
   return (
     <Center {...props}>
       <Input
+        name="search"
         variant={"outline"}
         placeholder="Search for an event..."
         rounded={"full"}
@@ -16,6 +17,7 @@ export const Search = ({ inputProps, props }) => {
         px={6}
         color="gray.200"
         focusBorderColor="purple.300"
+        defaultValue={searchQ}
         onChange={(e) => {
           setSearchQ(e.target.value);
         }}
