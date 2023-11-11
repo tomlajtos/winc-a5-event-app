@@ -1,9 +1,9 @@
 // React imports
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 // React Router imports
 import { useLoaderData, Link as RRLink } from "react-router-dom";
 // ChakraUi imports
-import { Flex, Heading, Wrap } from "@chakra-ui/react";
+import { Box, Flex, Heading, Wrap, Stack } from "@chakra-ui/react";
 // Context and custom hook imports
 import { RootContext } from "../context/RootContext";
 // Util imports
@@ -16,7 +16,7 @@ export const loader = async () =>
 
 export const EventsPage = () => {
   let { events } = useLoaderData();
-  const { filterQ, searchQ, headerHeight } = useContext(RootContext);
+  const { filterQ, searchQ, rootSize } = useContext(RootContext);
 
   const filteredEvents = events
     .filter((event) => {
@@ -34,29 +34,38 @@ export const EventsPage = () => {
       }
     });
 
-  console.log("header height:", headerHeight);
+  const wrapH = rootSize.height - 184; // 184 <-- Wrap.py + Heading.height + Header.heigh
   return (
-    <Flex direction={"column"}>
+    <Box className="events-page-container">
       <Heading
+        display="box"
+        height="65px"
         fontSize="2rem"
         px={[2, 4, 8, null, 12]}
         py={3}
-        position="sticky"
-        top={headerHeight}
-        zIndex="sticky"
         backgroundColor="gray.200"
         borderBottom="1px solid"
         borderColor="gray.300"
       >
         Events
       </Heading>
-      <Wrap direction={"row"} justify="center" spacing={4} py={6}>
+      <Wrap
+        direction={"row"}
+        // height={`${rootSize.height - 140}px`}
+        height={`${wrapH}px`}
+        // justify={["center", null, null, "start"]}
+        justify="center"
+        spacing={4}
+        py={6}
+        px={[2, 4, 4, null, 12]}
+        overflowY="scroll"
+      >
         {filteredEvents.map((event) => (
           <RRLink key={event.id} to={`/event/${event.id}`}>
             <EventCard event={event} />
           </RRLink>
         ))}
       </Wrap>
-    </Flex>
+    </Box>
   );
 };

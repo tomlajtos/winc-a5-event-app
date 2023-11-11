@@ -24,20 +24,26 @@ export const Root = () => {
 
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState([...categoryIds]);
-  const header = useRef();
+  const [rootSize, setRootSize] = useState({});
 
   useEffect(() => {
-    if (header.current) {
-      setHeaderHeight(header.current.offsetHeight);
-    }
-    const setHeightOnResize = () => {
-      setHeaderHeight(header.current.offsetHeight);
-    };
-    window.onresize = setHeightOnResize;
-  }, [headerHeight]);
+    const resizeObserver = new ResizeObserver((entry) => {
+      if (entry[0].borderBoxSize) {
+        setRootSize({
+          width: Math.round(entry[0].borderBoxSize[0].inlineSize),
+          height: Math.round(entry[0].borderBoxSize[0].blockSize),
+        });
+      } else if (entry[0].contentRect) {
+        setRootSize({
+          width: Math.round(entry[0].contentRect.width),
+          height: Math.round(entry[0].contentRect.height),
+        });
+      }
+    });
+    resizeObserver.observe(document.querySelector("div"));
+  }, []);
 
   return (
-    <Flex
     <Box
       className="root-container"
       mx={0}
@@ -45,8 +51,7 @@ export const Root = () => {
       b={8}
       h={"100vh"}
       background="gray.200"
-      alignItems="center"
-      pb={8}
+      overflowY="hidden"
     >
       <RootContext.Provider
         value={{
@@ -56,7 +61,7 @@ export const Root = () => {
           setFilterQ,
           searchQ,
           setSearchQ,
-          headerHeight,
+          rootSize,
         }}
       >
         <Header />
