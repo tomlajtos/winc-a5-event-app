@@ -4,6 +4,7 @@ import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
   Avatar,
+  Box,
   Button,
   Center,
   Flex,
@@ -31,7 +32,7 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { categories, users } = useContext(RootContext);
+  const { categories, users, rootSize } = useContext(RootContext);
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
@@ -39,109 +40,148 @@ export const EventPage = () => {
   const end = formatDateAndTime(event.endTime);
   const [user] = users.filter((user) => user.id === event.createdBy);
 
+  const contentH = rootSize.height - 95;
   return (
-    <Flex direction={"column"} padding={8}>
-      {event.image ? (
-        <Image src={event.image} />
-      ) : (
-        <Center
-          width={"full"}
-          height={"20vh"}
-          backgroundColor={"purple.800"}
-          color={"cyan.100"}
-        >
-          <Text fontSize={"2xl"}>{event.title}</Text>
-        </Center>
-      )}
-      <Heading>{event.title}</Heading>
-      <Heading size={"sm"}>Created by:</Heading>
-      {user ? (
-        <Flex>
-          <Avatar name={user.name} src={user.image} />
-          <Text>{user.name}</Text>
+    <Box
+      className="event-page-container"
+      px={10}
+      py={12}
+      width="full"
+      h={`${contentH}px`}
+      overflowY="scroll"
+    >
+      <Flex direction={"column"} rowGap={8} maxW="1200px" mx="auto">
+        <Flex directon="row" gap={8} flex={1} justify="space-between">
+          <Stack direction="column" rowGap={4}>
+            <Heading size="2xl">{event.title}</Heading>
+            {start.date === end.date ? (
+              <Text py={1} maxH={14} fontSize="2xl" alignSelf="start">
+                {start.date}
+                {", "}
+                {start.time}
+                {" - "}
+                {end.time}
+              </Text>
+            ) : (
+              <Text py={1} maxH={14} fontSize="lg">
+                {start.date}
+                {", "}
+                {start.time}
+                {" - "}
+                {end.date}
+                {", "}
+                {end.time}
+              </Text>
+            )}
+            <Heading size={"md"}>Created by:</Heading>
+            {user ? (
+              <Flex gap={4} alignItems="center">
+                <Avatar size="lg" name={user.name} src={user.image} />
+                <Text fontSize="2xl">{user.name}</Text>
+              </Flex>
+            ) : (
+              <Flex py={2} direction="row" align="center" gap={2}>
+                <Avatar size="sm" name="Unknown Person" />
+                <Text>Unknown Person</Text>
+              </Flex>
+            )}
+          </Stack>
+          {event.image ? (
+            <Image
+              display="block"
+              src={event.image}
+              boxSize="400px"
+              objectFit="cover"
+              rounded="xl"
+            />
+          ) : (
+            <Center
+              width={"full"}
+              height={"20vh"}
+              backgroundColor={"purple.800"}
+              color={"cyan.100"}
+            >
+              <Text fontSize={"2xl"}>{event.title}</Text>
+            </Center>
+          )}
         </Flex>
-      ) : (
-        <Flex py={2} direction="row" align="center" gap={2}>
-          <Avatar size="sm" name="Unknown Person" />
-          <Text>Unknown Person</Text>
-        </Flex>
-      )}
-      <Heading size={"sm"}>Event date:</Heading>
-      {start.date === end.date ? (
-        <Text>{start.date}</Text>
-      ) : (
-        <Text>{`${start.date} - ${end.date}`}</Text>
-      )}
-      <Heading size={"sm"}>Starts at: </Heading>
-      <Text> {start.time} </Text>
-      <Heading size={"sm"}>Ends at: </Heading>
-      <Text>{end.time}</Text>
-      <Text>{event.location}</Text>
 
-      <Text>{event.description}</Text>
-      <Stack direction={"row"} spacing={2} pt={1}>
-        {categories.map((category) =>
-          event.categoryIds.includes(category.id) ? (
-            <Tag key={category.name} colorScheme={"purple"}>
-              {category.name}
-            </Tag>
-          ) : null
-        )}
-      </Stack>
-      <Stack direction="row" justify="end">
-        <Button onClick={editModal.onOpen}>Edit</Button>
-        <Portal>
-          <Modal
-            isOpen={editModal.isOpen}
-            onClose={editModal.onClose}
-            size={["full", null, "lg"]}
-          >
+        <Stack spacing={3}>
+          <Stack spacing={1}>
+            <Heading size={"md"}>Location:</Heading>
+            <Text>{event.location}</Text>
+          </Stack>
+
+          <Stack spacing={1}>
+            <Heading size={"md"}>About the event:</Heading>
+            <Text>{event.description}</Text>
+          </Stack>
+
+          <Stack direction={"row"} spacing={2} pt={1}>
+            {categories.map((category) =>
+              event.categoryIds.includes(category.id) ? (
+                <Tag key={category.name} size="lg" colorScheme={"purple"}>
+                  {category.name}
+                </Tag>
+              ) : null,
+            )}
+          </Stack>
+        </Stack>
+        <Stack direction="row" justify="end">
+          <Button onClick={editModal.onOpen}>Edit</Button>
+          <Portal>
+            <Modal
+              isOpen={editModal.isOpen}
+              onClose={editModal.onClose}
+              size={["full", null, "lg"]}
+            >
+              <ModalOverlay
+                bg="blackAlpha.500"
+                backdropFilter="auto"
+                backdropBlur="5px"
+              >
+                <ModalContent backgroundColor="whiteAlpha.900">
+                  <ModalHeader fontSize="2xl" background="transparent">
+                    Edit event
+                  </ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody background="transparent">
+                    <EditEventForm
+                      event={event}
+                      categories={categories}
+                      onClose={editModal.onClose}
+                    />
+                  </ModalBody>
+                </ModalContent>
+              </ModalOverlay>
+            </Modal>
+          </Portal>
+          <Button onClick={deleteModal.onOpen}>Delete</Button>
+          <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
             <ModalOverlay
               bg="blackAlpha.500"
               backdropFilter="auto"
               backdropBlur="5px"
             >
-              <ModalContent backgroundColor="whiteAlpha.900">
-                <ModalHeader fontSize="2xl" background="transparent">
-                  Edit event
-                </ModalHeader>
+              <ModalContent>
+                <ModalHeader>Delete Event</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody background="transparent">
-                  <EditEventForm
-                    event={event}
-                    categories={categories}
-                    onClose={editModal.onClose}
-                  />
+                <ModalBody>
+                  Are you sure that you want to delete this event?
                 </ModalBody>
+                <ModalFooter>
+                  <Stack direction="row" spacing={2}>
+                    <Form method="post" action="delete">
+                      <Button type="submit">Delete</Button>
+                    </Form>
+                    <Button onClick={deleteModal.onClose}>Cancel</Button>
+                  </Stack>
+                </ModalFooter>
               </ModalContent>
             </ModalOverlay>
           </Modal>
-        </Portal>
-        <Button onClick={deleteModal.onOpen}>Delete</Button>
-        <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
-          <ModalOverlay
-            bg="blackAlpha.500"
-            backdropFilter="auto"
-            backdropBlur="5px"
-          >
-            <ModalContent>
-              <ModalHeader>Delete Event</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                Are you sure that you want to delete this event?
-              </ModalBody>
-              <ModalFooter>
-                <Stack direction="row" spacing={2}>
-                  <Form method="post" action="delete">
-                    <Button type="submit">Delete</Button>
-                  </Form>
-                  <Button onClick={deleteModal.onClose}>Cancel</Button>
-                </Stack>
-              </ModalFooter>
-            </ModalContent>
-          </ModalOverlay>
-        </Modal>
-      </Stack>
-    </Flex>
+        </Stack>
+      </Flex>
+    </Box>
   );
 };
