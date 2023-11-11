@@ -228,8 +228,9 @@ export const EditEventForm = ({ categories, event, onClose }) => {
                 status: "error",
                 isClosable: true,
               });
+            } else {
+              onClose();
             }
-            onClose();
           }}
         >
           Save
