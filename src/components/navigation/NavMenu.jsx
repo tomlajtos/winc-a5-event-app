@@ -1,29 +1,22 @@
 import React, { useContext } from "react";
 import { Link as RRLink } from "react-router-dom";
 import {
-  // Box,
-  // Button,
-  // Checkbox,
-  // Heading,
   IconButton,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   MenuItemOption,
-  // MenuGroup,
   MenuOptionGroup,
   MenuDivider,
-  // Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { RootContext } from "../../context/RootContext";
 import { Search } from "../Search";
 
 export const NavMenu = () => {
-  const { categories, filterQ, setFilterQ } = useContext(RootContext);
+  const { categories, filterQ, setFilterQ, rootSize } = useContext(RootContext);
 
-  console.log("filters:", filterQ);
   return (
     <Menu
       closeOnSelect={false}
@@ -47,7 +40,7 @@ export const NavMenu = () => {
         color="gray.900"
         border="none"
       >
-        {window.innerWidth < 768 && (
+        {rootSize.width < 768 && (
           <Search
             props={{
               width: "90%",
