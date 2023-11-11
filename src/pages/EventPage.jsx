@@ -1,4 +1,3 @@
-// TODO: refactor: move editing functionality here, use <Modal/> (or <Editable/> ?)
 import { useContext } from "react";
 import { useLoaderData, Form } from "react-router-dom";
 import {
@@ -25,6 +24,7 @@ import {
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 import { RootContext } from "../context/RootContext.jsx";
 import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
+import phantom from "../assets/phantom_mask.svg";
 
 // Loader function to fetch event specific data (dynamic path)
 export const loader = async ({ params }) =>
@@ -77,12 +77,18 @@ export const EventPage = () => {
             {user ? (
               <Flex gap={4} alignItems="center">
                 <Avatar size="lg" name={user.name} src={user.image} />
-                <Text fontSize="2xl">{user.name}</Text>
+                <Text fontSize="2xl">{event.createdBy}</Text>
               </Flex>
             ) : (
               <Flex py={2} direction="row" align="center" gap={2}>
-                <Avatar size="sm" name="Unknown Person" />
-                <Text>Unknown Person</Text>
+                <Avatar
+                  size="md"
+                  name="Unknown Person"
+                  src={event.createdBy ? phantom : null}
+                />
+                <Text>
+                  {event.createdBy ? event.createdBy : "Unknown Person"}
+                </Text>
               </Flex>
             )}
           </Stack>
@@ -92,16 +98,18 @@ export const EventPage = () => {
               src={event.image}
               boxSize="400px"
               objectFit="cover"
-              rounded="xl"
+              rounded="2xl"
             />
           ) : (
             <Center
-              width={"full"}
-              height={"20vh"}
+              boxSize="250px"
+              rounded="2xl"
               backgroundColor={"purple.800"}
               color={"cyan.100"}
             >
-              <Text fontSize={"2xl"}>{event.title}</Text>
+              <Text fontSize={"2xl"} textAlign="center">
+                {event.title}
+              </Text>
             </Center>
           )}
         </Flex>
@@ -149,6 +157,7 @@ export const EventPage = () => {
                     <EditEventForm
                       event={event}
                       categories={categories}
+                      users={users}
                       onClose={editModal.onClose}
                     />
                   </ModalBody>
