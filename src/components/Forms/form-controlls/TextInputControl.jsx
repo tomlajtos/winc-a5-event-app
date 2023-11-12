@@ -2,8 +2,9 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  Input,
+  Input as CInput,
 } from "@chakra-ui/react";
+import { Input } from "../../ui/Input";
 import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
 
 export const TextInputControl = ({

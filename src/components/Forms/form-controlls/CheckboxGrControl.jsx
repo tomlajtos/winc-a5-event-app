@@ -1,12 +1,5 @@
-import {
-  Checkbox,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, Stack, Text } from "@chakra-ui/react";
+import { Checkbox } from "../../ui/Checkbox";
 import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
 import { handleCheckboxChanges } from "../../../util/globalFunctions";
 

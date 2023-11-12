@@ -2,9 +2,9 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  Input,
   Stack,
 } from "@chakra-ui/react";
+import { Input } from "../../ui/Input";
 import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
 
 export const DateTimeControl = ({
@@ -24,7 +24,7 @@ export const DateTimeControl = ({
       isRequired={isRequired}
       isInvalid={isInvalidInput(errors, inputName)}
     >
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={2} align="center" width="full">
         <FormLabel margin={0} px={2}>
           {label}
         </FormLabel>
@@ -32,7 +32,7 @@ export const DateTimeControl = ({
           type="datetime-local"
           name={inputName}
           defaultValue={defaultValue}
-          justifySelf="stretch"
+          flex={1}
           onChange={(e) => validate(errors, e.target, categoryIds, setErrors)}
           onInvalid={(e) => e.preventDefault()}
         />

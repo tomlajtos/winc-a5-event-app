@@ -1,9 +1,5 @@
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Textarea,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { Textarea } from "../../ui/Textarea";
 import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
 
 export const TextareaControl = ({
@@ -26,6 +22,7 @@ export const TextareaControl = ({
         defaultValue={defaultValue}
         placeholder={`Please write a short ${inputName}...`}
         resize="none"
+        overflowY="auto"
         onChange={(e) => validate(errors, e.target, categoryIds, setErrors)}
         onInvalid={(e) => e.preventDefault()}
       />
