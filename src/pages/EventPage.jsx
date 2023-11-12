@@ -4,7 +4,6 @@ import {
   useDisclosure,
   Avatar,
   Box,
-  Button,
   Center,
   Flex,
   Heading,
@@ -24,6 +23,7 @@ import {
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 import { RootContext } from "../context/RootContext.jsx";
 import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
+import { Button } from "../components/ui/Button";
 import phantom from "../assets/phantom_mask.svg";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -136,7 +136,7 @@ export const EventPage = () => {
           </Stack>
         </Stack>
         <Stack direction="row" justify="end">
-          <Button onClick={editModal.onOpen}>Edit</Button>
+          <Button text="Edit" onClick={editModal.onOpen} />
           <Portal>
             <Modal
               isOpen={editModal.isOpen}
@@ -165,7 +165,7 @@ export const EventPage = () => {
               </ModalOverlay>
             </Modal>
           </Portal>
-          <Button onClick={deleteModal.onOpen}>Delete</Button>
+          <Button text="Delete" onClick={deleteModal.onOpen} />
           <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
             <ModalOverlay
               bg="blackAlpha.500"
