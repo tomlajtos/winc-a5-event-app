@@ -5,7 +5,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../context/RootContext";
 // Component imports
-import { Navigation } from "./Navigation";
+import { Navigation } from "./navigation/Navigation";
 import { NavMenu } from "./navigation/NavMenu";
 import { Search } from "./Search";
 
