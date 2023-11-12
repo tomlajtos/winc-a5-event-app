@@ -38,7 +38,7 @@ export const EventPage = () => {
 
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
-  const [user] = users.filter((user) => user.name === event.createdBy);
+  const [user] = users.filter((user) => user.id === event.createdBy);
 
   const contentH = rootSize.height - 95;
   return (
