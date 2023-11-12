@@ -1,3 +1,5 @@
+// TODO: > vertical card layout for small screens
+//
 import { useContext } from "react";
 import { Heading } from "@chakra-ui/react";
 import {
@@ -30,17 +32,20 @@ export const EventCard = ({ event }) => {
       height="240px"
       direction="row"
       variant="outline"
-      padding={3}
+      py={4}
+      px={3}
     >
       <Image
-        boxSize="200px"
+        boxSize="206px"
         objectFit="cover"
         src={event.image}
         fallbackSrc={placeholderImgUrl}
       />
       <Stack flex={1}>
         <CardBody pt={0} pb={2} pr={0}>
-          <Heading size="lg">{event.title}</Heading>
+          <Heading size="lg" noOfLines={1}>
+            {event.title}
+          </Heading>
           <Stack pt={0} spacing={1} w="full">
             {start.date === end.date ? (
               <Text py={1} maxH={14} fontSize="lg">
