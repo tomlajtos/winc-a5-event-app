@@ -12,14 +12,8 @@ import {
   useToast,
   Box,
   Button,
-  Checkbox,
+  Container,
   Flex,
-  Input,
-  Textarea,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Select,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -76,19 +70,18 @@ export const NewEventPage = () => {
   };
 
   return (
-    <Box backgroundColor="yellow.200">
-      <Flex
+    <Box overflowY="scroll" bg="gray.100">
+      <Container
         mx="auto"
         py={6}
         h={`${contentH}px`}
-        width={["300px", null, "550px"]}
+        width={["full", "sm", "container.sm"]}
         as={Form}
         method="post"
         direction="column"
         alignItems="center"
-        backgroundColor="blue.200"
       >
-        <Stack direction="column" spacing={5} p={4} bg="red.100">
+        <Stack direction="column" spacing={5} p={4} with="full">
           {/* INPUT for title */}
           <TextInputControl
             label="Title"
@@ -161,7 +154,7 @@ export const NewEventPage = () => {
           />
         </Stack>
         {/* form button group */}
-        <Stack w="full" direction="row" spacing={2} p={4} justifyContent="end">
+        <Stack w="full" direction="row" spacing={2} py={4} justifyContent="end">
           <Button
             type="submit"
             variant="ghost"
@@ -196,7 +189,7 @@ export const NewEventPage = () => {
             Cancel
           </Button>
         </Stack>{" "}
-      </Flex>
+      </Container>
     </Box>
   );
 };
