@@ -77,7 +77,7 @@ export const EventPage = () => {
             {user ? (
               <Flex gap={4} alignItems="center">
                 <Avatar size="lg" name={user.name} src={user.image} />
-                <Text fontSize="2xl">{event.createdBy}</Text>
+                <Text fontSize="2xl">{user.name}</Text>
               </Flex>
             ) : (
               <Flex py={2} direction="row" align="center" gap={2}>
