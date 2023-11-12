@@ -136,6 +136,7 @@ export const EventPage = () => {
           </Stack>
         </Stack>
         <Stack direction="row" justify="end">
+          {/* edit event */}
           <Button text="Edit" onClick={editModal.onOpen} />
           <Portal>
             <Modal
@@ -179,11 +180,28 @@ export const EventPage = () => {
                   Are you sure that you want to delete this event?
                 </ModalBody>
                 <ModalFooter>
-                  <Stack direction="row" spacing={2}>
+                  <Stack direction="row" spacing={4}>
                     <Form method="post" action="delete">
-                      <Button type="submit">Delete</Button>
+                      <Button
+                        type="submit"
+                        text="Delete"
+                        isPermDel={true}
+                        size="sm"
+                        onMouseEnter={(e) =>
+                          (e.target.offsetParent.style.backgroundColor =
+                            // "#FED7D7")
+                            "#FEB2B2")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.offsetParent.style.backgroundColor = "")
+                        }
+                      />
                     </Form>
-                    <Button onClick={deleteModal.onClose}>Cancel</Button>
+                    <Button
+                      text="Cancel"
+                      size="sm"
+                      onClick={deleteModal.onClose}
+                    />
                   </Stack>
                 </ModalFooter>
               </ModalContent>
