@@ -131,9 +131,8 @@ export const EditEventForm = ({ categories, users, event, onClose }) => {
       >
         <Button
           type="submit"
-          variant="ghost"
+          variant="base"
           size="lg"
-          colorScheme="purple"
           onClick={(e) => {
             if (inputErrors.size > 0) {
               e.preventDefault();
@@ -150,13 +149,7 @@ export const EditEventForm = ({ categories, users, event, onClose }) => {
         >
           Save
         </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="lg"
-          colorScheme="red"
-          onClick={onClose}
-        >
+        <Button type="button" variant="base" size="lg" onClick={onClose}>
           Cancel
         </Button>
       </Stack>
