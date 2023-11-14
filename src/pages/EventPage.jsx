@@ -3,6 +3,7 @@ import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
   Avatar,
+  Button,
   Box,
   Center,
   Flex,
@@ -23,7 +24,6 @@ import {
 import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 import { RootContext } from "../context/RootContext.jsx";
 import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
-import { Button } from "../components/ui/Button";
 import phantom from "../assets/phantom_mask.svg";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -96,7 +96,7 @@ export const EventPage = () => {
             <Image
               display="block"
               src={event.image}
-              boxSize="400px"
+              boxSize="300px"
               objectFit="cover"
               rounded="2xl"
             />
@@ -135,9 +135,11 @@ export const EventPage = () => {
             )}
           </Stack>
         </Stack>
-        <Stack direction="row" justify="end">
+        <Stack direction="row" justify="end" justifySelf="end">
           {/* edit event */}
-          <Button text="Edit" onClick={editModal.onOpen} />
+          <Button variant="base" onClick={editModal.onOpen}>
+            Edit
+          </Button>
           <Portal>
             <Modal
               isOpen={editModal.isOpen}
@@ -166,7 +168,9 @@ export const EventPage = () => {
               </ModalOverlay>
             </Modal>
           </Portal>
-          <Button text="Delete" onClick={deleteModal.onOpen} />
+          <Button variant="base" onClick={deleteModal.onOpen}>
+            Delete
+          </Button>
           <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
             <ModalOverlay
               bg="blackAlpha.500"
@@ -184,8 +188,7 @@ export const EventPage = () => {
                     <Form method="post" action="delete">
                       <Button
                         type="submit"
-                        text="Delete"
-                        isPermDel={true}
+                        variant="permDel"
                         size="sm"
                         onMouseEnter={(e) =>
                           (e.target.offsetParent.style.backgroundColor =
@@ -195,13 +198,18 @@ export const EventPage = () => {
                         onMouseLeave={(e) =>
                           (e.target.offsetParent.style.backgroundColor = "")
                         }
-                      />
+                      >
+                        Delete
+                      </Button>
                     </Form>
                     <Button
                       text="Cancel"
+                      variant="base"
                       size="sm"
                       onClick={deleteModal.onClose}
-                    />
+                    >
+                      Cancel
+                    </Button>
                   </Stack>
                 </ModalFooter>
               </ModalContent>
