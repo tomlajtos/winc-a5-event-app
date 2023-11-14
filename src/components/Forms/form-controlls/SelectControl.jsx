@@ -27,7 +27,7 @@ export const SelectControl = ({
       >
         <option name="createdBy">{"Phantom of the EventApp"}</option>
         {users.map((user) => (
-          <option key={user.id} name="createdBy">
+          <option key={user.id} name="createdBy" value={user.id}>
             {user.name}
           </option>
         ))}
