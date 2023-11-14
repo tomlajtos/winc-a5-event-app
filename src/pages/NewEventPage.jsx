@@ -13,7 +13,6 @@ import {
   Box,
   Button,
   Container,
-  Flex,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -27,16 +26,8 @@ import { UrlInputControl } from "../components/Forms/form-controlls/UrlInputCont
 import { SelectControl } from "../components/Forms/form-controlls/SelectControl";
 
 // util imports
-import {
-  handleCheckboxChanges,
-  generateDateTimeStr,
-} from "../util/globalFunctions";
-import {
-  validate,
-  validateAll,
-  getErrMsg,
-  isInvalidInput,
-} from "../util/validate";
+import { generateDateTimeStr } from "../util/globalFunctions";
+import { validateAll } from "../util/validate";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
@@ -69,12 +60,12 @@ export const NewEventPage = () => {
     setErrors: setInputErrors,
   };
 
+  console.log("NEW EVENT");
   return (
-    <Box overflowY="scroll" bg="gray.100">
+    <Box overflowY="scroll" bg="gray.100" pb={6} h={`${contentH}px`}>
       <Container
         mx="auto"
-        py={6}
-        h={`${contentH}px`}
+        pt={6}
         width={["full", "sm", "container.sm"]}
         as={Form}
         method="post"
@@ -94,7 +85,7 @@ export const NewEventPage = () => {
           <SelectControl
             label="Created by"
             inputName="createdBy"
-            defaultValue={event.createdBy}
+            defaultValue={"Phantom of The EventApp"}
             isRequired={true}
             users={users}
             {...stateProps}
