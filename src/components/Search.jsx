@@ -14,6 +14,7 @@ import {
   Stack,
   StackItem,
 } from "@chakra-ui/react";
+
 import { RootContext } from "../context/RootContext";
 
 import { log } from "../util/log";
@@ -38,6 +39,9 @@ export const Search = ({ inputProps, props }) => {
   };
 
   log.comp("Search", "purple", "white");
+  log.val("events",events)
+  const filteredEvents = events.filter(e=>e.title.toLowerCase().includes(searchQ.toLowerCase()) && searchQ.length > 0)
+  log.val("filteredE", filteredEvents)
 
   return (
     <Center {...props}>
@@ -104,13 +108,10 @@ export const Search = ({ inputProps, props }) => {
                 }}
               />
               <Stack>
-                {events
-                  ?.filter((event) =>
-                    event.title.toLowerCase().includes(searchQ.toLowerCase()),
-                  )
+                {filteredEvents
                   .map((event) => (
                     <StackItem key={event.id}>
-                      <RRLink to={`/event/${event.id}`}></RRLink>
+                      <RRLink to={`/event/${event.id}`} onClick={closeSearchModal}>{event.title}</RRLink>
                     </StackItem>
                   ))}
               </Stack>
