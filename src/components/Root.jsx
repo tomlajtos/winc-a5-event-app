@@ -15,18 +15,17 @@ export const loader = async () => {
   const res = fetchData([
     { name: "categories", path: "/categories" },
     { name: "users", path: "/users" },
+    { name: "events", path: "/events" },
   ]);
   return res;
 };
 
 export const Root = () => {
-  const { categories, users } = useLoaderData();
+  const { categories, users, events } = useLoaderData();
   const categoryIds = initCategoryIdsArr(categories);
-
   const [searchQ, setSearchQ] = useState("");
   const [filterQ, setFilterQ] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
-
   log.comp("Root", "red", "white");
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entry) => {
@@ -59,6 +58,7 @@ export const Root = () => {
         value={{
           categories,
           users,
+          events,
           filterQ,
           setFilterQ,
           searchQ,
