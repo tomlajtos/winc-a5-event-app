@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { RootContext } from "../context/RootContext";
 
+import { log } from "../util/log";
+
 export const Search = ({ inputProps, props }) => {
   const { searchQ, setSearchQ, events } = useContext(RootContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,6 +36,8 @@ export const Search = ({ inputProps, props }) => {
     setSearchQ("");
     onClose();
   };
+
+  log.comp("Search", "purple", "white");
 
   return (
     <Center {...props}>

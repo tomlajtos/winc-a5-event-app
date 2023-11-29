@@ -9,8 +9,11 @@ import { Navigation } from "./navigation/Navigation";
 import { NavMenu } from "./navigation/NavMenu";
 import { Search } from "./Search";
 
+import { log } from "../util/log";
+
 export const Header = () => {
   const { rootSize } = useContext(RootContext);
+  log.comp("Header", "purple", "white");
   return (
     <Flex
       as="header"

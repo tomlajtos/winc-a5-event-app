@@ -13,6 +13,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { RootContext } from "../../context/RootContext";
 import { Search } from "../Search";
+import { log } from "../../util/log";
 
 export const NavMenu = () => {
   const { categories, filterQ, setFilterQ, rootSize } = useContext(RootContext);

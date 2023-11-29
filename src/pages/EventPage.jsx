@@ -25,6 +25,7 @@ import { formatDateAndTime, fetchData } from "../util/globalFunctions.js";
 import { RootContext } from "../context/RootContext.jsx";
 import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
 import phantom from "../assets/phantom_mask.svg";
+import { log } from "../util/log.js";
 
 // Loader function to fetch event specific data (dynamic path)
 export const loader = async ({ params }) =>
@@ -41,6 +42,8 @@ export const EventPage = () => {
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
 
   const contentH = rootSize.height - 95;
+  log.comp("EventPage", "navy", "white");
+
   return (
     <Box
       className="event-page-container"

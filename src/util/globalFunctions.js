@@ -1,6 +1,6 @@
 // TODO: add jsDOC comments
 export const getData = async (
-  endpoints = [{ name: "categories", path: "/categories" }]
+  endpoints = [{ name: "categories", path: "/categories" }],
 ) => {
   // const baseUrl = "http://localhost:3003";
   // const events = await fetch(`${baseUrl}/${endpoint}`);
@@ -25,7 +25,7 @@ export const getData = async (
           console.warn(r);
           throw new Error(`${r.status} (${r.statusText})`);
         }
-      }
+      },
     );
 
   const dataObj = endpoints.reduce((obj, endpoint) => {
@@ -40,7 +40,7 @@ export const getData = async (
 // TODO: add jsDOC comments
 // helper function for React Router loader function
 export const fetchData = async (
-  endpoints = [{ name: "categories", path: "/categories" }]
+  endpoints = [{ name: "categories", path: "/categories" }],
 ) => {
   const baseUrl = "http://localhost:3003";
   // reduce can't handle async
@@ -56,7 +56,7 @@ export const fetchData = async (
           console.warn(r);
           throw new Error(`${r.status} (${r.statusText})`);
         }
-      }
+      },
     );
 
   const dataObj = endpoints.reduce((obj, endpoint) => {
@@ -198,6 +198,6 @@ export const generateDateTimeStr = (dateStr, dur) => {
   let minute = new Date(timeStamp).getMinutes();
 
   return `${year}-${addZeroToDT(month)}-${addZeroToDT(day)}T${addZeroToDT(
-    hour
+    hour,
   )}:${addZeroToDT(minute)}`;
 };

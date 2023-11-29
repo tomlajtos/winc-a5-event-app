@@ -17,6 +17,8 @@ import { RootContext } from "../context/RootContext.jsx";
 import { formatDateAndTime } from "../util/globalFunctions.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
+import { log } from "../util/log";
+
 export const EventCard = ({ event }) => {
   const { categories } = useContext(RootContext);
   const eventCategories = categories
@@ -24,7 +26,7 @@ export const EventCard = ({ event }) => {
     .map((cat) => ` ${cat.name}`);
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
-
+  log.comp("EventCard", "purple", "white");
   return (
     <Card
       background="gray.50"

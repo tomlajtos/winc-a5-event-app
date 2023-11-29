@@ -9,6 +9,7 @@ import { RootContext } from "../context/RootContext";
 import { Header } from "../components/Header";
 // utils imports
 import { fetchData, initCategoryIdsArr } from "../util/globalFunctions";
+import { log } from "../util/log";
 
 export const loader = async () => {
   const res = fetchData([
@@ -26,6 +27,7 @@ export const Root = () => {
   const [filterQ, setFilterQ] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
 
+  log.comp("Root", "red", "white");
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entry) => {
       if (entry[0].borderBoxSize) {

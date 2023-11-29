@@ -3,13 +3,14 @@ import React, { useContext } from "react";
 // React Router imports
 import { useLoaderData, Link as RRLink } from "react-router-dom";
 // ChakraUi imports
-import { Box, Flex, Heading, Wrap, Stack } from "@chakra-ui/react";
+import { Box, Heading, Wrap } from "@chakra-ui/react";
 // Context and custom hook imports
 import { RootContext } from "../context/RootContext";
-// Util imports
-import { fetchData } from "../util/globalFunctions";
 // App component imports
 import { EventCard } from "../components/EventCard";
+// Util imports
+import { fetchData } from "../util/globalFunctions";
+import { log } from "../util/log";
 
 export const loader = async () =>
   fetchData([{ name: "events", path: "/events" }]);
@@ -34,7 +35,10 @@ export const EventsPage = () => {
       }
     });
 
-  const wrapH = rootSize.height - 184; // 184 <-- Wrap.py + Heading.height + Header.heigh
+  const wrapH = rootSize.height - 184; // 184 <-- Wrap[py] + Heading.height + Header.heigh
+
+  log.comp("EventsPage", "navy", "yellow");
+
   return (
     <Box className="events-page-container">
       <Heading
