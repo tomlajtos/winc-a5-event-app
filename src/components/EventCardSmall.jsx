@@ -1,0 +1,81 @@
+import { RootContext } from "../context/RootContext.jsx";
+import {
+  Card,
+  CardBody,
+  Heading,
+  Image,
+  Stack,
+  Text,
+  Tag,
+} from "@chakra-ui/react";
+import { formatDateAndTime } from "../util/globalFunctions.js";
+import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
+
+import { log } from "../util/log";
+
+export const EventCardSmall = ({ event, categories }) => {
+  const start = formatDateAndTime(event.startTime);
+  const end = formatDateAndTime(event.endTime);
+  const eventCategories = categories
+    .filter((category) => event.categoryIds.includes(category.id))
+    .map((cat) => ` ${cat.name}`);
+
+  log.val("categories", eventCategories);
+  eventCategories.map((c) => console.log("cat", c.slice(0, 2)));
+  return (
+    <Card direction="row" overflow="hidden" height="100px">
+      <Image
+        boxSize="100px"
+        objectFit="cover"
+        src={event.image}
+        fallbackSrc={placeholderImgUrl}
+      />
+      <CardBody fontSize="1rem" px={2} py={2}>
+        <Stack flex={1} spacing={1} m={0} py={0}>
+          <Heading size="md" py={0} m={0}>
+            {event.title}
+          </Heading>
+          {start.date === end.date ? (
+            <Text maxH={14} fontSize="md">
+              {start.date}
+              {", "}
+              {start.time}
+              {" - "}
+              {end.time}
+            </Text>
+          ) : (
+            <Text maxH={14} fontSize="md" noOfLines={1}>
+              {start.date}
+              {", "}
+              {start.time}
+              {" - "}
+              {end.date}
+              {", "}
+              {end.time}
+            </Text>
+          )}
+          <Stack>
+            <Stack direction="row" spacing={1} pt={1.5}>
+              {eventCategories.map((category) => (
+                <Tag
+                  key={category}
+                  variant="outline"
+                  colorScheme="purple"
+                  size="md"
+                  px={1.5}
+                  py={0.5}
+                  fontWeight={800}
+                  borderRadius="full"
+                  borderWidth="2px"
+                  textTransform="capitalize"
+                >
+                  {category.slice(0, 2)}
+                </Tag>
+              ))}
+            </Stack>
+          </Stack>
+        </Stack>
+      </CardBody>
+    </Card>
+  );
+};
