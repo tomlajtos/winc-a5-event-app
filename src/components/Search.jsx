@@ -16,11 +16,12 @@ import {
 } from "@chakra-ui/react";
 
 import { RootContext } from "../context/RootContext";
+import { EventCardSmall } from "./EventCardSmall";
 
 import { log } from "../util/log";
 
 export const Search = ({ inputProps, props }) => {
-  const { searchQ, setSearchQ, events } = useContext(RootContext);
+  const { searchQ, setSearchQ, events,categories } = useContext(RootContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,7 +112,7 @@ export const Search = ({ inputProps, props }) => {
                 {filteredEvents
                   .map((event) => (
                     <StackItem key={event.id}>
-                      <RRLink to={`/event/${event.id}`} onClick={closeSearchModal}>{event.title}</RRLink>
+                      <RRLink to={`/event/${event.id}`} onClick={closeSearchModal}><EventCardSmall event={event} categories={categories}/></RRLink>
                     </StackItem>
                   ))}
               </Stack>
