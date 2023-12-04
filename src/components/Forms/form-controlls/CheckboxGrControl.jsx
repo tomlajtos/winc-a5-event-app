@@ -4,10 +4,9 @@ import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
 import { handleCheckboxChanges } from "../../../util/globalFunctions";
 
 export const CheckboxGrControl = ({
-  label,
+  grTitle,
   inputName,
-  // defaultValue,
-  isRequired,
+  showAsRequired,
   categories,
   categoryIds,
   setCategoryIds,
@@ -21,8 +20,8 @@ export const CheckboxGrControl = ({
       isInvalid={isInvalidInput(errors, inputName)}
     >
       <Text as="legend" fontWeight="bolder" pb={1}>
-        {label}
-        {isRequired && (
+        {grTitle}
+        {showAsRequired && (
           <Text as="span" pl={1} color="red.500">
             *
           </Text>

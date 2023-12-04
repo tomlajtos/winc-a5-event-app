@@ -105,7 +105,8 @@ export const EditEventForm = ({ categories, users, event, onClose }) => {
         />
         {/* CHECKBOX GR. for categories */}
         <CheckboxGrControl
-          label="Categories"
+          grTitle="Categories"
+          showAsRequired={true}
           inputName="categoryIds"
           categories={categories}
           {...stateProps}

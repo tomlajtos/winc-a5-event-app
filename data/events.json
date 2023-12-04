@@ -14,14 +14,16 @@
   "events": [
     {
       "id": 1,
-      "createdBy": 1,
+      "createdBy": "1",
       "title": "Trampoline party",
       "description": "Bounce around with your friends",
       "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
-      "categoryIds": [2],
+      "categoryIds": [
+        2
+      ],
       "location": "My back yard",
-      "startTime": "2023-03-10T17:00:00.000Z",
-      "endTime": "2023-03-10T18:00:00.000Z"
+      "startTime": "2023-03-10T18:00",
+      "endTime": "2023-03-10T19:00"
     },
     {
       "id": 2,
@@ -29,32 +31,103 @@
       "title": "Laser Tag mania",
       "description": "Let's play laser tag!",
       "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
-      "categoryIds": [2],
+      "categoryIds": [
+        2
+      ],
       "location": "Blinded by the Lights Laser Tag, 15 Main St.",
       "startTime": "2023-04-06T17:46:00.000Z",
       "endTime": "2023-04-06T18:46:00.000Z"
     },
     {
       "id": 3,
-      "createdBy": 2,
+      "createdBy": "2",
       "title": "Badminton game",
       "description": "Hit that shuttle!",
       "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-      "categoryIds": [1, 2],
+      "categoryIds": [
+        2
+      ],
       "location": "The Park",
-      "startTime": "2023-03-15T12:00:00.000Z",
-      "endTime": "2023-03-15T13:30:00.000Z"
+      "startTime": "2023-03-15T13:00",
+      "endTime": "2023-03-15T14:30"
     },
     {
       "id": 4,
-      "createdBy": 2,
+      "createdBy": "2",
       "title": "Yoga",
       "description": "It's a bit of a stretch.",
       "image": "https://ymcasouthflorida.org/wp-content/uploads/2019/12/AA2I8910-scaled.jpg",
-      "categoryIds": [3],
+      "categoryIds": [
+        3
+      ],
       "location": "Shavasana Yoga School",
-      "startTime": "2023-03-09T06:00:00.000Z",
-      "endTime": "2023-03-09T07:00:00.000Z"
+      "startTime": "2023-03-09T07:00",
+      "endTime": "2023-03-09T08:00"
+    },
+    {
+      "title": "Test toast",
+      "startTime": "2023-10-23T14:22",
+      "endTime": "2023-10-23T14:23",
+      "description": "test",
+      "categoryIds": [
+        3
+      ],
+      "image": "https://images.pexels.com/photos/7210754/pexels-photo-7210754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "id": 5,
+      "createdBy": "Phantom of the EventApp"
+    },
+    {
+      "title": "Test 2 edited",
+      "startTime": "2023-10-30T21:08",
+      "endTime": "2023-10-31T22:08",
+      "description": "If you've ever had any of these questions, or you'd just like to dig into the fundamental pieces of routing, you're in the right place. This document contains detailed explanations of all the core concepts behind routing as implemented in React Router.",
+      "categoryIds": [
+        3,
+        2
+      ],
+      "image": "https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg",
+      "id": 6,
+      "createdBy": "Jane Bennett",
+      "location": "Big Hall"
+    },
+    {
+      "title": "Test again",
+      "createdBy": "Jane Bennett",
+      "startTime": "2023-11-11T02:49",
+      "endTime": "2023-11-11T03:49",
+      "description": "is data submitted?",
+      "categoryIds": [
+        3,
+        2
+      ],
+      "image": "https://images.pexels.com/photos/18624479/pexels-photo-18624479/free-photo-of-pumpkin.jpeg",
+      "id": 7
+    },
+    {
+      "title": "Mysterious Friends' Party",
+      "createdBy": "Phantom of the EventApp",
+      "startTime": "2023-11-01T00:00",
+      "endTime": "2023-11-01T04:00",
+      "description": "spooky",
+      "categoryIds": [
+        3
+      ],
+      "image": "https://www.annmariejohn.com/wp-content/uploads/2021/08/The-Best-Haunted-Houses.jpg",
+      "id": 8,
+      "location": "Old haunted house"
+    },
+    {
+      "title": "Stg",
+      "createdBy": "2",
+      "startTime": "2023-12-04T15:40",
+      "endTime": "2023-12-04T15:40",
+      "location": "idk",
+      "description": "hmmm",
+      "categoryIds": [
+        1
+      ],
+      "image": "",
+      "id": 9
     }
   ],
   "categories": [
