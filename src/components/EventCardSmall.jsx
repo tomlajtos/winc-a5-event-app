@@ -23,7 +23,7 @@ export const EventCardSmall = ({ event, categories }) => {
   log.val("categories", eventCategories);
   eventCategories.map((c) => console.log("cat", c.slice(0, 2)));
   return (
-    <Card direction="row" overflow="hidden" height="100px">
+    <Card direction="row" overflow="hidden" height="100px" width={["350px"]} textAlign="left">
       <Image
         boxSize="100px"
         objectFit="cover"
@@ -31,12 +31,12 @@ export const EventCardSmall = ({ event, categories }) => {
         fallbackSrc={placeholderImgUrl}
       />
       <CardBody fontSize="1rem" px={2} py={2}>
-        <Stack flex={1} spacing={1} m={0} py={0}>
-          <Heading size="md" py={0} m={0}>
+        <Stack flex={1} spacing={1} m={0} py={0} >
+          <Heading size="md" py={0} m={0} noOfLines={1} >
             {event.title}
           </Heading>
           {start.date === end.date ? (
-            <Text maxH={14} fontSize="md">
+            <Text maxH={14} fontSize="md" noOfLines={1} >
               {start.date}
               {", "}
               {start.time}
@@ -44,7 +44,7 @@ export const EventCardSmall = ({ event, categories }) => {
               {end.time}
             </Text>
           ) : (
-            <Text maxH={14} fontSize="md" noOfLines={1}>
+            <Text maxH={14} fontSize="md" noOfLines={1} textAlign="left">
               {start.date}
               {", "}
               {start.time}

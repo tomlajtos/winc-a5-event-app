@@ -2,7 +2,6 @@ import { useLocation, Link as RRLink } from "react-router-dom";
 import { useState, useEffect, useContext, useRef } from "react";
 import {
   useDisclosure,
-  // Button,
   Center,
   Input as CInput,
   Modal,
@@ -11,6 +10,7 @@ import {
   ModalCloseButton,
   ModalOverlay,
   Portal,
+  Spacer,
   Stack,
   StackItem,
 } from "@chakra-ui/react";
@@ -21,7 +21,7 @@ import { EventCardSmall } from "./EventCardSmall";
 import { log } from "../util/log";
 
 export const Search = ({ inputProps, props }) => {
-  const { searchQ, setSearchQ, events,categories } = useContext(RootContext);
+  const { searchQ, setSearchQ, events, categories } = useContext(RootContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,9 +40,13 @@ export const Search = ({ inputProps, props }) => {
   };
 
   log.comp("Search", "purple", "white");
-  log.val("events",events)
-  const filteredEvents = events.filter(e=>e.title.toLowerCase().includes(searchQ.toLowerCase()) && searchQ.length > 0)
-  log.val("filteredE", filteredEvents)
+  log.val("events", events);
+  const filteredEvents = events.filter(
+    (e) =>
+      e.title.toLowerCase().includes(searchQ.toLowerCase()) &&
+      searchQ.length > 0,
+  );
+  log.val("filteredE", filteredEvents);
 
   return (
     <Center {...props}>
@@ -78,6 +82,7 @@ export const Search = ({ inputProps, props }) => {
       />
       <Portal>
         <Modal
+          size={["full", null, "sm"]}
           initialFocusRef={popupSearch}
           isOpen={isModalOpen}
           onClose={closeSearchModal}
@@ -90,10 +95,14 @@ export const Search = ({ inputProps, props }) => {
           />
           <ModalContent bg="whiteAlpha.300">
             <ModalCloseButton size="sm" />
-            <ModalBody>
+            <ModalBody
+              px={[0, 0, 4]}
+              py={10}
+              align="center"
+            >
               <CInput
                 ref={popupSearch}
-                my={8}
+                w={["330px"]}
                 name="search"
                 variant="outline"
                 type="input"
@@ -108,13 +117,18 @@ export const Search = ({ inputProps, props }) => {
                   setSearchQ(e.target.value);
                 }}
               />
+              <Spacer h={6}/>
               <Stack>
-                {filteredEvents
-                  .map((event) => (
-                    <StackItem key={event.id}>
-                      <RRLink to={`/event/${event.id}`} onClick={closeSearchModal}><EventCardSmall event={event} categories={categories}/></RRLink>
-                    </StackItem>
-                  ))}
+                {filteredEvents.map((event) => (
+                  <StackItem key={event.id}>
+                    <RRLink
+                      to={`/event/${event.id}`}
+                      onClick={closeSearchModal}
+                    >
+                      <EventCardSmall event={event} categories={categories} />
+                    </RRLink>
+                  </StackItem>
+                ))}
               </Stack>
             </ModalBody>
           </ModalContent>

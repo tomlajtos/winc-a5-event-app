@@ -130,7 +130,8 @@ export const NewEventPage = () => {
           />
           {/* CHECKBOX GR. for categories */}
           <CheckboxGrControl
-            label="Categories"
+            grTitle="Categories"
+            showAsRequired={true}
             inputName="categoryIds"
             categories={categories}
             {...stateProps}
