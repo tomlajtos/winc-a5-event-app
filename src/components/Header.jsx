@@ -1,5 +1,6 @@
 // React and RRouter imports
 import React, { useContext } from "react";
+import { Outlet, useLoaderData, Link as RRLink } from "react-router-dom";
 // Chakra-ui imports
 import { Flex, Heading } from "@chakra-ui/react";
 // Context imports
@@ -35,20 +36,21 @@ export const Header = () => {
         gap={6}
       >
         {rootSize.width < 1024 && <NavMenu />}
-        <Heading
-          as="h1"
-          // NOTE: if lineH. is not def, Chakra-ui will change it on the sm/md breakpoint
-          lineHeight={1}
-          fontSize={["2.5rem", null, "3rem"]}
-          width="fit-content"
-          color="purple.200"
-          fontWeight="light"
-          fontFamily="mono"
-          // pl={[8, null, null, null, 0]}
-          flex={1}
-        >
-          EventApp
-        </Heading>
+        <RRLink to="/">
+          <Heading
+            as="h1"
+            // NOTE: if lineH. is not def, Chakra-ui will change it on the sm/md breakpoint
+            lineHeight={1}
+            fontSize={["2.5rem", null, "3rem"]}
+            width="fit-content"
+            color="purple.200"
+            fontWeight="light"
+            fontFamily="mono"
+            flex={1}
+          >
+            EventApp
+          </Heading>
+        </RRLink>
       </Flex>
       {rootSize.width > 767 && <Search justifySelf="center" />}
       {rootSize.width > 1023 && <Navigation />}
