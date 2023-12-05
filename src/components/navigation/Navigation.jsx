@@ -13,7 +13,7 @@ import {
 import { RootContext } from "../../context/RootContext";
 
 export const Navigation = () => {
-  const { categories, filterQ, setFilterQ } = useContext(RootContext);
+  const { categories, filters, setFilters } = useContext(RootContext);
 
   return (
     <Stack
@@ -77,7 +77,7 @@ export const Navigation = () => {
           <MenuOptionGroup
             type="checkbox"
             name="categoryIds"
-            defaultValue={filterQ.map((id) => id.toString())}
+            defaultValue={filters.map((id) => id.toString())}
           >
             {categories.map((category) => (
               <MenuItemOption
@@ -107,7 +107,7 @@ export const Navigation = () => {
                     console.log("newFilters after", newFilters);
                     setFn(newFilters);
                   };
-                  handleFilterChange(filterQ, category.id, setFilterQ);
+                  handleFilterChange(filters, category.id, setFilters);
                 }}
               >
                 {category.name}

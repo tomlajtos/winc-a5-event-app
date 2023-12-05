@@ -17,13 +17,13 @@ export const loader = async () =>
 
 export const EventsPage = () => {
   let { events } = useLoaderData();
-  const { filterQ, searchQ, rootSize } = useContext(RootContext);
+  const { filters, searchQ, rootSize } = useContext(RootContext);
 
   const filteredEvents = events
     .filter((event) => {
-      if (!filterQ.length) {
+      if (!filters.length) {
         return null;
-      } else if (event.categoryIds.some((id) => filterQ.includes(id))) {
+      } else if (event.categoryIds.some((id) => filters.includes(id))) {
         return event;
       }
     })

@@ -16,7 +16,7 @@ import { Search } from "../Search";
 import { log } from "../../util/log";
 
 export const NavMenu = () => {
-  const { categories, filterQ, setFilterQ, rootSize } = useContext(RootContext);
+  const { categories, filters, setFilters, rootSize } = useContext(RootContext);
 
   return (
     <Menu
@@ -82,7 +82,7 @@ export const NavMenu = () => {
           title="Categories"
           type="checkbox"
           name="categoryIds"
-          defaultValue={filterQ.map((id) => id.toString())}
+          defaultValue={filters.map((id) => id.toString())}
           fontSize="xl"
           fontWeight="thin"
         >
@@ -116,7 +116,7 @@ export const NavMenu = () => {
                   console.log("newFilters after", newFilters);
                   setFn(newFilters);
                 };
-                handleFilterChange(filterQ, category.id, setFilterQ);
+                handleFilterChange(filters, category.id, setFilters);
               }}
             >
               {category.name}

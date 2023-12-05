@@ -24,7 +24,7 @@ export const Root = () => {
   const { categories, users, events } = useLoaderData();
   const categoryIds = initCategoryIdsArr(categories);
   const [searchQ, setSearchQ] = useState("");
-  const [filterQ, setFilterQ] = useState([...categoryIds]);
+  const [filters, setFilters] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
   log.comp("Root", "red", "white");
   useEffect(() => {
@@ -59,8 +59,8 @@ export const Root = () => {
           categories,
           users,
           events,
-          filterQ,
-          setFilterQ,
+          filters,
+          setFilters,
           searchQ,
           setSearchQ,
           rootSize,
@@ -70,7 +70,6 @@ export const Root = () => {
         <Box pt={0} backgroundColor="transparent" mx="auto">
           <Outlet />
         </Box>
-        {/* )} */}
       </RootContext.Provider>
     </Box>
   );
