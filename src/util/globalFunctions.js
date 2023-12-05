@@ -1,4 +1,5 @@
 // TODO: add jsDOC comments
+
 export const getData = async (
   endpoints = [{ name: "categories", path: "/categories" }],
 ) => {
@@ -72,6 +73,8 @@ export const fetchData = async (
   return dataObj;
 };
 
+/*--------------------------------------------------------------------------------*/
+
 // Categories related checkbox handler and support functions
 // TODO: add jsDOC comments
 export const initCheckedStateArr = (template, initValue = true) => {
@@ -88,7 +91,7 @@ export const initCategoryIdsArr = (categories) => {
 };
 
 // TODO: add jsDOC comments
-export const setCheckedStateArr = (template, values) => {
+export const createCheckedStateArr = (template, values) => {
   const state = initCheckedStateArr(template, false);
   values.map((e) => (state[Number(e) - 1] = true));
 
@@ -135,6 +138,8 @@ export const handleCheckboxChanges = (e, setFn2) => {
 //     (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
 //     []
 //   );
+
+/*--------------------------------------------------------------------------------*/
 
 // TODO: add jsDOC comments
 //
