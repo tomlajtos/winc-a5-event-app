@@ -14,20 +14,28 @@ import { log } from "../util/log";
 
 export const loader = async () => {
   const res = fetchData([
-    { name: "categories", path: "/categories" },
-    { name: "users", path: "/users" },
     { name: "events", path: "/events" },
   ]);
   return res;
 };
 
+// fetch static data separately from loader
+const staticData = await fetchData([
+  { name: "categories", path: "/categories" },
+  { name: "users", path: "/users" },
+]);
+
+const {categories, users, categoryIds=initCategoryIdsArr(categories)} = staticData;
+// console.log("Users", users, "Categories", categories, "CategoryIds", categoryIds)
+
 export const Root = () => {
-  const { categories, users, events } = useLoaderData();
-  const categoryIds = initCategoryIdsArr(categories);
+  const { events } = useLoaderData();
   const [searchQ, setSearchQ] = useState("");
   const [filters, setFilters] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
-  log.comp("Root", "red", "white");
+  log.comp("Root", "white", "red");
+
+  // get .root-container size dynamically
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entry) => {
       if (entry[0].borderBoxSize) {
