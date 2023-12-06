@@ -92,16 +92,17 @@
     },
     {
       "title": "Test again",
-      "createdBy": "Jane Bennett",
+      "createdBy": "1",
       "startTime": "2023-11-11T02:49",
       "endTime": "2023-11-11T03:49",
       "description": "is data submitted?",
       "categoryIds": [
-        3,
-        2
+        2,
+        3
       ],
       "image": "https://images.pexels.com/photos/18624479/pexels-photo-18624479/free-photo-of-pumpkin.jpeg",
-      "id": 7
+      "id": 7,
+      "location": "idk"
     },
     {
       "title": "Mysterious Friends' Party",
@@ -115,19 +116,6 @@
       "image": "https://www.annmariejohn.com/wp-content/uploads/2021/08/The-Best-Haunted-Houses.jpg",
       "id": 8,
       "location": "Old haunted house"
-    },
-    {
-      "title": "Stg",
-      "createdBy": "2",
-      "startTime": "2023-12-04T15:40",
-      "endTime": "2023-12-04T15:40",
-      "location": "idk",
-      "description": "hmmm",
-      "categoryIds": [
-        1
-      ],
-      "image": "",
-      "id": 9
     }
   ],
   "categories": [
