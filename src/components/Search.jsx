@@ -18,7 +18,7 @@ import {
 import { RootContext } from "../context/RootContext";
 import { EventCardSmall } from "./EventCardSmall";
 
-import { log } from "../util/log";
+import { log } from "../util/Logger";
 
 export const Search = ({ inputProps, props }) => {
   const { searchQ, setSearchQ, events, categories } = useContext(RootContext);

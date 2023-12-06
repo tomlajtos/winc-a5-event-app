@@ -11,7 +11,7 @@ import {
 import { formatDateAndTime } from "../util/datetime.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
-import { log } from "../util/log";
+import { log } from "../util/Logger";
 
 export const EventCardSmall = ({ event, categories }) => {
   const start = formatDateAndTime(event.startTime);

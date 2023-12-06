@@ -10,7 +10,7 @@ import { Header } from "../components/Header";
 // utils imports
 import { fetchData } from "../util/fetch.js";
 import { initCategoryIdsArr } from "../util/inputUtils.js";
-import { log } from "../util/log";
+import {log, Logger } from "../util/Logger.jsx";
 
 export const loader = async () => {
   const res = fetchData([
@@ -33,7 +33,6 @@ export const Root = () => {
   const [searchQ, setSearchQ] = useState("");
   const [filters, setFilters] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
-  log.comp("Root", "white", "red");
 
   // get .root-container size dynamically
   useEffect(() => {
@@ -63,6 +62,7 @@ export const Root = () => {
       background="gray.200"
       overflowY="hidden"
     >
+    <Logger type="render" name="Root" color="white" bg="red"/>
       <RootContext.Provider
         value={{
           categories,

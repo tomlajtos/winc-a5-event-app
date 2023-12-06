@@ -10,7 +10,7 @@ import { RootContext } from "../context/RootContext";
 import { EventCard } from "../components/EventCard";
 // Util imports
 import { fetchData } from "../util/fetch.js";
-import { log } from "../util/log";
+import { log } from "../util/Logger";
 
 export const loader = async () =>
   fetchData([{ name: "events", path: "/events" }]);
