@@ -24,7 +24,7 @@ export const Header = () => {
       pl={[2, 4, 6, 8, 12]}
       pr={[4, 4, 6, 8, 10]}
       py={6}
-      direction={["column", null, "row"]}
+      direction="row"
       gap={2}
       background="gray.800"
       minH={"6vh"}
