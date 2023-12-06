@@ -9,7 +9,7 @@ import { RootContext } from "../context/RootContext";
 // App component imports
 import { EventCard } from "../components/EventCard";
 // Util imports
-import { fetchData } from "../util/globalFunctions";
+import { fetchData } from "../util/fetch.js";
 import { log } from "../util/log";
 
 export const loader = async () =>

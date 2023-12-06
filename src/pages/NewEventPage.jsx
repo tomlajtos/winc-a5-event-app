@@ -26,8 +26,8 @@ import { UrlInputControl } from "../components/Forms/form-controlls/UrlInputCont
 import { SelectControl } from "../components/Forms/form-controlls/SelectControl";
 
 // util imports
-import { generateDateTimeStr } from "../util/globalFunctions";
-import { validateAll } from "../util/validate";
+import { generateDateTimeStr } from "../util/datetime.js";
+import { validateAll } from "../util/validate.js";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());

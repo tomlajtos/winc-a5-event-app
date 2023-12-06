@@ -8,7 +8,8 @@ import { RootContext } from "../context/RootContext";
 // Component imports
 import { Header } from "../components/Header";
 // utils imports
-import { fetchData, initCategoryIdsArr } from "../util/globalFunctions";
+import { fetchData } from "../util/fetch.js";
+import { initCategoryIdsArr } from "../util/inputUtils.js";
 import { log } from "../util/log";
 
 export const loader = async () => {

@@ -10,7 +10,8 @@ import { Navigation } from "./navigation/Navigation";
 import { NavMenu } from "./navigation/NavMenu";
 import { Search } from "./Search";
 
-import { log } from "../util/log";
+import { log } from "../util/log.js";
+import { fetchData } from "../util/fetch.js";
 
 export const Header = () => {
   const { rootSize } = useContext(RootContext);

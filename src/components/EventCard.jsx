@@ -14,7 +14,7 @@ import {
 
 import { RootContext } from "../context/RootContext.jsx";
 
-import { formatDateAndTime } from "../util/globalFunctions.js";
+import { formatDateAndTime } from "../util/datetime.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
 import { log } from "../util/log";

@@ -1,4 +1,4 @@
-import { createIdArrOnChange } from "./globalFunctions";
+import { createIdArrOnChange } from "./inputUtils.js";
 
 // TODO: add jsDOC comments
 const formatInputName = (iN) => {

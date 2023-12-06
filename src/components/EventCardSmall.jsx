@@ -8,7 +8,7 @@ import {
   Text,
   Tag,
 } from "@chakra-ui/react";
-import { formatDateAndTime } from "../util/globalFunctions.js";
+import { formatDateAndTime } from "../util/datetime.js";
 import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
 
 import { log } from "../util/log";

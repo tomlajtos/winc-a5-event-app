@@ -15,7 +15,7 @@ import { CheckboxGrControl } from "./form-controlls/CheckboxGrControl";
 import { UrlInputControl } from "./form-controlls/UrlInputControl";
 import { SelectControl } from "./form-controlls/SelectControl";
 // util imports
-import { generateDateTimeStr } from "../../util/globalFunctions";
+import { generateDateTimeStr } from "../../util/datetime.js";
 
 export const EditEventForm = ({ categories, users, event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
