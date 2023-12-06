@@ -19,7 +19,7 @@ export const EventsPage = () => {
   let { events } = useLoaderData();
   const { filters, searchQ, rootSize } = useContext(RootContext);
 
-  const filteredEvents = events
+  const eventsToRender = events
     .filter((event) => {
       if (!filters.length) {
         return null;
@@ -35,7 +35,8 @@ export const EventsPage = () => {
       }
     });
 
-  const wrapH = rootSize.height - 184; // 184 <-- Wrap[py] + Heading.height + Header.heigh
+
+  const wrapHeight = rootSize.height - 184; // 184 <-- Wrap[py] + Heading.height + Header.heigh
 
   log.comp("EventsPage", "navy", "yellow");
 
@@ -55,16 +56,14 @@ export const EventsPage = () => {
       </Heading>
       <Wrap
         direction={"row"}
-        // height={`${rootSize.height - 140}px`}
-        height={`${wrapH}px`}
-        // justify={["center", null, null, "start"]}
+        height={`${wrapHeight}px`}
         justify="center"
         spacing={4}
         py={6}
         px={[2, 4, 4, null, 12]}
         overflowY="scroll"
       >
-        {filteredEvents.map((event) => (
+        {eventsToRender.map((event) => (
           <RRLink key={event.id} to={`/event/${event.id}`}>
             <EventCard event={event} />
           </RRLink>

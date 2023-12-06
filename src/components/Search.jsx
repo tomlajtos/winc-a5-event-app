@@ -28,7 +28,7 @@ export const Search = ({ inputProps, props }) => {
   const popupSearch = useRef("");
 
   // TODO: find out if 'open Modal on "Enter" down event' is possible without useEffect
-  // does not seem so... still looking...
+  // does not seem so... keep looking...
   useEffect(() => {
     const open = () => setIsModalOpen(isOpen);
     open();
@@ -40,13 +40,14 @@ export const Search = ({ inputProps, props }) => {
   };
 
   log.comp("Search", "purple", "white");
-  log.val("events", events);
-  const filteredEvents = events.filter(
+  // log.val("events in search", events);
+
+  const searchResults = events.filter(
     (e) =>
       e.title.toLowerCase().includes(searchQ.toLowerCase()) &&
       searchQ.length > 0,
   );
-  log.val("filteredE", filteredEvents);
+  // log.val("search res evevts", searchResults);
 
   return (
     <Center {...props}>
@@ -119,7 +120,7 @@ export const Search = ({ inputProps, props }) => {
               />
               <Spacer h={6}/>
               <Stack>
-                {filteredEvents.map((event) => (
+                {searchResults.map((event) => (
                   <StackItem key={event.id}>
                     <RRLink
                       to={`/event/${event.id}`}
