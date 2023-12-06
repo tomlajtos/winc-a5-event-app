@@ -26,7 +26,7 @@ export const EventCard = ({ event }) => {
     .map((cat) => ` ${cat.name}`);
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
-  log.comp("EventCard", "purple", "white");
+
   return (
     <Card
       background="gray.50"

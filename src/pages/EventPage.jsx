@@ -43,7 +43,8 @@ export const EventPage = () => {
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
 
   const contentH = rootSize.height - 95;
-  log.comp("EventPage", "navy", "white");
+  log.comp("EventPage", "navy", "orange");
+  // log.val("event",event)
 
   return (
     <Box
