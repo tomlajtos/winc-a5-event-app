@@ -14,12 +14,15 @@ export const getData = async (endpointPath, setCallback) => {
   }
 };
 
+// TODO: add jsDOC comments
+export const getMultiData = (endpointArr) => {
+  //example: [{  path: "/categories", setCallback: setCategories}]
+  endpointArr.map((endpoint) => getData(endpoint.path, endpoint.setCallback));
 };
 
 // TODO: Revisit: I'm note sure if I like this
-// TODO: add jsDOC comments
 // helper function for React Router loader function
-// can take multiple endpoint objects >>  TODO: don't know if this is needed though...
+// TODO: check if mixing async/await with promise chaining is OK,... probably not >> FIX
 export const fetchData = async (
   endpoints = [{ name: "categories", path: "/categories" }],
 ) => {
