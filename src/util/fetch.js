@@ -1,26 +1,19 @@
 // TODO: add jsDOC comments
-// can take multiple endpoint objects
-// can take multiple endpoint objects >>  TODO: don't know if this is needed though...
-export const getData = async (
-  endpoints = [{ name: "categories", path: "/categories" }],
-) => {
+// TODO: use less complicated fetching for single resource only
+export const getData = async (endpointPath, setCallback) => {
   const baseUrl = "http://localhost:3003";
-  const fetchData = async (endpoint) =>
-    await fetch(`${baseUrl}${endpoint.path}`).then((r) => {
-      if (r.ok) {
-        return r.json();
-      } else {
-        console.warn(r);
-        throw new Error(`${r.status} (${r.statusText})`);
-      }
-    });
+  const promise = await fetch(`${baseUrl}${endpointPath}`);
+  // console.log(promise);
+  if (promise.ok) {
+    let data = await promise.json();
+    // console.log("data in getData", data);
+    setCallback(data);
+  } else {
+    console.warn(promise);
+    throw new Error(`${promise.status} (${promise.statusText})`);
+  }
+};
 
-  const dataObj = endpoints.reduce((obj, endpoint) => {
-    Object.assign(obj, { [endpoint.name]: "" });
-    obj[endpoint.name] = fetchData(endpoint);
-    return obj;
-  }, {});
-  return dataObj;
 };
 
 // TODO: Revisit: I'm note sure if I like this
