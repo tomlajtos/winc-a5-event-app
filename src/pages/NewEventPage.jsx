@@ -18,12 +18,12 @@ import {
 } from "@chakra-ui/react";
 
 // component imports
-import { TextInputControl } from "../components/Forms/form-controlls/TextInputControl";
-import { DateTimeControl } from "../components/Forms/form-controlls/DateTimeControl";
-import { TextareaControl } from "../components/Forms/form-controlls/TextareaControl";
-import { CheckboxGrControl } from "../components/Forms/form-controlls/CheckboxGrControl";
-import { UrlInputControl } from "../components/Forms/form-controlls/UrlInputControl";
-import { SelectControl } from "../components/Forms/form-controlls/SelectControl";
+import { TextInputControl } from "../components/forms/form-controlls/TextInputControl";
+import { DateTimeControl } from "../components/forms/form-controlls/DateTimeControl";
+import { TextareaControl } from "../components/forms/form-controlls/TextareaControl";
+import { CheckboxGrControl } from "../components/forms/form-controlls/CheckboxGrControl";
+import { UrlInputControl } from "../components/forms/form-controlls/UrlInputControl";
+import { SelectControl } from "../components/forms/form-controlls/SelectControl";
 
 // util imports
 import { generateDateTimeStr } from "../util/datetime.js";

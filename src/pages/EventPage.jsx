@@ -21,10 +21,10 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
-import { formatDateAndTime, } from "../util/datetime.js";
-import {fetchData} from "../util/fetch.js"
+import { formatDateAndTime } from "../util/datetime.js";
+import { fetchData } from "../util/fetch.js";
 import { RootContext } from "../context/RootContext.jsx";
-import { EditEventForm } from "../components/Forms/EditEventForm.jsx";
+import { EditEventForm } from "../components/forms/EditEventForm.jsx";
 import phantom from "../assets/phantom_mask.svg";
 import { log } from "../util/Logger";
 

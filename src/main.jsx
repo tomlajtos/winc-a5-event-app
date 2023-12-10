@@ -9,6 +9,7 @@ import { theme } from "./styles/index";
 // App component imports
 import { Root, loader as rootLoader } from "./components/Root";
 import { ErrorBoundry } from "./ErrorBoundaries/ErrorBoundary";
+import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
 import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
