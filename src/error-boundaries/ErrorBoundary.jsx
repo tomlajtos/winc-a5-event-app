@@ -8,9 +8,9 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 
-export const ErrorBoundry = () => {
+export const ErrorBoundary = () => {
   const error = useRouteError();
-  console.error("ErrorBoundry\n", error);
+  console.error("ErrorBoundary\n", error);
   return (
     <Center minH="100vh">
       <Container size="lg">

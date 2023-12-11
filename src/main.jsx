@@ -8,7 +8,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./styles/index";
 // App component imports
 import { Root, loader as rootLoader } from "./components/Root";
-import { ErrorBoundry } from "./ErrorBoundaries/ErrorBoundary";
 import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
 import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
@@ -21,32 +20,28 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     loader: rootLoader,
-    errorElement: <ErrorBoundry />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
-        errorElement: <ErrorBoundry />,
+        errorElement: <ErrorBoundary />,
         children: [
           {
             path: "/",
             element: <EventsPage />,
-            // errorElement: <ErrorBoundry />,
             loader: eventsLoader,
           },
           {
             path: "/event/:eventId",
             element: <EventPage />,
-            // errorElement: <ErrorBoundry />,
             loader: eventLoader,
           },
           {
             path: "/event/new",
             element: <NewEventPage />,
-            // errorElement: <ErrorBoundry />,
             action: createEvent,
           },
           {
             path: "/event/:eventId/edit",
-            // errorElement: <ErrorBoundry />,
             action: editEvent,
           },
           {
