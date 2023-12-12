@@ -9,13 +9,11 @@ import { RootContext } from "../context/RootContext";
 import { Header } from "../components/Header";
 // utils imports
 import { fetchData } from "../util/fetch.js";
-import { initCategoryIdsArr } from "../util/inputUtils.js";
-import {log, Logger } from "../util/Logger.jsx";
+import { createCategoryIdsArr } from "../util/inputUtils.js";
+import { log, Logger } from "../util/Logger.jsx";
 
 export const loader = async () => {
-  const res = fetchData([
-    { name: "events", path: "/events" },
-  ]);
+  const res = fetchData([{ name: "events", path: "/events" }]);
   return res;
 };
 
@@ -25,7 +23,11 @@ const staticData = await fetchData([
   { name: "users", path: "/users" },
 ]);
 
-const {categories, users, categoryIds=initCategoryIdsArr(categories)} = staticData;
+const {
+  categories,
+  users,
+  categoryIds = createCategoryIdsArr(categories),
+} = staticData;
 // console.log("Users", users, "Categories", categories, "CategoryIds", categoryIds)
 
 export const Root = () => {
@@ -62,7 +64,7 @@ export const Root = () => {
       background="gray.200"
       overflowY="hidden"
     >
-    <Logger type="render" name="Root" color="white" bg="red"/>
+      <Logger type="render" name="Root" color="white" bg="red" />
       <RootContext.Provider
         value={{
           categories,

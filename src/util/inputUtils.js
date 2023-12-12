@@ -9,7 +9,7 @@ export const initCheckedStateArr = (template, initValue = true) => {
 };
 
 // TODO: add jsDOC comments
-export const initCategoryIdsArr = (categories) => {
+export const createCategoryIdsArr = (categories) => {
   return categories.map((category) => Number(category.id));
 };
 
@@ -61,4 +61,3 @@ export const handleCheckboxChanges = (e, setFn2) => {
 //     (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
 //     []
 //   );
-
