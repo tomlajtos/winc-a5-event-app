@@ -1,27 +1,19 @@
-import { useLocation, Link as RRLink } from "react-router-dom";
 import { useState, useEffect, useContext, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import {
   useDisclosure,
   Center,
   Input as CInput,
-  Modal,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  ModalOverlay,
   Portal,
-  Spacer,
-  Stack,
-  StackItem,
 } from "@chakra-ui/react";
 
 import { RootContext } from "../context/RootContext";
-import { EventCardSmall } from "./EventCardSmall";
+import { ModalSearch } from "./search/ModalSearch";
 
 import { log } from "../util/Logger";
 
 export const Search = ({ inputProps, props }) => {
-  const { searchQ, setSearchQ, events, categories } = useContext(RootContext);
+  const { searchQ, setSearchQ, categories } = useContext(RootContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,14 +32,6 @@ export const Search = ({ inputProps, props }) => {
   };
 
   log.comp("Search", "purple", "white");
-  // log.val("events in search", events);
-
-  const searchResults = events.filter(
-    (e) =>
-      e.title.toLowerCase().includes(searchQ.toLowerCase()) &&
-      searchQ.length > 0,
-  );
-  // log.val("search res evevts", searchResults);
 
   return (
     <Center {...props}>
@@ -82,58 +66,14 @@ export const Search = ({ inputProps, props }) => {
         }
       />
       <Portal>
-        <Modal
-          size={["full", null, "sm"]}
-          initialFocusRef={popupSearch}
+        <ModalSearch
+          inputRef={popupSearch}
+          categories={categories}
           isOpen={isModalOpen}
           onClose={closeSearchModal}
-          // returnFocusOnClose={false}
-        >
-          <ModalOverlay
-            backdropFilter="auto"
-            backdropBlur="50px"
-            backdropSaturate="500%"
-          />
-          <ModalContent bg="whiteAlpha.300">
-            <ModalCloseButton size="sm" />
-            <ModalBody
-              px={[0, 0, 4]}
-              py={10}
-              align="center"
-            >
-              <CInput
-                ref={popupSearch}
-                w={["330px"]}
-                name="search"
-                variant="outline"
-                type="input"
-                aria-label="popup-search"
-                placeholder="search input inside modal"
-                rounded="xl"
-                borderColor={"gray.300"}
-                color="gray.200"
-                focusBorderColor="purple.300"
-                defaultValue={searchQ}
-                onChange={(e) => {
-                  setSearchQ(e.target.value);
-                }}
-              />
-              <Spacer h={6}/>
-              <Stack>
-                {searchResults.map((event) => (
-                  <StackItem key={event.id}>
-                    <RRLink
-                      to={`/event/${event.id}`}
-                      onClick={closeSearchModal}
-                    >
-                      <EventCardSmall event={event} categories={categories} />
-                    </RRLink>
-                  </StackItem>
-                ))}
-              </Stack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+          searchQ={searchQ}
+          setSearchQ={setSearchQ}
+        />
       </Portal>
     </Center>
   );
