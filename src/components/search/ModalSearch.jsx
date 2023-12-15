@@ -10,6 +10,7 @@ import {
 
 import { CompactEventList } from "./CompactEventList";
 import { Logger } from "../../util/Logger";
+import { ModalSearchErrorBoundary } from "../../error-boundaries/ModalSearchErrorBoundary";
 
 export const ModalSearch = ({
   inputRef,
@@ -54,11 +55,13 @@ export const ModalSearch = ({
             }}
           />
           <Spacer h={6} />
-          <CompactEventList
-            categories={categories}
-            searchQ={searchQ}
-            onClose={onClose}
-          />
+          <ModalSearchErrorBoundary>
+            <CompactEventList
+              categories={categories}
+              searchQ={searchQ}
+              onClose={onClose}
+            />
+          </ModalSearchErrorBoundary>
         </ModalBody>
       </ModalContent>
     </Modal>
