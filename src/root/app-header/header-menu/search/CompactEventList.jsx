@@ -1,7 +1,7 @@
 import { Link as RRLink } from "react-router-dom";
 import { Stack, StackItem } from "@chakra-ui/react";
-import { EventCardSmall } from "../EventCardSmall";
-import { useData } from "../../hooks/useData";
+import { EventCardSmall } from "./EventCardSmall";
+import { useData } from "../../../../hooks/useData";
 
 export const CompactEventList = ({ searchQ, onClose, categories }) => {
   const events = useData("/events");

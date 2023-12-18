@@ -1,4 +1,4 @@
-import { RootContext } from "../context/RootContext.jsx";
+import { RootContext } from "../../../../context/RootContext.jsx";
 import {
   Card,
   CardBody,
@@ -8,10 +8,10 @@ import {
   Text,
   Tag,
 } from "@chakra-ui/react";
-import { formatDateAndTime } from "../util/datetime.js";
-import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
+import { formatDateAndTime } from "../../../../util/datetime.js";
+import placeholderImgUrl from "../../../../assets/eventImgPlaceholder_300.svg";
 
-import { log } from "../util/Logger";
+import { log } from "../../../../util/Logger";
 
 export const EventCardSmall = ({ event, categories }) => {
   const start = formatDateAndTime(event.startTime);
@@ -23,7 +23,13 @@ export const EventCardSmall = ({ event, categories }) => {
   log.val("categories", eventCategories);
   eventCategories.map((c) => console.log("cat", c.slice(0, 2)));
   return (
-    <Card direction="row" overflow="hidden" height="100px" width={["350px"]} textAlign="left">
+    <Card
+      direction="row"
+      overflow="hidden"
+      height="100px"
+      width={["350px"]}
+      textAlign="left"
+    >
       <Image
         boxSize="100px"
         objectFit="cover"
@@ -31,12 +37,12 @@ export const EventCardSmall = ({ event, categories }) => {
         fallbackSrc={placeholderImgUrl}
       />
       <CardBody fontSize="1rem" px={2} py={2}>
-        <Stack flex={1} spacing={1} m={0} py={0} >
-          <Heading size="md" py={0} m={0} noOfLines={1} >
+        <Stack flex={1} spacing={1} m={0} py={0}>
+          <Heading size="md" py={0} m={0} noOfLines={1}>
             {event.title}
           </Heading>
           {start.date === end.date ? (
-            <Text maxH={14} fontSize="md" noOfLines={1} >
+            <Text maxH={14} fontSize="md" noOfLines={1}>
               {start.date}
               {", "}
               {start.time}

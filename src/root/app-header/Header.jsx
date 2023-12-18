@@ -4,14 +4,14 @@ import { Outlet, useLoaderData, Link as RRLink } from "react-router-dom";
 // Chakra-ui imports
 import { Flex, Heading } from "@chakra-ui/react";
 // Context imports
-import { RootContext } from "../context/RootContext";
+import { RootContext } from "../../context/RootContext";
 // Component imports
-import { Navigation } from "./navigation/Navigation";
-import { NavMenu } from "./navigation/NavMenu";
-import { Search } from "./Search";
+import { Navigation } from "./header-menu/navigation/Navigation";
+import { NavMenu } from "./header-menu/navigation/NavMenu";
+import { Search } from "./header-menu/search/Search";
 
-import { log } from "../util/Logger";
-import { fetchData } from "../util/fetch.js";
+import { log } from "../../util/Logger";
+import { fetchData } from "../../util/fetch.js";
 
 export const Header = () => {
   const { rootSize } = useContext(RootContext);

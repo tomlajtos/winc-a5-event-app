@@ -6,11 +6,11 @@ import { Box } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../context/RootContext";
 // Component imports
-import { Header } from "../components/Header";
+import { Header } from "./app-header/Header";
 // utils imports
 import { fetchData } from "../util/fetch.js";
 import { createCategoryIdsArr } from "../util/inputUtils.js";
-import { log, Logger } from "../util/Logger.jsx";
+import { Logger } from "../util/Logger.jsx";
 
 export const loader = async () => {
   const res = fetchData([{ name: "events", path: "/events" }]);

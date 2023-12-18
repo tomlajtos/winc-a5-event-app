@@ -7,9 +7,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./styles/index";
 // App component imports
-import { Root, loader as rootLoader } from "./components/Root";
+import { Root, loader as rootLoader } from "./root/Root";
 import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
-import { EventsPage, loader as eventsLoader } from "./pages/EventsPage";
+import {
+  EventsPage,
+  loader as eventsLoader,
+} from "./pages/events-page/EventsPage";
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
 import { action as deleteEvent } from "./io/delete.jsx";

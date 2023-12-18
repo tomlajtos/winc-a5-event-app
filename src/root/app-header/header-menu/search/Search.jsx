@@ -7,10 +7,10 @@ import {
   Portal,
 } from "@chakra-ui/react";
 
-import { RootContext } from "../context/RootContext";
-import { ModalSearch } from "./search/ModalSearch";
+import { RootContext } from "../../../../context/RootContext";
+import { ModalSearch } from "./ModalSearch";
 
-import { log } from "../util/Logger";
+import { log } from "../../../../util/Logger";
 
 export const Search = ({ inputProps, props }) => {
   const { searchQ, setSearchQ, categories } = useContext(RootContext);

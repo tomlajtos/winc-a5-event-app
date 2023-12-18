@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 
 import { CompactEventList } from "./CompactEventList";
-import { Logger } from "../../util/Logger";
-import { ModalSearchErrorBoundary } from "../../error-boundaries/ModalSearchErrorBoundary";
+import { Logger } from "../../../../util/Logger";
+import { ModalSearchErrorBoundary } from "../../../../error-boundaries/ModalSearchErrorBoundary";
 
 export const ModalSearch = ({
   inputRef,

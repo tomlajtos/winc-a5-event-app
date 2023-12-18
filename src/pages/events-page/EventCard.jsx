@@ -12,12 +12,12 @@ import {
   Tag,
 } from "@chakra-ui/react";
 
-import { RootContext } from "../context/RootContext.jsx";
+import { RootContext } from "../../context/RootContext.jsx";
 
-import { formatDateAndTime } from "../util/datetime.js";
-import placeholderImgUrl from "../assets/eventImgPlaceholder_300.svg";
+import { formatDateAndTime } from "../../util/datetime.js";
+import placeholderImgUrl from "../../assets/eventImgPlaceholder_300.svg";
 
-import { log } from "../util/Logger";
+import { log } from "../../util/Logger";
 
 export const EventCard = ({ event }) => {
   const { categories } = useContext(RootContext);
