@@ -1,59 +1,32 @@
 // React and RRouter imports
-import React, { useContext } from "react";
-import { Link as RRLink } from "react-router-dom";
+import React from "react";
 // Chakra-ui imports
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 // Context imports
-import { RootContext } from "../../context/RootContext";
 // Component imports
-import { Navigation } from "./header-menu/navigation/Navigation";
-import { NavMenu } from "./header-menu/navigation/NavMenu";
-import { Search } from "./header-menu/search/Search";
+import { AppTitle } from "./AppTitle";
+import { HeaderMenu } from "./header-menu/HeaderMenu";
 
 import { log } from "../../util/Logger";
 
 export const AppHeader = () => {
-  const { rootSize } = useContext(RootContext);
   log.comp("Header", "purple", "white");
   return (
     <Flex
       as="header"
       width="full"
       height="95px"
-      pl={[2, 4, 6, 8, 12]}
-      pr={[4, 4, 6, 8, 10]}
+      pl={[4, null, 6, 10, 12]}
+      pr={[4, null, 6, 8, 10]}
       py={6}
       direction="row"
       gap={2}
       background="gray.800"
-      minH={"6vh"}
+      align="center"
+      justifyContent="space-between"
     >
-      <Flex
-        direction={["row-reverse", null, "row"]}
-        flex={1}
-        align="center"
-        justifySelf="start"
-        gap={6}
-      >
-        {rootSize.width < 1024 && <NavMenu />}
-        <RRLink to="/">
-          <Heading
-            as="h1"
-            // NOTE: if lineH. is not def, Chakra-ui will change it on the sm/md breakpoint
-            lineHeight={1}
-            fontSize={["2.5rem", null, "3rem"]}
-            width="fit-content"
-            color="purple.200"
-            fontWeight="light"
-            fontFamily="mono"
-            flex={1}
-          >
-            EventApp
-          </Heading>
-        </RRLink>
-      </Flex>
-      {rootSize.width > 767 && <Search justifySelf="center" />}
-      {rootSize.width > 1023 && <Navigation />}
+      <AppTitle title="EventApp" />
+      <HeaderMenu />
     </Flex>
   );
 };
