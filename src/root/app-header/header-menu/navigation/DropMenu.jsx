@@ -13,9 +13,9 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { RootContext } from "../../../../context/RootContext";
 import { Search } from "../search/Search";
-import { log } from "../../../../util/Logger";
+import { Logger } from "../../../../util/Logger";
 
-export const NavMenu = () => {
+export const DropMenu = () => {
   const { categories, filters, setFilters, rootSize } = useContext(RootContext);
 
   return (
