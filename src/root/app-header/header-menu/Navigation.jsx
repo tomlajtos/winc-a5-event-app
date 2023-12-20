@@ -10,7 +10,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-import { RootContext } from "../../../../context/RootContext";
+import { RootContext } from "../../../context/RootContext";
 
 export const Navigation = () => {
   const { categories, filters, setFilters } = useContext(RootContext);

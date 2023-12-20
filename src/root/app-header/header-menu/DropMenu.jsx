@@ -11,9 +11,9 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { RootContext } from "../../../../context/RootContext";
-import { Search } from "../search/Search";
-import { Logger } from "../../../../util/Logger";
+import { RootContext } from "../../../context/RootContext";
+import { Search } from "./search/Search";
+import { Logger } from "../../../util/Logger";
 
 export const DropMenu = () => {
   const { categories, filters, setFilters, rootSize } = useContext(RootContext);

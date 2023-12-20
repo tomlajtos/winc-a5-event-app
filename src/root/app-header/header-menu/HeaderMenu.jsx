@@ -5,8 +5,8 @@ import { Flex } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../../../context/RootContext";
 // Component imports
-import { DropMenu } from "./navigation/DropMenu";
-import { Navigation } from "./navigation/Navigation";
+import { DropMenu } from "./DropMenu";
+import { Navigation } from "./Navigation";
 import { Search } from "./search/Search";
 
 export const HeaderMenu = () => {
