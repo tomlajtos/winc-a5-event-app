@@ -1,6 +1,6 @@
 // React and RRouter imports
 import React, { useContext } from "react";
-import { Outlet, useLoaderData, Link as RRLink } from "react-router-dom";
+import { Link as RRLink } from "react-router-dom";
 // Chakra-ui imports
 import { Flex, Heading } from "@chakra-ui/react";
 // Context imports
@@ -11,9 +11,8 @@ import { NavMenu } from "./header-menu/navigation/NavMenu";
 import { Search } from "./header-menu/search/Search";
 
 import { log } from "../../util/Logger";
-import { fetchData } from "../../util/fetch.js";
 
-export const Header = () => {
+export const AppHeader = () => {
   const { rootSize } = useContext(RootContext);
   log.comp("Header", "purple", "white");
   return (

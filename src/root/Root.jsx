@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 // Context imports
 import { RootContext } from "../context/RootContext";
 // Component imports
-import { Header } from "./app-header/Header";
+import { AppHeader } from "./app-header/AppHeader";
 // utils imports
 import { fetchData } from "../util/fetch.js";
 import { createCategoryIdsArr } from "../util/inputUtils.js";
@@ -77,7 +77,7 @@ export const Root = () => {
           rootSize,
         }}
       >
-        <Header />
+        <AppHeader />
         <Box pt={0} backgroundColor="transparent" mx="auto">
           <Outlet />
         </Box>
