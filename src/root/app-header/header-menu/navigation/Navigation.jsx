@@ -19,8 +19,7 @@ export const Navigation = () => {
     <Stack
       as={"nav"}
       direction={["column", "row"]}
-      py={0}
-      px={2}
+      padding={0}
       minWidth={"350px"}
       alignItems="center"
       spacing={0}
@@ -29,7 +28,7 @@ export const Navigation = () => {
         as={RRLink}
         to={"/"}
         py={2}
-        px={6}
+        px={4}
         rounded="full"
         fontSize={"xl"}
         fontWeight="thin"
@@ -44,7 +43,7 @@ export const Navigation = () => {
         as={RRLink}
         to={"/event/new"}
         py={2}
-        px={6}
+        px={4}
         fontSize={"xl"}
         fontWeight="thin"
         rounded="full"
@@ -61,7 +60,7 @@ export const Navigation = () => {
           fontSize={"xl"}
           fontWeight="thin"
           py={2}
-          px={3}
+          px={4}
           rounded="full"
           variant="ghost"
           color="gray.300"
