@@ -10,7 +10,7 @@ import {
 
 import { RootContext } from "../../../../context/RootContext";
 
-export const CategoryFilters = () => {
+export const CategoryFiltersMenu = () => {
   const { categories, filters, setFilters } = useContext(RootContext);
 
   return (
