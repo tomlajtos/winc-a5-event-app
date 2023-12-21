@@ -9,13 +9,14 @@ import {
   MenuItemOption,
   MenuOptionGroup,
   MenuDivider,
+  Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { RootContext } from "../../../context/RootContext";
-import { Search } from "./search/Search";
-import { Logger } from "../../../util/Logger";
+import { RootContext } from "../../../../context/RootContext";
+import { Search } from "../search/Search";
+// import { Logger } from "../../../../util/Logger";
 
-export const DropMenu = () => {
+export const DropdownMenu = () => {
   const { categories, filters, setFilters, rootSize } = useContext(RootContext);
 
   return (
@@ -55,28 +56,31 @@ export const DropMenu = () => {
             }}
           />
         )}
-        <MenuItem
-          as={RRLink}
-          to={"/"}
-          px={6}
-          fontSize={"xl"}
-          fontWeight="thin"
-          color="gray.900"
-        >
-          Events
-        </MenuItem>
+        <Stack as="nav" spacing={0}>
+          <MenuItem
+            as={RRLink}
+            to={"/"}
+            px={6}
+            fontSize={"xl"}
+            fontWeight="thin"
+            color="gray.900"
+          >
+            Events
+          </MenuItem>
 
-        <MenuItem
-          as={RRLink}
-          to={"/event/new"}
-          px={6}
-          fontSize={"xl"}
-          fontWeight="thin"
-          color="gray.900"
-        >
-          Create new
-        </MenuItem>
+          <MenuItem
+            as={RRLink}
+            to={"/event/new"}
+            px={6}
+            fontSize={"xl"}
+            fontWeight="thin"
+            color="gray.900"
+          >
+            Create new
+          </MenuItem>
+        </Stack>
         <MenuDivider borderColor="gray.400" width="95%" mx="auto" />
+
         <MenuOptionGroup
           px={2}
           title="Categories"
