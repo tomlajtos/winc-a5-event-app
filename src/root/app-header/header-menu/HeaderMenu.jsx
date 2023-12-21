@@ -6,7 +6,7 @@ import { Flex } from "@chakra-ui/react";
 import { RootContext } from "../../../context/RootContext";
 // Component imports
 import { DropMenu } from "./DropMenu";
-import { Navigation } from "./Navigation";
+import { MenuBar } from "./menu-bar/MenuBar";
 import { Search } from "./search/Search";
 
 export const HeaderMenu = () => {
@@ -15,7 +15,7 @@ export const HeaderMenu = () => {
   return (
     <Flex align="center" gap={6}>
       {rootSize.width > 767 && <Search justifySelf="center" order={1} />}
-      {rootSize.width > 1023 && <Navigation />}
+      {rootSize.width > 1023 && <MenuBar />}
       {rootSize.width < 1024 && <DropMenu />}
     </Flex>
   );
