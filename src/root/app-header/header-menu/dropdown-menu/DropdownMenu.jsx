@@ -1,17 +1,15 @@
 import React, { useContext } from "react";
-import { Link as RRLink } from "react-router-dom";
 import {
   IconButton,
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   MenuDivider,
-  Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { RootContext } from "../../../../context/RootContext";
 import { Search } from "../search/Search";
+import { Navigation } from "./Navigation";
 import { CategoryFilters } from "../CategoryFilters";
 // import { Logger } from "../../../../util/Logger";
 
@@ -55,29 +53,7 @@ export const DropdownMenu = () => {
             }}
           />
         )}
-        <Stack as="nav" spacing={0}>
-          <MenuItem
-            as={RRLink}
-            to={"/"}
-            px={6}
-            fontSize={"xl"}
-            fontWeight="thin"
-            color="gray.900"
-          >
-            Events
-          </MenuItem>
-
-          <MenuItem
-            as={RRLink}
-            to={"/event/new"}
-            px={6}
-            fontSize={"xl"}
-            fontWeight="thin"
-            color="gray.900"
-          >
-            Create new
-          </MenuItem>
-        </Stack>
+        <Navigation />
         <MenuDivider borderColor="gray.400" width="95%" mx="auto" />
         <CategoryFilters />
       </MenuList>
