@@ -37,11 +37,11 @@ export const EventsList = ({ events }) => {
     <Wrap
       direction={"row"}
       height={`${wrapHeight}px`}
+      width="100%"
       justify="center"
       spacing={4}
       py={6}
       px={[2, 4, 4, null, 12]}
-      overflowY="scroll"
     >
       {eventsToRender.map((event) => (
         <RRLink key={event.id} to={`/event/${event.id}`}>

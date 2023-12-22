@@ -13,11 +13,13 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Stack,
   Text,
 } from "@chakra-ui/react";
 
 // component imports
+import { PageTitle } from "./PageTitle";
 import { TextInputControl } from "../components/forms/form-controlls/TextInputControl";
 import { DateTimeControl } from "../components/forms/form-controlls/DateTimeControl";
 import { TextareaControl } from "../components/forms/form-controlls/TextareaControl";
@@ -52,7 +54,7 @@ export const NewEventPage = () => {
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-  const contentH = rootSize.height - 95;
+  const pageH = rootSize.height - 95;
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,
@@ -62,7 +64,60 @@ export const NewEventPage = () => {
 
   console.log("NEW EVENT");
   return (
-    <Box overflowY="scroll" bg="gray.100" pb={6} h={`${contentH}px`}>
+    <Box
+      pb={6}
+      width="100%"
+      maxW="1280px"
+      minH={pageH}
+      marginX="auto"
+      bg="gray.100"
+    >
+      <Flex
+        align="center"
+        justify="space-between"
+        borderBottom="1px solid"
+        borderColor="gray.300"
+      >
+        <PageTitle title="New Event" position="sticky" top="95" border="none" />
+        {/* form button group */}
+        <Stack direction="row" spacing={2} pr={8} justifyContent="end">
+          <Button
+            type="submit"
+            // variant="ghost"
+            variant="base"
+            size="md"
+            colorScheme="purple"
+            onClick={(e) => {
+              // get and use errors for validation that are not yet set as state
+              const validity = validateAll(categoryIds, setInputErrors);
+
+              if (validity.isInvalid) {
+                e.preventDefault();
+                toast({
+                  title: "Event information is incomplete",
+                  description: "Please complete the required fields.",
+                  duration: 4000,
+                  position: "top",
+                  status: "error",
+                  isClosable: true,
+                });
+              }
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            as={RRLink}
+            to="/"
+            // variant="ghost"
+            variant="base"
+            size="md"
+            colorScheme="red"
+          >
+            Cancel
+          </Button>
+        </Stack>
+      </Flex>
       <Container
         mx="auto"
         pt={6}
@@ -145,42 +200,6 @@ export const NewEventPage = () => {
             {...stateProps}
           />
         </Stack>
-        {/* form button group */}
-        <Stack w="full" direction="row" spacing={2} py={4} justifyContent="end">
-          <Button
-            type="submit"
-            variant="ghost"
-            size="lg"
-            colorScheme="purple"
-            onClick={(e) => {
-              // get and use errors for validation that are not yet set as state
-              const validity = validateAll(categoryIds, setInputErrors);
-
-              if (validity.isInvalid) {
-                e.preventDefault();
-                toast({
-                  title: "Event information is incomplete",
-                  description: "Please complete the required fields.",
-                  duration: 4000,
-                  position: "top",
-                  status: "error",
-                  isClosable: true,
-                });
-              }
-            }}
-          >
-            Save
-          </Button>
-          <Button
-            as={RRLink}
-            to="/"
-            variant="ghost"
-            size="lg"
-            colorScheme="red"
-          >
-            Cancel
-          </Button>
-        </Stack>{" "}
       </Container>
     </Box>
   );

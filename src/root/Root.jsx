@@ -60,9 +60,7 @@ export const Root = () => {
       mx={0}
       px={0}
       b={8}
-      h={"100vh"}
       background="gray.200"
-      overflowY="hidden"
     >
       <Logger type="render" name="Root" color="white" bg="red" />
       <RootContext.Provider
@@ -76,6 +74,7 @@ export const Root = () => {
           setSearchQ,
           rootSize,
         }}
+        minH="100vh"
       >
         <AppHeader />
         <Box pt={0} backgroundColor="transparent" mx="auto">

@@ -6,6 +6,7 @@ import { useLoaderData } from "react-router-dom";
 import { Box, Heading } from "@chakra-ui/react";
 // Context and custom hook imports
 // App component imports
+import { PageTitle } from "../PageTitle";
 import { EventsList } from "./EventsList";
 // Util imports
 import { fetchData } from "../../util/fetch.js";
@@ -19,19 +20,9 @@ export const EventsPage = () => {
 
   return (
     <Box className="events-page-container">
+    >
       <Logger type="render" name="EventsPage" color="navy" bg="yellow" />
-      <Heading
-        display="box"
-        height="65px"
-        fontSize="2rem"
-        px={[2, 4, 8, null, 12]}
-        py={3}
-        backgroundColor="gray.200"
-        borderBottom="1px solid"
-        borderColor="gray.300"
-      >
-        Events
-      </Heading>
+      <PageTitle title="Events" position="sticky" top="95px" />
       <EventsList events={events} />
     </Box>
   );
