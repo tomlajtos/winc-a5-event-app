@@ -13,7 +13,7 @@ import { EventCard } from "./EventCard";
 // import { log } from "../../util/Logger";
 
 export const EventsList = ({ events }) => {
-  const { filters, searchQ, rootSize } = useContext(RootContext);
+  const { filters, searchQ } = useContext(RootContext);
 
   const eventsToRender = events
     .filter((event) => {
@@ -31,12 +31,9 @@ export const EventsList = ({ events }) => {
       }
     });
 
-  const wrapHeight = rootSize.height - 184; // 184 <-- Wrap.paddingY + PageTitle.height + AppHeader.height
-
   return (
     <Wrap
       direction={"row"}
-      height={`${wrapHeight}px`}
       width="100%"
       justify="center"
       spacing={4}
