@@ -28,6 +28,10 @@ export const Root = () => {
   const [searchQ, setSearchQ] = useState("");
   const [filters, setFilters] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
+  const [windowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   // get .root-container size dynamically
   useEffect(() => {
@@ -48,13 +52,7 @@ export const Root = () => {
   }, []);
 
   return (
-    <Box
-      className="root-container"
-      mx={0}
-      px={0}
-      b={8}
-      background="gray.200"
-    >
+    <Box className="root-container" mx={0} px={0} b={8} background="gray.200">
       <Logger type="render" name="Root" color="white" bg="red" />
       <RootContext.Provider
         value={{
@@ -65,6 +63,7 @@ export const Root = () => {
           searchQ,
           setSearchQ,
           rootSize,
+          windowSize,
         }}
         minH="100vh"
       >
