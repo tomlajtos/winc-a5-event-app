@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./styles/index";
 // App component imports
-import { Root, loader as rootLoader } from "./root/Root";
+import { Root } from "./root/Root";
 import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
 import {
   EventsPage,
@@ -22,7 +22,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    loader: rootLoader,
     errorElement: <ErrorBoundary />,
     children: [
       {

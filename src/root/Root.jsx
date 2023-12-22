@@ -1,6 +1,6 @@
 // React and RRouter imports
 import React, { useState, useEffect } from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 // Chakra-ui imports
 import { Box } from "@chakra-ui/react";
 // Context imports
@@ -11,11 +11,6 @@ import { AppHeader } from "./app-header/AppHeader";
 import { fetchData } from "../util/fetch.js";
 import { createCategoryIdsArr } from "../util/inputUtils.js";
 import { Logger } from "../util/Logger.jsx";
-
-export const loader = async () => {
-  const res = fetchData([{ name: "events", path: "/events" }]);
-  return res;
-};
 
 // fetch static data separately from loader
 const staticData = await fetchData([
@@ -28,10 +23,8 @@ const {
   users,
   categoryIds = createCategoryIdsArr(categories),
 } = staticData;
-// console.log("Users", users, "Categories", categories, "CategoryIds", categoryIds)
 
 export const Root = () => {
-  const { events } = useLoaderData();
   const [searchQ, setSearchQ] = useState("");
   const [filters, setFilters] = useState([...categoryIds]);
   const [rootSize, setRootSize] = useState({});
@@ -67,7 +60,6 @@ export const Root = () => {
         value={{
           categories,
           users,
-          events,
           filters,
           setFilters,
           searchQ,
