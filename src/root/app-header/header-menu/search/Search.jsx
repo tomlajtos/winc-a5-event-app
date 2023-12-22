@@ -10,7 +10,7 @@ import {
 import { RootContext } from "../../../../context/RootContext";
 import { ModalSearch } from "./ModalSearch";
 
-import { log } from "../../../../util/Logger";
+import { Logger } from "../../../../util/Logger";
 
 export const Search = ({ inputProps, props }) => {
   const { searchQ, setSearchQ, categories } = useContext(RootContext);
@@ -31,10 +31,11 @@ export const Search = ({ inputProps, props }) => {
     onClose();
   };
 
-  log.comp("Search", "purple", "white");
+  // log.comp("Search", "purple", "white");
 
   return (
     <Center {...props}>
+      <Logger type="render" name="Search" color="purple" bg="white" />
       <CInput
         type="search"
         name="search"
@@ -65,16 +66,24 @@ export const Search = ({ inputProps, props }) => {
           })()
         }
       />
-      <Portal>
-        <ModalSearch
-          inputRef={popupSearch}
-          categories={categories}
-          isOpen={isModalOpen}
-          onClose={closeSearchModal}
-          searchQ={searchQ}
-          setSearchQ={setSearchQ}
-        />
-      </Portal>
+      {pathname !== "/" && (
+        <Portal>
+          <Logger
+            type="render"
+            name="Search-Portal"
+            color="white"
+            bg="purple"
+          />
+          <ModalSearch
+            inputRef={popupSearch}
+            categories={categories}
+            isOpen={isModalOpen}
+            onClose={closeSearchModal}
+            searchQ={searchQ}
+            setSearchQ={setSearchQ}
+          />
+        </Portal>
+      )}
     </Center>
   );
 };
