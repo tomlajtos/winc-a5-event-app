@@ -50,11 +50,11 @@ export const action = async ({ request }) => {
 };
 
 export const NewEventPage = () => {
-  const { categories, users, rootSize } = useContext(RootContext);
+  const { categories, users, rootWidth } = useContext(RootContext);
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-  const pageH = rootSize.height - 95;
+  const pageH = rootWidth - 95;
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,

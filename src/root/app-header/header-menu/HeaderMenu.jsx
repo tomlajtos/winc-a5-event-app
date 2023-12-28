@@ -10,13 +10,13 @@ import { MenuBar } from "./menu-bar/MenuBar";
 import { Search } from "./search/Search";
 
 export const HeaderMenu = () => {
-  const { rootSize } = useContext(RootContext);
+  const { rootWidth } = useContext(RootContext);
 
   return (
     <Flex align="center" gap={6}>
-      {rootSize.width > 767 && <Search justifySelf="center" order={1} />}
-      {rootSize.width > 1023 && <MenuBar />}
-      {rootSize.width < 1024 && <DropdownMenu />}
+      {rootWidth > 767 && <Search justifySelf="center" order={1} />}
+      {rootWidth > 1023 && <MenuBar />}
+      {rootWidth < 1024 && <DropdownMenu />}
     </Flex>
   );
 };

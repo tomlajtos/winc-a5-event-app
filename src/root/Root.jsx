@@ -27,25 +27,19 @@ const {
 export const Root = () => {
   const [searchQ, setSearchQ] = useState("");
   const [filters, setFilters] = useState([...categoryIds]);
-  const [rootSize, setRootSize] = useState({});
+  const [rootWidth, setRootWidth] = useState("");
   const [windowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // get .root-container size dynamically
+  // get .root-container width dynamically
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entry) => {
       if (entry[0].borderBoxSize) {
-        setRootSize({
-          width: Math.round(entry[0].borderBoxSize[0].inlineSize),
-          height: Math.round(entry[0].borderBoxSize[0].blockSize),
-        });
+        setRootWidth(Math.round(entry[0].borderBoxSize[0].inlineSize));
       } else if (entry[0].contentRect) {
-        setRootSize({
-          width: Math.round(entry[0].contentRect.width),
-          height: Math.round(entry[0].contentRect.height),
-        });
+        setRootWidth(Math.round(entry[0].contentRect.width));
       }
     });
     resizeObserver.observe(document.querySelector("div"));
@@ -62,7 +56,7 @@ export const Root = () => {
           setFilters,
           searchQ,
           setSearchQ,
-          rootSize,
+          rootWidth,
           windowSize,
         }}
         minH="100vh"

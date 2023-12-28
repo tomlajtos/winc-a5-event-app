@@ -14,7 +14,7 @@ import { CategoryFilters } from "../CategoryFilters";
 // import { Logger } from "../../../../util/Logger";
 
 export const DropdownMenu = () => {
-  const { rootSize } = useContext(RootContext);
+  const { rootWidth } = useContext(RootContext);
 
   return (
     <Menu
@@ -39,7 +39,7 @@ export const DropdownMenu = () => {
         color="gray.900"
         border="none"
       >
-        {rootSize.width < 768 && (
+        {rootWidth < 768 && (
           <Search
             props={{
               width: "90%",
