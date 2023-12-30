@@ -6,14 +6,15 @@ import { Heading } from "@chakra-ui/react";
 // Context imports
 // Component imports
 // Util imports
-// import { Logger } from "../../util/Logger";
+import { Logger } from "../../util/Logger";
 
 export const AppTitle = ({ title }) => {
   return (
     <RRLink to="/">
+      <Logger type="render" target="component" name="App-Title" level={2} />
       <Heading
         as="h1"
-        // NOTE: if lineH. is not def, Chakra-ui will change it on the sm/md breakpoint > causing shift-glitch
+        // NOTE: if lineH. is not defined, Chakra-ui will change it on the sm/md breakpoint > causing shift-glitch
         lineHeight={1}
         fontSize={["2.5rem", null, "3rem"]}
         width="fit-content"

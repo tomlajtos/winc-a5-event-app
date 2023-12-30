@@ -1,10 +1,11 @@
 import { Link as RRLink } from "react-router-dom";
 import { MenuItem, Stack } from "@chakra-ui/react";
-// import { Logger } from "../../../../util/Logger";
+import { Logger } from "../../../../util/Logger";
 
 export const Navigation = () => {
   return (
     <Stack as="nav" spacing={0}>
+      <Logger type="render" target="component" name="navigation" level={4} />
       <MenuItem
         as={RRLink}
         to={"/"}

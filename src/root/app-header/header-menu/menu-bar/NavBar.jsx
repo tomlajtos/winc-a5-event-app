@@ -1,9 +1,11 @@
 import { Link as RRLink } from "react-router-dom";
 import { Button, Stack } from "@chakra-ui/react";
+import { Logger } from "../../../../util/Logger";
 
 export const NavBar = () => {
   return (
     <Stack as="nav" direction="row" padding={0} alignItems="center" spacing={0}>
+      <Logger type="render" target="component" name="NavBar" level={4} />
       <Button
         as={RRLink}
         to="/"
