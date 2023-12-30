@@ -11,9 +11,9 @@ export const FilterContextProvider = ({ children, categoryIds }) => {
     <FilterContext.Provider value={{ filters, setFilters }}>
       <Logger
         type="render"
+        target="context"
         name="Filter.Context.Provider"
-        color="yellow"
-        bg="purple"
+        level={2}
       />
       {children}
     </FilterContext.Provider>
