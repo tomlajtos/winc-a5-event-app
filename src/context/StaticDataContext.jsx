@@ -19,23 +19,22 @@ export const StaticDataContextProvider = ({ children }) => {
       ]);
     }
     return () => {
-      ignore = false;
+      ignore = true;
     };
   }, []);
 
   if (categories.length && users.length) {
     const categoryIds = createCategoryIdsArr(categories);
     const value = { categories, categoryIds, users };
-    console.log("STATIC VAL", value);
+
     return (
       <StaticDataContext.Provider value={value}>
         <Logger
           type="render"
+          target="context"
           name="Static.Data.Context.Provider"
-          color="cyan"
-          bg="purple"
+          level={0}
         />
-        {/* { console.log("StaticDataProvider") } */}
         {children}
       </StaticDataContext.Provider>
     );
