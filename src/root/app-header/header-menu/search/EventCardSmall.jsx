@@ -1,4 +1,4 @@
-import { RootContext } from "../../../../context/RootContext.jsx";
+import { useStaticData } from "../../../../context/StaticDataContext.jsx";
 import {
   Card,
   CardBody,
@@ -13,7 +13,8 @@ import placeholderImgUrl from "../../../../assets/eventImgPlaceholder_300.svg";
 
 import { log } from "../../../../util/Logger";
 
-export const EventCardSmall = ({ event, categories }) => {
+export const EventCardSmall = ({ event }) => {
+  const { categories } = useStaticData();
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
   const eventCategories = categories

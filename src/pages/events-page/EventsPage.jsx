@@ -1,11 +1,11 @@
 // React imports
-import React, { useContext } from "react";
+import React from "react";
 // React Router imports
 import { useLoaderData } from "react-router-dom";
 // ChakraUi imports
-import { Box, Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 // Context and custom hook imports
-import { RootContext } from "../../context/RootContext.jsx";
+import { useWindowSize } from "../../context/WindowSizeContext.jsx";
 // App component imports
 import { PageTitle } from "../PageTitle";
 import { EventsList } from "./EventsList";
@@ -18,8 +18,8 @@ export const loader = async () =>
 
 export const EventsPage = () => {
   const { events } = useLoaderData();
-  const { windowSize } = useContext(RootContext);
-  const minPageH = `${windowSize.height - 95}px`; //  PageTitle.height
+  const windowSize = useWindowSize();
+  const minPageH = `${windowSize.height - 95}px`; //  App header height
 
   return (
     <Box
@@ -30,7 +30,7 @@ export const EventsPage = () => {
       marginX="auto"
       bg="gray.100"
     >
-      <Logger type="render" name="EventsPage" color="navy" bg="yellow" />
+      <Logger type="render" target="page" name="EventsPage" level={0} />
       <PageTitle title="Events" position="sticky" top="95px" />
       <EventsList events={events} />
     </Box>

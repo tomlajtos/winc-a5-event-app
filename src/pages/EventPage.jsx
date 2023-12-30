@@ -1,6 +1,5 @@
 // TODO: split up to sub components, improve styles, responsive styles
 
-import { useContext } from "react";
 import { useLoaderData, Form } from "react-router-dom";
 import {
   useDisclosure,
@@ -26,11 +25,11 @@ import {
 } from "@chakra-ui/react";
 import { formatDateAndTime } from "../util/datetime.js";
 import { fetchData } from "../util/fetch.js";
-import { RootContext } from "../context/RootContext.jsx";
+import { useStaticData } from "../context/StaticDataContext.jsx";
 import { EditEventForm } from "../components/forms/EditEventForm.jsx";
 import { PageTitle } from "./PageTitle";
 import phantom from "../assets/phantom_mask.svg";
-import { log } from "../util/Logger";
+import { Logger } from "../util/Logger";
 
 // Loader function to fetch event specific data (dynamic path)
 export const loader = async ({ params }) =>
@@ -38,7 +37,7 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const { event } = useLoaderData();
-  const { categories, users } = useContext(RootContext);
+  const { categories, users } = useStaticData();
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
@@ -47,7 +46,6 @@ export const EventPage = () => {
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
 
   const minPageH = window.innerHeight - 95;
-  log.comp("EventPage", "navy", "orange");
 
   return (
     <Box
@@ -57,6 +55,7 @@ export const EventPage = () => {
       marginX="auto"
       bg="gray.100"
     >
+      <Logger type="render" target="page" name="EventPage" Level={1} />
       <Spacer height={4} />
       <Flex align="center" justify="space-between">
         <PageTitle title={event.title} borderBottom="none" fontSize="2.5rem" />

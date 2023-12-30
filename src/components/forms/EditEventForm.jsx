@@ -3,8 +3,7 @@ import { useState } from "react";
 import { Form } from "react-router-dom";
 
 // Context imports
-// import { RootContext } from "../context/RootContext";
-
+import { useStaticData } from "../../context/StaticDataContext.jsx";
 // chakra-ui imports
 import { useToast, Button, Flex, Stack, Text } from "@chakra-ui/react";
 // component imports
@@ -17,9 +16,10 @@ import { SelectControl } from "./form-controlls/SelectControl";
 // util imports
 import { generateDateTimeStr } from "../../util/datetime.js";
 
-export const EditEventForm = ({ categories, users, event, onClose }) => {
+export const EditEventForm = ({ event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [inputErrors, setInputErrors] = useState(new Map());
+  const { categories, users } = useStaticData();
   const toast = useToast();
   const stateProps = {
     categoryIds: categoryIds,

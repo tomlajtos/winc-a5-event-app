@@ -1,19 +1,20 @@
 // React imports
-import React, { useContext } from "react";
+import React from "react";
 // React Router imports
 import { Link as RRLink } from "react-router-dom";
 // ChakraUi imports
 import { Wrap } from "@chakra-ui/react";
 // Context and custom hook imports
-import { RootContext } from "../../context/RootContext";
+import { useFilters } from "../../context/FilterContext";
 // App component imports
 import { EventCard } from "./EventCard";
+import { useSearchQuery } from "../../context/SearchContext";
 // Util imports
-// import { fetchData } from "../../util/fetch.js";
-// import { log } from "../../util/Logger";
+import { Logger } from "../../util/Logger";
 
 export const EventsList = ({ events }) => {
-  const { filters, searchQ } = useContext(RootContext);
+  const { filters } = useFilters();
+  const { searchQ } = useSearchQuery();
 
   const eventsToRender = events
     .filter((event) => {
@@ -40,6 +41,7 @@ export const EventsList = ({ events }) => {
       py={6}
       px={[2, 4, 4, null, 12]}
     >
+      <Logger type="render" target="component" name="events-list" level={2} />
       {eventsToRender.map((event) => (
         <RRLink key={event.id} to={`/event/${event.id}`}>
           <EventCard event={event} />

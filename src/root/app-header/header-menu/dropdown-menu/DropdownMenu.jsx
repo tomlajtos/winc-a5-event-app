@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   IconButton,
   Menu,
@@ -7,14 +7,14 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { RootContext } from "../../../../context/RootContext";
+import { useResizeData } from "../../../../context/ResizeContext";
 import { Search } from "../search/Search";
 import { Navigation } from "./Navigation";
 import { CategoryFilters } from "../CategoryFilters";
-// import { Logger } from "../../../../util/Logger";
+import { Logger } from "../../../../util/Logger";
 
 export const DropdownMenu = () => {
-  const { rootWidth } = useContext(RootContext);
+  const { menuLayout } = useResizeData();
 
   return (
     <Menu
@@ -23,6 +23,7 @@ export const DropdownMenu = () => {
       isLazy={true}
       lazyBehavior="keepMounted"
     >
+      <Logger type="render" target="component" name="dropdown-menu" level={3} />
       <MenuButton
         as={IconButton}
         arai-label="Options"
@@ -39,7 +40,7 @@ export const DropdownMenu = () => {
         color="gray.900"
         border="none"
       >
-        {rootWidth < 768 && (
+        {menuLayout == "min" && (
           <Search
             props={{
               width: "90%",

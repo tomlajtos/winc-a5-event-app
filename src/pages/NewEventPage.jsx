@@ -1,11 +1,11 @@
-// TODO: refactor: use the new FormControl components
-
+// TODO: break out form to its own component (<NewEventForm/>)
 // React and RRouter imports
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { redirect, Form, Link as RRLink } from "react-router-dom";
 
 //Context imports
-import { RootContext } from "../context/RootContext";
+import { useStaticData } from "../context/StaticDataContext.jsx";
+import { useWindowSize } from "../context/WindowSizeContext.jsx";
 
 //chakra-ui imports
 import {
@@ -30,6 +30,7 @@ import { SelectControl } from "../components/forms/form-controlls/SelectControl"
 // util imports
 import { generateDateTimeStr } from "../util/datetime.js";
 import { validateAll } from "../util/validate.js";
+import { Logger } from "../util/Logger.jsx";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
@@ -50,11 +51,12 @@ export const action = async ({ request }) => {
 };
 
 export const NewEventPage = () => {
-  const { categories, users, rootWidth } = useContext(RootContext);
+  const windowSize = useWindowSize();
+  const { categories, users } = useStaticData();
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-  const pageH = rootWidth - 95;
+  const pageH = windowSize.height - 95;
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,
@@ -62,7 +64,6 @@ export const NewEventPage = () => {
     setErrors: setInputErrors,
   };
 
-  console.log("NEW EVENT");
   return (
     <Box
       pb={6}
@@ -72,6 +73,7 @@ export const NewEventPage = () => {
       marginX="auto"
       bg="gray.100"
     >
+      <Logger type="render" target="page" name="new-event-page" level={2} />
       <Flex
         align="center"
         justify="space-between"

@@ -1,6 +1,5 @@
 // TODO: > vertical card layout for small screens
 //
-import { useContext } from "react";
 import { Heading } from "@chakra-ui/react";
 import {
   Card,
@@ -12,15 +11,15 @@ import {
   Tag,
 } from "@chakra-ui/react";
 
-import { RootContext } from "../../context/RootContext.jsx";
+import { useStaticData } from "../../context/StaticDataContext.jsx";
 
 import { formatDateAndTime } from "../../util/datetime.js";
 import placeholderImgUrl from "../../assets/eventImgPlaceholder_300.svg";
 
-import { log } from "../../util/Logger";
+//import { Logger } from "../../util/Logger";
 
 export const EventCard = ({ event }) => {
-  const { categories } = useContext(RootContext);
+  const { categories } = useStaticData();
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);

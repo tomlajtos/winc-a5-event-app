@@ -1,24 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MenuItemOption, MenuOptionGroup } from "@chakra-ui/react";
-import { RootContext } from "../../../context/RootContext";
-// import { Logger } from "../../../util/Logger";
+import { useStaticData } from "../../../context/StaticDataContext";
+import { useFilters } from "../../../context/FilterContext";
+import { Logger } from "../../../util/Logger";
 
 export const CategoryFilters = () => {
-  const { categories, filters, setFilters } = useContext(RootContext);
+  const { filters, setFilters } = useFilters();
+  const { categories } = useStaticData();
 
   const handleFilterChange = (filters, inputValue, setFn) => {
     let newFilters = [...filters];
-    console.log(
-      "%c onClick > filter > FilterGroup",
-      "color:red;background:white",
-    );
-    console.log("newFilters before", newFilters);
     if (!newFilters.includes(inputValue)) {
       newFilters = Array.from(new Set([Number(inputValue), ...newFilters]));
     } else {
       newFilters = newFilters.filter((q) => q !== Number(inputValue));
     }
-    console.log("newFilters after", newFilters);
     setFn(newFilters);
   };
 
@@ -32,6 +28,12 @@ export const CategoryFilters = () => {
       fontSize="xl"
       fontWeight="thin"
     >
+      <Logger
+        type="render"
+        target="component"
+        name="CategoryFilters"
+        level={4}
+      />
       {categories.map((category) => (
         <MenuItemOption
           key={category.id}

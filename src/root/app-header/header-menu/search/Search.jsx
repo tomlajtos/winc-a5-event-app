@@ -1,26 +1,19 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  useDisclosure,
-  Center,
-  Input as CInput,
-  Portal,
-} from "@chakra-ui/react";
+import { useDisclosure, Center, Input as CInput } from "@chakra-ui/react";
 
-import { RootContext } from "../../../../context/RootContext";
 import { ModalSearch } from "./ModalSearch";
 
 import { Logger } from "../../../../util/Logger";
+import { useSearchQuery } from "../../../../context/SearchContext";
 
 export const Search = ({ inputProps, props }) => {
-  const { searchQ, setSearchQ, categories } = useContext(RootContext);
+  const { searchQ, setSearchQ } = useSearchQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const popupSearch = useRef("");
 
-  // TODO: find out if 'open Modal on "Enter" down event' is possible without useEffect
-  // does not seem so... keep looking...
   useEffect(() => {
     const open = () => setIsModalOpen(isOpen);
     open();
@@ -31,11 +24,9 @@ export const Search = ({ inputProps, props }) => {
     onClose();
   };
 
-  // log.comp("Search", "purple", "white");
-
   return (
     <Center {...props}>
-      <Logger type="render" name="Search" color="purple" bg="white" />
+      <Logger type="render" target="component" name="Search" level={3} />
       <CInput
         type="search"
         name="search"
@@ -49,40 +40,31 @@ export const Search = ({ inputProps, props }) => {
         focusBorderColor="purple.300"
         defaultValue={searchQ}
         onChange={(e) => {
-          setSearchQ(e.target.value);
+          if (pathname == "/") {
+            setSearchQ(e.target.value);
+          }
         }}
         {...inputProps}
         onClick={() => (pathname !== "/" ? onOpen() : closeSearchModal())}
         onKeyDown={(e) =>
           (() => {
             if (pathname !== "/" && e.key === "Enter") {
-              // console.log(1, e.key, ">", pathname);
-              // console.log(e.key === "Enter");
               onOpen();
             } else if (pathname !== "/" && e.key === "Escape") {
-              // console.log(2, e.key, ">", pathname);
               closeSearchModal();
             }
           })()
         }
       />
       {pathname !== "/" && (
-        <Portal>
-          <Logger
-            type="render"
-            name="Search-Portal"
-            color="white"
-            bg="purple"
-          />
-          <ModalSearch
-            inputRef={popupSearch}
-            categories={categories}
-            isOpen={isModalOpen}
-            onClose={closeSearchModal}
-            searchQ={searchQ}
-            setSearchQ={setSearchQ}
-          />
-        </Portal>
+        <ModalSearch
+          inputRef={popupSearch}
+          // categories={categories}
+          isOpen={isModalOpen}
+          onClose={closeSearchModal}
+          // searchQ={searchQ}
+          // setSearchQ={setSearchQ}
+        />
       )}
     </Center>
   );

@@ -1,22 +1,23 @@
 // React and RRouter imports
-import React, { useContext } from "react";
 // Chakra-ui imports
 import { Flex } from "@chakra-ui/react";
 // Context imports
-import { RootContext } from "../../../context/RootContext";
+import { useResizeData } from "../../../context/ResizeContext";
 // Component imports
 import { DropdownMenu } from "./dropdown-menu/DropdownMenu";
 import { MenuBar } from "./menu-bar/MenuBar";
 import { Search } from "./search/Search";
+// Util import
+import { Logger } from "../../../util/Logger";
 
 export const HeaderMenu = () => {
-  const { rootWidth } = useContext(RootContext);
-
+  const { menuLayout } = useResizeData();
   return (
     <Flex align="center" gap={6}>
-      {rootWidth > 767 && <Search justifySelf="center" order={1} />}
-      {rootWidth > 1023 && <MenuBar />}
-      {rootWidth < 1024 && <DropdownMenu />}
+      <Logger type="render" target="component" name="Header-Menu" level={2} />
+      {menuLayout !== "min" && <Search justifySelf="center" order={1} />}
+      {menuLayout === "full" && <MenuBar />}
+      {menuLayout !== "full" && <DropdownMenu />}
     </Flex>
   );
 };

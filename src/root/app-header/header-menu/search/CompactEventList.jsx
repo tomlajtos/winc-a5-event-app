@@ -2,9 +2,14 @@ import { Link as RRLink } from "react-router-dom";
 import { Stack, StackItem } from "@chakra-ui/react";
 import { EventCardSmall } from "./EventCardSmall";
 import { useData } from "../../../../hooks/useData";
+import { useSearchQuery } from "../../../../context/SearchContext";
+import { useStaticData } from "../../../../context/StaticDataContext";
+import { Logger } from "../../../../util/Logger";
 
-export const CompactEventList = ({ searchQ, onClose, categories }) => {
+export const CompactEventList = ({ onClose }) => {
   const events = useData("/events");
+  const { categories } = useStaticData();
+  const { searchQ } = useSearchQuery();
 
   const searchResults = events.filter(
     (e) =>
@@ -12,8 +17,14 @@ export const CompactEventList = ({ searchQ, onClose, categories }) => {
       searchQ.length > 0,
   );
 
-  return (
+  return searchQ.length > 0 ? (
     <Stack>
+      <Logger
+        type="render"
+        target="component"
+        name="compact-event-list"
+        level={5}
+      />
       {searchResults.map((event) => (
         <StackItem key={event.id}>
           <RRLink to={`/event/${event.id}`} onClick={onClose}>
@@ -22,5 +33,5 @@ export const CompactEventList = ({ searchQ, onClose, categories }) => {
         </StackItem>
       ))}
     </Stack>
-  );
+  ) : null;
 };

@@ -3,17 +3,19 @@ import React from "react";
 // Chakra-ui imports
 import { Box, Flex } from "@chakra-ui/react";
 // Context imports
+import { ResizeContextProvider } from "../../context/ResizeContext";
 // Component imports
 import { AppTitle } from "./AppTitle";
 import { HeaderMenu } from "./header-menu/HeaderMenu";
 
-import { log } from "../../util/Logger";
+import { Logger } from "../../util/Logger";
 
-export const AppHeader = () => {
-  log.comp("Header", "purple", "white");
+export const AppHeader = ({ children }) => {
   return (
     <Box bg="gray.800" position="sticky" top="0px" left="0px" zIndex="sticky">
+      <Logger type="render" target="component" name="header" level={1} />
       <Flex
+        className="app-header"
         as="header"
         width="100%"
         maxW="1280px"
@@ -27,8 +29,11 @@ export const AppHeader = () => {
         align="center"
         justifyContent="space-between"
       >
-        <AppTitle title="EventApp" />
-        <HeaderMenu />
+        <ResizeContextProvider>
+          <AppTitle title="EventApp" />
+          <HeaderMenu />
+          {/* {children} */}
+        </ResizeContextProvider>
       </Flex>
     </Box>
   );
