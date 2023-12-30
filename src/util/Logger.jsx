@@ -85,7 +85,8 @@ export const Logger = (props) => {
       "#000000",
     ],
     page: ["#1A365D", "#2A4365", "#2C5282", "#EBF8FF", "#BEE3F8", "#90CDF4"],
-    context: ["#FED7E2", "#FBB6CE", "#F687B3", "#97266D", "#702459", "#521B41"],
+    // context: ["#FFF5F7", "#FED7E2", "#FBB6CE", "#F687B3", "#702459", "#521B41"],
+    context: ["#ffff00", "#F6E05E", "#FAF089", "#FEFCBF", "#ED8936", "#DD6B20"],
   };
   const background = {
     default: ["#171923"],
@@ -98,7 +99,7 @@ export const Logger = (props) => {
       "#EDF2F7",
     ],
     page: ["#ffff00", "#FAF089", "#F6E05E", "#F6AD55", "#ED8936", "#DD6B20"],
-    context: ["#44337A", "#553C9A", "#6B46C1", "#805AD5", "#9F7AEA", "#B794F4"],
+    context: ["#322659", "#44337A", "#553C9A", "#B794F4", "#D6BCFA", "#E9D8FD"],
   };
 
   // switch (props.type) {

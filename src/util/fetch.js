@@ -9,7 +9,6 @@ export const getData = async (endpointPath, setState) => {
   // console.log(promise);
   if (promise.ok) {
     let data = await promise.json();
-    console.log("data in getData", data);
     setState(data);
   } else {
     console.warn(promise);
