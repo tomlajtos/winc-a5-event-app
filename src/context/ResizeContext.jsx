@@ -10,26 +10,30 @@ export const ResizeContextProvider = ({ children }) => {
   const wiW = window.innerWidth;
   const initLayout = bp1 - wiW > 0 ? "min" : bp2 - wiW <= 0 ? "full" : "mid";
   const [menuLayout, setMenuLayout] = useState(initLayout);
-  // const [docWidth, setDocWidth] = useState(window.innerWidth);
 
   const resizeObserver = new ResizeObserver((entry) => {
     const width = Math.round(entry[0].borderBoxSize[0].inlineSize);
-    const fallbackWidth = Math.round(entry[0].contentRect.width);
     const layout = bp1 - width > 0 ? "min" : bp2 - width <= 0 ? "full" : "mid";
-
-    // console.log("layout:", layout, "w", width);
+    // fallback option for browser compatibility
+    const fallbackWidth = Math.round(entry[0].contentRect.width);
+    const fallbackLayout =
+      bp1 - fallbackWidth > 0
+        ? "min"
+        : bp2 - fallbackWidth <= 0
+          ? "full"
+          : "mid";
 
     if (width) {
+      // setMenuLayout(layout);
       setMenuLayout(layout);
     } else if (fallbackWidth) {
-      setMenuLayout(layout);
+      // setMenuLayout(fallbackLayout);
+      setMenuLayout(fallbackLayout);
     } else {
       return;
     }
   });
-
   resizeObserver.observe(document.querySelector("#root"));
-
   return (
     <ResizeContext.Provider value={{ menuLayout }}>
       <Logger
