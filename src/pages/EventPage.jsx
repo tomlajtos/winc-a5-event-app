@@ -45,15 +45,14 @@ export const EventPage = () => {
   const end = formatDateAndTime(event.endTime);
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
 
-  const minPageH = window.innerHeight - 95;
-
   return (
     <Box
+      className="event-page-container"
       width="100%"
       maxW="1280px"
-      minH={minPageH}
       marginX="auto"
       bg="gray.100"
+      flexGrow="1"
     >
       <Logger type="render" target="page" name="EventPage" Level={1} />
       <Spacer height={4} />
@@ -68,13 +67,7 @@ export const EventPage = () => {
           </Button>
         </Stack>
       </Flex>
-      <Box
-        className="event-page-container"
-        px={10}
-        py={12}
-        width="full"
-        // h={`${contentH}px`}
-      >
+      <Box px={10} py={12} width="full">
         <Flex direction={"column"} rowGap={8}>
           <Flex directon="row" gap={8} flex={1} justify="start">
             {event.image ? (

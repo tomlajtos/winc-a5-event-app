@@ -5,7 +5,6 @@ import { useLoaderData } from "react-router-dom";
 // ChakraUi imports
 import { Box } from "@chakra-ui/react";
 // Context and custom hook imports
-import { useWindowSize } from "../../context/WindowSizeContext.jsx";
 // App component imports
 import { PageTitle } from "../PageTitle";
 import { EventsList } from "./EventsList";
@@ -18,15 +17,13 @@ export const loader = async () =>
 
 export const EventsPage = () => {
   const { events } = useLoaderData();
-  const windowSize = useWindowSize();
-  const minPageH = `${windowSize.height - 95}px`; //  App header height
 
   return (
     <Box
       className="events-page-container"
       width="100%"
       maxW="1280px"
-      minH={minPageH}
+      flexGrow="1"
       marginX="auto"
       bg="gray.100"
     >

@@ -5,7 +5,6 @@ import { redirect, Form, Link as RRLink } from "react-router-dom";
 
 //Context imports
 import { useStaticData } from "../context/StaticDataContext.jsx";
-import { useWindowSize } from "../context/WindowSizeContext.jsx";
 
 //chakra-ui imports
 import {
@@ -51,12 +50,10 @@ export const action = async ({ request }) => {
 };
 
 export const NewEventPage = () => {
-  const windowSize = useWindowSize();
   const { categories, users } = useStaticData();
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const toast = useToast();
-  const pageH = windowSize.height - 95;
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,
@@ -69,7 +66,7 @@ export const NewEventPage = () => {
       pb={6}
       width="100%"
       maxW="1280px"
-      minH={pageH}
+      flexGrow="1"
       marginX="auto"
       bg="gray.100"
     >
