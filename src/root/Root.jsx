@@ -25,7 +25,7 @@ export const Root = () => {
       mx={0}
       px={0}
       b={8}
-      background="gray.600"
+      background="gray.200"
     >
       <Logger type="render" target="component" name="root" level={0} />
       <SearchContextProvider>
