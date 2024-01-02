@@ -47,17 +47,23 @@ export const formatDateAndTime = (dateStr) => {
 // TODO: add jsDOC comments
 //
 // function to generate date-time str compatible with <input type=datetime-local>
-// str to be used as default value for input element
-export const generateDateTimeStr = (dateStr, dur) => {
-  const xtraHr = (dur?.h ?? 0) * (60 * 60 * 1000);
-  const xtraMin = (dur?.m ?? 0) * (60 * 1000);
-  const timeStamp = new Date(dateStr).getTime() + xtraHr + xtraMin;
+// dateTime (string) to be used as default value for input element
+// add duration as an object when generating datet-time str for endTime
+// i.e.dur = { h: 1, m: 30 };
+export const generateDateTimeStr = (dateTime, duration) => {
+  const { numericDate: currentDateTime } = formatDateAndTime(
+    new Date().toString(),
+  );
+  const dateTimeString = dateTime === "current" ? currentDateTime : dateTime;
+  const xtraHr = (duration?.h ?? 0) * (60 * 60 * 1000);
+  const xtraMin = (duration?.m ?? 0) * (60 * 1000);
+  const timeStamp = new Date(dateTimeString).getTime() + xtraHr + xtraMin;
 
   const year = new Date(timeStamp).getFullYear();
   const month = new Date(timeStamp).getMonth() + 1;
-  let day = new Date(timeStamp).getDate();
-  let hour = new Date(timeStamp).getHours();
-  let minute = new Date(timeStamp).getMinutes();
+  const day = new Date(timeStamp).getDate();
+  const hour = new Date(timeStamp).getHours();
+  const minute = new Date(timeStamp).getMinutes();
 
   return `${year}-${addZeroToDT(month)}-${addZeroToDT(day)}T${addZeroToDT(
     hour,

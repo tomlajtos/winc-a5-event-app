@@ -155,7 +155,7 @@ export const NewEventPage = () => {
             <DateTimeControl
               label="Start"
               inputName="startTime"
-              defaultValue={generateDateTimeStr(event.startTime)}
+              defaultValue={generateDateTimeStr("current")}
               isRequired={true}
               {...stateProps}
             />
@@ -163,7 +163,7 @@ export const NewEventPage = () => {
             <DateTimeControl
               label="End"
               inputName="endTime"
-              defaultValue={generateDateTimeStr(event.endTime)}
+              defaultValue={generateDateTimeStr("current", { h: 1, m: 0 })}
               isRequired={true}
               {...stateProps}
             />
