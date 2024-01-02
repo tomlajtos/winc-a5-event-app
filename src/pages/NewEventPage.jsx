@@ -1,21 +1,14 @@
 // TODO: break out form to its own component (<NewEventForm/>)
+
 // React and RRouter imports
 import { useState } from "react";
-import { redirect, Form, Link as RRLink } from "react-router-dom";
+import { redirect, Form } from "react-router-dom";
 
 //Context imports
 import { useStaticData } from "../context/StaticDataContext.jsx";
 
 //chakra-ui imports
-import {
-  useToast,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, Stack, Text } from "@chakra-ui/react";
 
 // component imports
 import { PageTitle } from "./PageTitle";
@@ -25,10 +18,11 @@ import { TextareaControl } from "../components/forms/form-controlls/TextareaCont
 import { CheckboxGrControl } from "../components/forms/form-controlls/CheckboxGrControl";
 import { UrlInputControl } from "../components/forms/form-controlls/UrlInputControl";
 import { SelectControl } from "../components/forms/form-controlls/SelectControl";
+import { SaveNewButton } from "../components/forms/buttons/SaveNewButton";
+import { CancelNewButton } from "../components/forms/buttons/CancelNewButton";
 
 // util imports
 import { generateDateTimeStr } from "../util/datetime.js";
-import { validateAll } from "../util/validate.js";
 import { Logger } from "../util/Logger.jsx";
 
 export const action = async ({ request }) => {
@@ -53,7 +47,6 @@ export const NewEventPage = () => {
   const { categories, users } = useStaticData();
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
-  const toast = useToast();
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,
@@ -80,41 +73,8 @@ export const NewEventPage = () => {
         <PageTitle title="New Event" position="sticky" top="95" border="none" />
         {/* form button group */}
         <Stack direction="row" spacing={2} pr={8} justifyContent="end">
-          <Button
-            type="submit"
-            form="new-event-form"
-            variant="base"
-            size="md"
-            colorScheme="purple"
-            onClick={(e) => {
-              // get and use errors for validation that are not yet set as state
-              const validity = validateAll(categoryIds, setInputErrors);
-
-              if (validity.isInvalid) {
-                e.preventDefault();
-                toast({
-                  title: "Event information is incomplete",
-                  description: "Please complete the required fields.",
-                  duration: 4000,
-                  position: "top",
-                  status: "error",
-                  isClosable: true,
-                });
-              }
-            }}
-          >
-            Save
-          </Button>
-          <Button
-            as={RRLink}
-            to="/"
-            // variant="ghost"
-            variant="base"
-            size="md"
-            colorScheme="red"
-          >
-            Cancel
-          </Button>
+          <SaveNewButton categoryIds={categoryIds} setErrors={setInputErrors} />
+          <CancelNewButton />
         </Stack>
       </Flex>
 
