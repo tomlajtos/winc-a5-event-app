@@ -82,7 +82,7 @@ export const NewEventPage = () => {
         <Stack direction="row" spacing={2} pr={8} justifyContent="end">
           <Button
             type="submit"
-            // variant="ghost"
+            form="new-event-form"
             variant="base"
             size="md"
             colorScheme="purple"
@@ -117,12 +117,14 @@ export const NewEventPage = () => {
           </Button>
         </Stack>
       </Flex>
+
       <Container
+        as={Form}
+        method="post"
+        id="new-event-form"
         mx="auto"
         pt={6}
         width={["full", "sm", "container.sm"]}
-        as={Form}
-        method="post"
         direction="column"
         alignItems="center"
       >
