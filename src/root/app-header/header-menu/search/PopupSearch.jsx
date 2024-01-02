@@ -10,19 +10,12 @@ import {
 } from "@chakra-ui/react";
 
 import { useSearchQuery } from "../../../../context/SearchContext";
-import { ModalSearchErrorBoundary } from "../../../../error-boundaries/ModalSearchErrorBoundary";
+import { PopupSearchErrorBoundary } from "../../../../error-boundaries/PopupSearchErrorBoundary";
 import { CompactEventList } from "./CompactEventList";
 // Utils import
 import { Logger } from "../../../../util/Logger";
 
-export const ModalSearch = ({
-  inputRef,
-  isOpen,
-  onClose,
-  // searchQ,
-  // setSearchQ,
-  // categories,
-}) => {
+export const PopupSearch = ({ inputRef, isOpen, onClose }) => {
   const { searchQ, setSearchQ } = useSearchQuery();
   return (
     <Portal>
@@ -32,7 +25,7 @@ export const ModalSearch = ({
         isOpen={isOpen}
         onClose={onClose}
       >
-        <Logger type="render" target="component" name="SearchModal" level={4} />
+        <Logger type="render" target="component" name="PopupSearch" level={4} />
         <ModalOverlay
           backdropFilter="auto"
           backdropBlur="50px"
@@ -60,13 +53,9 @@ export const ModalSearch = ({
               }}
             />
             <Spacer h={6} />
-            <ModalSearchErrorBoundary>
-              <CompactEventList
-                // categories={categories}
-                // searchQ={searchQ}
-                onClose={onClose}
-              />
-            </ModalSearchErrorBoundary>
+            <PopupSearchErrorBoundary>
+              <CompactEventList onClose={onClose} />
+            </PopupSearchErrorBoundary>
           </ModalBody>
         </ModalContent>
       </Modal>

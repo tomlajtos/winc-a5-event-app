@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useDisclosure, Center, Input as CInput } from "@chakra-ui/react";
 
-import { ModalSearch } from "./ModalSearch";
+import { PopupSearch } from "./PopupSearch";
 
 import { Logger } from "../../../../util/Logger";
 import { useSearchQuery } from "../../../../context/SearchContext";
@@ -13,7 +13,7 @@ export const Search = ({ inputProps, props }) => {
   const { pathname } = useLocation();
   const popupSearch = useRef("");
 
-  const closeSearchModal = () => {
+  const closePopupSearch = () => {
     setSearchQ("");
     onClose();
   };
@@ -39,25 +39,22 @@ export const Search = ({ inputProps, props }) => {
           }
         }}
         {...inputProps}
-        onClick={() => (pathname !== "/" ? onOpen() : closeSearchModal())}
+        onClick={() => (pathname !== "/" ? onOpen() : closePopupSearch())}
         onKeyDown={(e) =>
           (() => {
             if (pathname !== "/" && e.key === "Enter") {
               onOpen();
             } else if (pathname !== "/" && e.key === "Escape") {
-              closeSearchModal();
+              closePopupSearch();
             }
           })()
         }
       />
       {pathname !== "/" && (
-        <ModalSearch
+        <PopupSearch
           inputRef={popupSearch}
-          // categories={categories}
           isOpen={isOpen}
-          onClose={closeSearchModal}
-          // searchQ={searchQ}
-          // setSearchQ={setSearchQ}
+          onClose={closePopupSearch}
         />
       )}
     </Center>

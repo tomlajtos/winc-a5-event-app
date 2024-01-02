@@ -100,7 +100,7 @@ const pretifyError = (error) => {
   };
 };
 
-class ModalSearchErrorBoundary extends React.Component {
+class PopupSearchErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -121,4 +121,4 @@ class ModalSearchErrorBoundary extends React.Component {
   }
 }
 
-export { ModalSearchErrorBoundary };
+export { PopupSearchErrorBoundary };
