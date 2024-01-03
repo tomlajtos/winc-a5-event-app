@@ -102,10 +102,6 @@ export const NewEventForm = ({ stateProps }) => {
         isRequired={false}
         {...stateProps}
       />
-      <SaveNewButton
-        categoryIds={stateProps.categoryIds}
-        setErrors={stateProps.setErrors}
-      />
     </Stack>
   );
 };
