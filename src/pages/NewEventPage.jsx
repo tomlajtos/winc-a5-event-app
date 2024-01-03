@@ -19,19 +19,30 @@ import { Logger } from "../util/Logger.jsx";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
+  // turn categoryIds(string) into number array - to addhere to original events.json formatting
   formData.categoryIds = formData.categoryIds
     .split(",")
     .map((id) => Number(id));
 
-  const newEventId = await fetch("http://localhost:3003/events", {
+  // FIX: do not mix async/await with promise chaining like in winc solution:
+  // https://github.com/WincAcademy/fe-react-advanced/blob/main/exercise_routing/sending-data-solution/src/NewPost.jsx
+  // INFO:
+  // While it is possible, any ref I was able to find in regard of mixing the two, was advising against it.
+  // The general recommendation is to use one or the other to avoid confusion.
+  // const newEventId = await fetch("
+  // http://localhost:3003/events", {...})
+  // .then((res) => res.json())
+  // .then((json) => json.id);
+
+  const response = await fetch("http://localhost:3003/events", {
     method: "POST",
     body: JSON.stringify(formData),
     headers: {
       "Content-Type": "application/json; charset=UTF-8",
     },
-  })
-    .then((res) => res.json())
-    .then((json) => json.id);
+  });
+  const json = await response.json();
+  const newEventId = await json.id;
   return redirect(`/event/${newEventId}`);
 };
 
