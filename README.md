@@ -36,7 +36,7 @@ The app has a dashboard like appearance.
 
 ### Event page
 
-- The event page shows the following details of an event: title, start/end time, categories, user(creator) name aand image.
+- The event page shows the following details of an event: title, start/end time, categories, user(creator) name and image.
 - The user can click on an edit button to 'edit' all details shown on the page. This can be done in a modal or on the same page, but not an external page.
 - When edited the back-end data should be updated as well.
 - A 'success' or 'fail' message should be shown after an update was initiated.
@@ -50,4 +50,4 @@ The app has a dashboard like appearance.
 _Optional, not graded._
 
 - The app should have a responsive design.
-- Utilize Context to store the categories and users to lover the number of requests sent to the back-end.
+- Utilize Context to store the categories and users to lower the number of requests sent to the back-end.
