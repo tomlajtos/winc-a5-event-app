@@ -5,7 +5,7 @@ import { Form } from "react-router-dom";
 // Context imports
 import { useStaticData } from "../../context/StaticDataContext.jsx";
 // chakra-ui imports
-import { useToast, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 // component imports
 import { TextInputControl } from "./form-controlls/TextInputControl";
 import { DateTimeControl } from "./form-controlls/DateTimeControl";
@@ -13,6 +13,8 @@ import { TextareaControl } from "./form-controlls/TextareaControl";
 import { CheckboxGrControl } from "./form-controlls/CheckboxGrControl";
 import { UrlInputControl } from "./form-controlls/UrlInputControl";
 import { SelectControl } from "./form-controlls/SelectControl";
+import { SaveEditButton } from "./buttons/SaveEditButton";
+import { CancelEditButton } from "./buttons/CancelEditButton";
 // util imports
 import { generateDateTimeStr } from "../../util/datetime.js";
 
@@ -20,7 +22,6 @@ export const EditEventForm = ({ event, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [inputErrors, setInputErrors] = useState(new Map());
   const { categories, users } = useStaticData();
-  const toast = useToast();
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,
@@ -28,8 +29,6 @@ export const EditEventForm = ({ event, onClose }) => {
     setErrors: setInputErrors,
   };
 
-  // NOTE: 'novalidate' attr. of form prevents the built in validation, useful when custom validation is used
-  //
   return (
     <Flex
       as={Form}
@@ -130,29 +129,8 @@ export const EditEventForm = ({ event, onClose }) => {
         justifyContent="end"
         width="full"
       >
-        <Button
-          type="submit"
-          variant="base"
-          size="lg"
-          onClick={(e) => {
-            if (inputErrors.size > 0) {
-              e.preventDefault();
-              toast({
-                title: "Editing is incomplete",
-                description: "Please complete the required fields.",
-                duration: 4000,
-                position: "top",
-                status: "error",
-                isClosable: true,
-              });
-            }
-          }}
-        >
-          Save
-        </Button>
-        <Button type="button" variant="base" size="lg" onClick={onClose}>
-          Cancel
-        </Button>
+        <SaveEditButton errors={inputErrors} />
+        <CancelEditButton onClick={onClose} />
       </Stack>
     </Flex>
   );
