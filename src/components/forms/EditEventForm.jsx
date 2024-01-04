@@ -1,7 +1,5 @@
 // React and RRouter imports
 import { useState } from "react";
-import { Form } from "react-router-dom";
-
 // Context imports
 import { useStaticData } from "../../context/StaticDataContext.jsx";
 // chakra-ui imports
@@ -17,8 +15,9 @@ import { SaveEditButton } from "./buttons/SaveEditButton";
 import { CancelEditButton } from "./buttons/CancelEditButton";
 // util imports
 import { generateDateTimeStr } from "../../util/datetime.js";
+import { Logger } from "../../util/Logger.jsx";
 
-export const EditEventForm = ({ event, onClose }) => {
+export const EditEventForm = ({ event, fetcher, onClose }) => {
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [inputErrors, setInputErrors] = useState(new Map());
   const { categories, users } = useStaticData();
@@ -31,15 +30,21 @@ export const EditEventForm = ({ event, onClose }) => {
 
   return (
     <Flex
-      as={Form}
+      as={fetcher.Form}
       width="full"
-      method="post"
-      action="edit"
+      method="patch"
+      action={`/event/${event.id}`}
       direction="column"
       alignItems="stretch"
       backgroundColor="transparent"
       onSubmit={(e) => (inputErrors.size > 0 ? e.preventDefault() : onClose())}
     >
+      <Logger
+        type="render"
+        target="component"
+        name="fetcher.Form - edit"
+        level={5}
+      />
       <Stack
         direction="column"
         spacing={5}
