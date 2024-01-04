@@ -8,6 +8,8 @@ export const SaveEditButton = ({ errors }, props) => {
     <Button
       type="submit"
       variant={variant}
+      name="intent"
+      value="edit"
       size={size}
       onClick={(e) => {
         if (errors.size > 0) {
