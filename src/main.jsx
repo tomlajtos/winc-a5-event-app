@@ -15,10 +15,10 @@ import {
   EventsPage,
   loader as eventsLoader,
 } from "./pages/events-page/EventsPage";
+
 import { EventPage, loader as eventLoader } from "./pages/EventPage";
 import { NewEventPage, action as createEvent } from "./pages/NewEventPage";
-import { action as deleteEvent } from "./io/delete.jsx";
-import { action as editEvent } from "./io/edit.jsx";
+import { action as eventActions } from "./io/mutate.js";
 
 const router = createBrowserRouter([
   {
@@ -38,19 +38,12 @@ const router = createBrowserRouter([
             path: "/event/:eventId",
             element: <EventPage />,
             loader: eventLoader,
+            action: eventActions,
           },
           {
             path: "/event/new",
             element: <NewEventPage />,
             action: createEvent,
-          },
-          {
-            path: "/event/:eventId/edit",
-            action: editEvent,
-          },
-          {
-            path: "/event/:eventId/delete",
-            action: deleteEvent,
           },
         ],
       },
