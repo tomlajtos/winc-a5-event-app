@@ -12,11 +12,10 @@ import { EventsList } from "./EventsList";
 import { fetchData } from "../../util/fetch.js";
 import { Logger } from "../../util/Logger";
 
-export const loader = async () =>
-  fetchData([{ name: "events", path: "/events" }]);
+export const loader = async () => fetchData("/events");
 
 export const EventsPage = () => {
-  const { events } = useLoaderData();
+  const events = useLoaderData();
 
   return (
     <Box

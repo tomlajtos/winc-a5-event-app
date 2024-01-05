@@ -33,7 +33,7 @@ import { Logger } from "../util/Logger";
 
 // Loader function to fetch event specific data (dynamic path)
 export const loader = async ({ params }) =>
-  fetchData([{ name: "event", path: `/events/${params.eventId}` }]);
+  fetchData(`/events/${params.eventId}`, `/event/${params.eventId}`);
 
 export const EventPage = () => {
   const { event } = useLoaderData();
