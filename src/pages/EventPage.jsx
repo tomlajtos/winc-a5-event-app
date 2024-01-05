@@ -1,6 +1,6 @@
 // TODO: split up to sub components, improve styles, responsive styles
 
-import { useLoaderData, Form } from "react-router-dom";
+import { useLoaderData, useFetcher } from "react-router-dom";
 import {
   useDisclosure,
   Avatar,
@@ -36,8 +36,20 @@ export const loader = async ({ params }) =>
   fetchData(`/events/${params.eventId}`, `/event/${params.eventId}`);
 
 export const EventPage = () => {
-  const { event } = useLoaderData();
+  const event = useLoaderData();
   const { categories, users } = useStaticData();
+
+  const fetcher = useFetcher();
+  // console.log("fetcher on event page> data:", fetcher.data);
+  // console.log("fetcher on event page> state:", fetcher.state);
+  // console.log("fetcher @ event:", fetcher.formData);
+
+  const actionIntent = fetcher.formData?.get("intent");
+  const actionResponse = fetcher.data?.response;
+  const actionState = fetcher.state;
+  const actionDataTitle = fetcher.formData?.get("title");
+  console.log(actionIntent, actionResponse, actionState, fetcher.formMethod);
+
   const editModal = useDisclosure();
   const deleteModal = useDisclosure();
 
@@ -45,6 +57,16 @@ export const EventPage = () => {
   const end = formatDateAndTime(event.endTime);
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
 
+  // TODO: implement toast on failed or successful event editing
+  if (actionIntent) {
+    // console.log(`Event is being ${actionIntent}ed, not returning any JSX`);
+    if (actionIntent === "delete" && actionState === "loading") {
+      console.log("** Toast: EVENT DELETED:", actionDataTitle, "**");
+    } else {
+      console.log(actionResponse);
+    }
+    return null;
+  }
   return (
     <Box
       className="event-page-container"
@@ -154,11 +176,6 @@ export const EventPage = () => {
               )}
             </Stack>
           </Stack>
-          {/* <Stack direction="row" justify="end" justifySelf="end"> */}
-          {/* edit event */}
-          {/* <Button variant="base" onClick={editModal.onOpen}> */}
-          {/*   Edit */}
-          {/* </Button> */}
           <Portal>
             <Modal
               isOpen={editModal.isOpen}
@@ -177,18 +194,14 @@ export const EventPage = () => {
                   <ModalCloseButton />
                   <ModalBody background="transparent">
                     <EditEventForm
+                      fetcher={fetcher}
                       event={event}
-                      categories={categories}
-                      users={users}
                       onClose={editModal.onClose}
                     />
                   </ModalBody>
                 </ModalContent>
               </ModalOverlay>
             </Modal>
-            {/* <Button variant="base" onClick={deleteModal.onOpen}> */}
-            {/*   Delete */}
-            {/* </Button> */}
             <Modal isOpen={deleteModal.isOpen} onClose={deleteModal.onClose}>
               <ModalOverlay
                 bg="blackAlpha.500"
@@ -203,9 +216,14 @@ export const EventPage = () => {
                   </ModalBody>
                   <ModalFooter>
                     <Stack direction="row" spacing={4}>
-                      <Form method="post" action="delete">
+                      <fetcher.Form
+                        method="delete"
+                        action={`/event/${event.id}`}
+                      >
                         <Button
                           type="submit"
+                          name="intent"
+                          value="delete"
                           variant="permDel"
                           size="sm"
                           onMouseEnter={(e) =>
@@ -219,7 +237,7 @@ export const EventPage = () => {
                         >
                           Delete
                         </Button>
-                      </Form>
+                      </fetcher.Form>
                       <Button
                         text="Cancel"
                         variant="base"
