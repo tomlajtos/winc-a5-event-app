@@ -1,25 +1,22 @@
 import { useRouteError } from "react-router-dom";
-import {
-  Center,
-  Container,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { ErrorUi } from "./ErrorUi";
+import { pretifyError } from "../util/error";
 
 export const ErrorBoundary = () => {
   const error = useRouteError();
-  console.error("ErrorBoundary\n", error);
+  const prettyError = pretifyError(error);
   return (
-    <Center minH="100vh">
-      <Container size="lg">
-        <Alert status="error" display="flex" flexDirection="column">
-          <AlertIcon boxSize="69px" pb={4} />
-          <AlertTitle>The shit has hit the fan...!</AlertTitle>
-          <AlertDescription>{error.message}</AlertDescription>
-        </Alert>
-      </Container>
-    </Center>
+    <Box
+      className="event-page-container"
+      width="100%"
+      maxW="1280px"
+      marginX="auto"
+      bg="gray.900"
+      pt="10%"
+      flexGrow="1"
+    >
+      <ErrorUi error={prettyError} />;
+    </Box>
   );
 };
