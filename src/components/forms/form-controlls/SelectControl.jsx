@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { Select } from "../../ui/Select";
-import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
+import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
 
 export const SelectControl = ({
   label,

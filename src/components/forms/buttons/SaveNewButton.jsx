@@ -1,5 +1,5 @@
 import { useToast, Button } from "@chakra-ui/react";
-import { validateAll } from "../../../util/validate";
+import { validateAll } from "../../../io/validate";
 
 export const SaveNewButton = ({ categoryIds, setErrors }, props) => {
   const toast = useToast();

@@ -9,7 +9,7 @@ import { Box } from "@chakra-ui/react";
 import { PageTitle } from "../PageTitle";
 import { EventsList } from "./EventsList";
 // Util imports
-import { fetchData } from "../../util/fetch.js";
+import { fetchData } from "../../io/fetch.js";
 import { Logger } from "../../util/Logger";
 
 export const loader = async () => fetchData("/events");

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getMultiData } from "../util/fetch.js";
-import { createCategoryIdsArr } from "../util/inputUtils.js";
+import { getMultiData } from "../io/fetch.js";
+import { createCategoryIdsArr } from "../io/inputUtils.js";
 import { Logger } from "../util/Logger";
 
 export const StaticDataContext = createContext({});

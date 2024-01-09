@@ -1,6 +1,7 @@
 // React imports
 import React from "react";
 import ReactDOM from "react-dom/client";
+
 // React Router imports
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Chakra-Ui imports
@@ -27,25 +28,23 @@ const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       {
+        path: "/",
+        element: <EventsPage />,
+        loader: eventsLoader,
         errorElement: <ErrorBoundary />,
-        children: [
-          {
-            path: "/",
-            element: <EventsPage />,
-            loader: eventsLoader,
-          },
-          {
-            path: "/event/:eventId",
-            element: <EventPage />,
-            loader: eventLoader,
-            action: eventActions,
-          },
-          {
-            path: "/event/new",
-            element: <NewEventPage />,
-            action: createEvent,
-          },
-        ],
+      },
+      {
+        path: "/event/:eventId",
+        element: <EventPage />,
+        loader: eventLoader,
+        action: eventActions,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "/event/new",
+        element: <NewEventPage />,
+        action: createEvent,
+        errorElement: <ErrorBoundary />,
       },
     ],
   },

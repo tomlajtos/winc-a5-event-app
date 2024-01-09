@@ -5,7 +5,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Input } from "../../ui/Input";
-import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
+import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
 
 export const DateTimeControl = ({
   label,

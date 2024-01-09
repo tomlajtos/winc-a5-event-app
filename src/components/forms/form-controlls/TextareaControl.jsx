@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { Textarea } from "../../ui/Textarea";
-import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
+import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
 
 export const TextareaControl = ({
   label,

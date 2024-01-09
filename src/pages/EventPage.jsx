@@ -24,11 +24,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { formatDateAndTime } from "../util/datetime.js";
-import { fetchData } from "../util/fetch.js";
 import { useStaticData } from "../context/StaticDataContext.jsx";
 import { EditEventForm } from "../components/forms/EditEventForm.jsx";
 import { PageTitle } from "./PageTitle";
 import phantom from "../assets/phantom_mask.svg";
+// Util and I/O imports
+import { fetchData } from "../io/fetch";
 import { Logger } from "../util/Logger";
 
 // Loader function to fetch event specific data (dynamic path)

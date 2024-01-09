@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { Input } from "../../ui/Input";
-import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
+import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
 
 export const UrlInputControl = ({
   label,

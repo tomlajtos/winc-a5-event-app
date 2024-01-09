@@ -2,7 +2,7 @@
 
 // React and RRouter imports
 import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { redirect, useActionData } from "react-router-dom";
 
 //Context imports
 
@@ -16,6 +16,7 @@ import { CancelNewButton } from "../components/forms/buttons/CancelNewButton.jsx
 import { NewEventForm } from "../components/forms/NewEventForm.jsx";
 // util imports
 import { Logger } from "../util/Logger.jsx";
+import { log } from "../util/log.js";
 
 export const action = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData());
@@ -33,20 +34,34 @@ export const action = async ({ request }) => {
   // http://localhost:3003/events", {...})
   // .then((res) => res.json())
   // .then((json) => json.id);
-
-  const response = await fetch("http://localhost:3003/events", {
-    method: "POST",
-    body: JSON.stringify(formData),
-    headers: {
-      "Content-Type": "application/json; charset=UTF-8",
-    },
-  });
-  const json = await response.json();
-  const newEventId = await json.id;
-  return redirect(`/event/${newEventId}`);
+  try {
+    const response = await fetch("http://localhost:3003/vents", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    });
+    if (response.ok) {
+      const json = await response.json();
+      const newEventId = await json.id;
+      return redirect(`/event/${newEventId}`);
+    } else {
+      log.error("Fetch error('POST') @add>action:", response);
+      log.process(`Redirect to: "/"`);
+      // return redirect("/");
+      return response;
+    }
+  } catch (e) {
+    log.error("Error @NewEvnetPage>action>catch:", e);
+    throw new Error(e.message);
+  }
 };
 
 export const NewEventPage = () => {
+  const actionData = useActionData;
+  const formData = actionData;
+  log.value("formData(from action) @NewEventPage:", formData);
   const [categoryIds, setCategoryIds] = useState([]);
   const [inputErrors, setInputErrors] = useState(new Map());
   const stateProps = {

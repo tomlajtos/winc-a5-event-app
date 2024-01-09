@@ -1,7 +1,7 @@
 import { FormControl, FormErrorMessage, Stack, Text } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/Checkbox";
-import { validate, getErrMsg, isInvalidInput } from "../../../util/validate";
-import { handleCheckboxChanges } from "../../../util/inputUtils.js";
+import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
+import { handleCheckboxChanges } from "../../../io/inputUtils.js";
 
 export const CheckboxGrControl = ({
   grTitle,

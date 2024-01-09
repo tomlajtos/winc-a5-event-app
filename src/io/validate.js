@@ -1,4 +1,5 @@
 import { createIdArrOnChange } from "./inputUtils.js";
+import { log } from "../util/log.js";
 
 // TODO: add jsDOC comments
 const formatInputName = (iN) => {
