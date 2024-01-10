@@ -7,28 +7,24 @@ export const StaticDataContext = createContext({});
 StaticDataContext.displayName = "StaticDataContext";
 
 export const StaticDataContextProvider = ({ children }) => {
-  const [categories, setCategories] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [categories, setCategories] = useState(null);
+  const [users, setUsers] = useState(null);
+  const categoryIds = categories ? createCategoryIdsArr(categories) : null;
 
   useEffect(() => {
-    let ignore = false;
-    if (!ignore) {
-      getMultiData([
-        { path: "/categories", setState: setCategories },
-        { path: "/users", setState: setUsers },
-      ]);
-    }
-    return () => {
-      ignore = true;
-    };
+    getMultiData([
+      { path: "/categories", setState: setCategories },
+      { path: "/users", setState: setUsers },
+    ]);
   }, []);
 
-  if (categories.length && users.length) {
-    const categoryIds = createCategoryIdsArr(categories);
-    const value = { categories, categoryIds, users };
+  if (!categories && !users) {
+    return null;
+  } else {
+    const staticData = { categories, categoryIds, users };
 
     return (
-      <StaticDataContext.Provider value={value}>
+      <StaticDataContext.Provider value={staticData}>
         <Logger
           type="render"
           target="context"
