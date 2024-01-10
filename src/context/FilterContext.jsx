@@ -7,7 +7,7 @@ FilterContext.displayName = "FilterContext";
 export const FilterContextProvider = ({ children, categoryIds }) => {
   const [filters, setFilters] = useState([...categoryIds]);
 
-  return (
+  return filters ? (
     <FilterContext.Provider value={{ filters, setFilters }}>
       <Logger
         type="render"
@@ -17,7 +17,7 @@ export const FilterContextProvider = ({ children, categoryIds }) => {
       />
       {children}
     </FilterContext.Provider>
-  );
+  ) : null;
 };
 
 export const useFilters = () => {
