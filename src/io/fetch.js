@@ -1,85 +1,72 @@
-import { redirect } from "react-router-dom";
+import { json as rrjson } from "react-router-dom";
+import { log } from "../util/log";
 // TODO: thrown errors are ignored, only component level error is picked up by error boundaries and React Router
 // find a solution if possible
 
 // TODO: add jsDOC comments
 // TODO: use less complicated fetching for single resource only
 export const getData = async (endpointPath, setState) => {
+  //example: ( e.Path: "/categories", setState: setCategories )
   const baseUrl = "http://localhost:3003";
-  const promise = await fetch(`${baseUrl}${endpointPath}`);
-  // console.log(promise);
-  if (promise.ok) {
-    let data = await promise.json();
-    // console.log("data in getData", data);
+  const response = await fetch(`${baseUrl}${endpointPath}`);
+  if (response.ok) {
+    let data = await response.json();
     setState(data);
   } else {
-    console.warn(promise);
-    throw new Error(`${promise.status}:(${promise.statusText})`);
+    log.error("Error @getData>promise:", response);
+    throw new Error(`${response.status}:(${response.statusText})`);
   }
 };
 
 // TODO: add jsDOC comments
 export const getMultiData = (endpointArr) => {
-  //example: [{  path: "/categories", setCallback: setCategories}]
+  //example: [{  path: "/categories", setState: setCategories}]
   endpointArr.map((endpoint) => getData(endpoint.path, endpoint.setState));
 };
 
-export const fetchData = async (endpoint, redirRout) => {
+export const fetchData = async (endpoint) => {
   const baseUrl = "http://localhost:3003";
   const url = `${baseUrl}${endpoint}`;
-  console.log("fetching data");
-  console.log("fetchData:", endpoint);
-  console.log("fetchData:", redirRout);
 
+  // using try/catch - this way it can chatch more then just http errors
+  // still needs conditional react router `json` throw in `try` so it can be retreaved in `catch`
+  // r.r. json is imported as rrjson because of the use of promise proto method .json()
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      return response.status === 404
-        ? redirect("/")
-        : console.log("response not ok", response);
+      log.error("throwing shit");
+      // name, error, stack is for prettyError and ErrorUi
+      throw rrjson(
+        {
+          name: `Error: ${response.statusText}`,
+          message: "There was an error while talking to the server...",
+          stack: `Error: HTTP error\n    ${response.status} -${response.statusText} (${response.url})`,
+          url: response.url,
+        },
+        {
+          status: response.status,
+          statusText: response.statusText,
+          url: response.url,
+        },
+      );
     }
-    console.log("response", response);
+
     const json = await response.json();
-    console.log("json", json);
+    log.value("json fetch", json);
     return json;
   } catch (e) {
-    throw new Error("Catch me if you can...", e.message);
+    const data = await e.json();
+
+    console.log("fetch catch:", data);
+    throw rrjson(
+      {
+        name: data.name,
+        message: data.message,
+        stack: e.stack,
+        resStack: data.stack,
+        url: data.url,
+      },
+      { status: e.status, statusText: e.statusText, url: e.url },
+    );
   }
 };
-
-// TODO: Revisit: I'm note sure if I like this
-// helper function for React Router loader function
-// FIX: do not mix async/await and promise chaining
-// TODO: replace this with a `getMultiDataObj` or similar
-// export const fetchDataOld = async (
-//   endpoints = [{ name: "categories", path: "/categories" }],
-// ) => {
-//   const baseUrl = "http://localhost:3003";
-//   // reduce can't handle async
-//   const fetchD = async (endpoint) =>
-//     await fetch(`${baseUrl}${endpoint.path}`).then((r) =>
-//       // r.json());
-//
-//       // /* ?for error? */
-//       {
-//         if (r.ok) {
-//           return r.json();
-//         } else {
-//           console.warn(r);
-//           throw new Error(`${r.status} (${r.statusText})`);
-//         }
-//       },
-//     );
-//
-//   const dataObj = endpoints.reduce((obj, endpoint) => {
-//     Object.assign(obj, { [endpoint.name]: "" });
-//     obj[endpoint.name] = fetchD(endpoint);
-//     return obj;
-//   }, {});
-//
-//   // re-assign dataObj key values with their awaited self, as they are resolved Promise objects
-//   for (let key in dataObj) {
-//     dataObj[key] = await dataObj[key];
-//   }
-//   return dataObj;
-// };
