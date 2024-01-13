@@ -1,3 +1,5 @@
+// import { log } from "./log";
+
 // TODO: add jsDOC comments
 //
 // function to format date-time unti strings from single digit to double digit (i.e. 1 to 01)
@@ -31,7 +33,9 @@ export const formatDateAndTime = (dateStr) => {
     // timeZoneName: "shortOffset",
   };
 
-  const numericDate = date.toLocaleDateString("en-GB", numericDateOpt);
+  const numericDate = date
+    .toLocaleDateString("en-GB", numericDateOpt)
+    .replaceAll("/", "-");
   const shortDate = date.toLocaleString("en-GB", shortDateOpt);
   const longDate = date.toLocaleDateString("en-GB", longDateOpt);
   const time = date.toLocaleTimeString("en-GB", timeOpt);
@@ -51,13 +55,11 @@ export const formatDateAndTime = (dateStr) => {
 // add duration as an object when generating datet-time str for endTime
 // i.e.dur = { h: 1, m: 30 };
 export const generateDateTimeStr = (dateTime, duration) => {
-  const { numericDate: currentDateTime } = formatDateAndTime(
-    new Date().toString(),
-  );
-  const dateTimeString = dateTime === "current" ? currentDateTime : dateTime;
+  const dateTimeStamp =
+    dateTime === "current" ? Date.now() : new Date(dateTime).getTime();
   const xtraHr = (duration?.h ?? 0) * (60 * 60 * 1000);
   const xtraMin = (duration?.m ?? 0) * (60 * 1000);
-  const timeStamp = new Date(dateTimeString).getTime() + xtraHr + xtraMin;
+  const timeStamp = dateTimeStamp + xtraHr + xtraMin;
 
   const year = new Date(timeStamp).getFullYear();
   const month = new Date(timeStamp).getMonth() + 1;
