@@ -34,13 +34,12 @@ export const fetchData = async (endpoint) => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      log.error("throwing shit");
       // name, error, stack is for prettyError and ErrorUi
       throw rrjson(
         {
-          name: `Error: ${response.statusText}`,
+          name: "Fetch error",
           message: "There was an error while talking to the server...",
-          stack: `Error: HTTP error\n    ${response.status} -${response.statusText} (${response.url})`,
+          stack: `Error: HTTP error - ${response.status}\n  ${response.statusText} > ${response.url}\n  at fetchData(async) fetch.js (url:${response.url})`,
           url: response.url,
         },
         {
@@ -57,7 +56,6 @@ export const fetchData = async (endpoint) => {
   } catch (e) {
     const data = await e.json();
 
-    console.log("fetch catch:", data);
     throw rrjson(
       {
         name: data.name,
