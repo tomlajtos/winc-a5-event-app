@@ -1,30 +1,41 @@
 // TODO: > vertical card layout for small screens
-//
+
+// React and React Router imports
+import { useMemo } from "react";
+import { useRouteLoaderData } from "react-router-dom";
+// chakra-ui imports
 import { Heading } from "@chakra-ui/react";
 import {
   Card,
   CardBody,
   CardFooter,
+  Center,
   Image,
   Stack,
   Text,
   Tag,
 } from "@chakra-ui/react";
-
-import { useStaticData } from "../../context/StaticDataContext.jsx";
-
+// Util and i/o imports
 import { formatDateAndTime } from "../../util/datetime.js";
+import { Logger } from "../../util/Logger";
+import { log } from "../../util/log.js";
+// Asset imports
 import placeholderImgUrl from "../../assets/eventImgPlaceholder_300.svg";
 
-//import { Logger } from "../../util/Logger";
-
 export const EventCard = ({ event }) => {
-  const { categories } = useStaticData();
+  const { categories } = useRouteLoaderData("root");
+
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);
-  const start = formatDateAndTime(event.startTime);
-  const end = formatDateAndTime(event.endTime);
+
+  const start = useMemo(
+    () => formatDateAndTime(event.startTime),
+    [event.startTime],
+  );
+  const end = useMemo(() => formatDateAndTime(event.endTime), [event.endTime]);
+
+  const image = event.image === "" ? placeholderImgUrl : event.image;
 
   return (
     <Card
@@ -36,12 +47,17 @@ export const EventCard = ({ event }) => {
       py={4}
       px={3}
     >
-      <Image
-        boxSize="206px"
-        objectFit="cover"
-        src={event.image}
-        fallbackSrc={placeholderImgUrl}
-      />
+      {image ? (
+        <Image
+          boxSize="206px"
+          objectFit="cover"
+          src={event.image === "" ? placeholderImgUrl : event.image}
+        />
+      ) : (
+        <Center boxSize="206px" bg="gray.300">
+          Loading...
+        </Center>
+      )}
       <Stack flex={1}>
         <CardBody pt={0} pb={2} pr={0}>
           <Heading size="lg" noOfLines={1}>
