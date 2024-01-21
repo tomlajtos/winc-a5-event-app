@@ -1,14 +1,13 @@
-import { Link as RRLink } from "react-router-dom";
+import { Link as RRLink, useRouteLoaderData } from "react-router-dom";
 import { Stack, StackItem } from "@chakra-ui/react";
 import { EventCardSmall } from "./EventCardSmall";
 import { useData } from "../../../../hooks/useData";
 import { useSearchQuery } from "../../../../context/SearchContext";
-import { useStaticData } from "../../../../context/StaticDataContext";
 import { Logger } from "../../../../util/Logger";
 
 export const CompactEventList = ({ onClose }) => {
   const events = useData("/events");
-  const { categories } = useStaticData();
+  const { categories } = useRouteLoaderData("root");
   const { searchQ } = useSearchQuery();
 
   const searchResults = events.filter(

@@ -1,9 +1,9 @@
 import { Stack, Tag } from "@chakra-ui/react";
-import { useStaticData } from "../../context/StaticDataContext";
+import { useRouteLoaderData } from "react-router-dom";
 import { Logger } from "../../util/Logger";
 
 export const EventCategories = ({ event }) => {
-  const { categories } = useStaticData();
+  const { categories } = useRouteLoaderData("root");
   return (
     <Stack direction={"row"} spacing={2} pt={1}>
       <Logger

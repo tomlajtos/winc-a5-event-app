@@ -1,4 +1,4 @@
-import { useStaticData } from "../../../../context/StaticDataContext.jsx";
+import { useRouteLoaderData } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -10,18 +10,16 @@ import {
 } from "@chakra-ui/react";
 import { formatDateAndTime } from "../../../../util/datetime.js";
 import placeholderImgUrl from "../../../../assets/eventImgPlaceholder_300.svg";
-
-import { log } from "../../../../util/Logger";
+import { Logger } from "../../../../util/Logger.jsx";
 
 export const EventCardSmall = ({ event }) => {
-  const { categories } = useStaticData();
+  const { categories } = useRouteLoaderData("root");
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);
 
-  log.val("categories", eventCategories);
   eventCategories.map((c) => console.log("cat", c.slice(0, 2)));
   return (
     <Card
@@ -31,6 +29,12 @@ export const EventCardSmall = ({ event }) => {
       width={["350px"]}
       textAlign="left"
     >
+      <Logger
+        type="render"
+        target="component"
+        name="EventCardSmall"
+        level={5}
+      />
       <Image
         boxSize="100px"
         objectFit="cover"

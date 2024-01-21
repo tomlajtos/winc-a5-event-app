@@ -1,7 +1,7 @@
 // React and RRouter imports
 import { useState } from "react";
+import { useRouteLoaderData } from "react-router-dom";
 // Context imports
-import { useStaticData } from "../../context/StaticDataContext.jsx";
 // chakra-ui imports
 import { Flex, Stack, Text } from "@chakra-ui/react";
 // component imports
@@ -18,9 +18,9 @@ import { generateDateTimeStr } from "../../util/datetime.js";
 import { Logger } from "../../util/Logger.jsx";
 
 export const EditEventForm = ({ event, fetcher, onClose }) => {
+  const { categories, users } = useRouteLoaderData("root");
   const [categoryIds, setCategoryIds] = useState(event.categoryIds);
   const [inputErrors, setInputErrors] = useState(new Map());
-  const { categories, users } = useStaticData();
   const stateProps = {
     categoryIds: categoryIds,
     setCategoryIds: setCategoryIds,

@@ -1,10 +1,14 @@
 import { createContext, useContext, useState } from "react";
+import { useOutletContext, useRouteLoaderData } from "react-router-dom";
 import { Logger } from "../util/Logger";
 
 export const FilterContext = createContext({});
 FilterContext.displayName = "FilterContext";
 
-export const FilterContextProvider = ({ children, categoryIds }) => {
+export const FilterContextProvider = ({ children /*categoryIds*/ }) => {
+  const { categoryIds } = useRouteLoaderData("root");
+  console.log("FILTER C categoryIds from OutletContext", categoryIds);
+
   const [filters, setFilters] = useState([...categoryIds]);
 
   return filters ? (
@@ -23,7 +27,7 @@ export const FilterContextProvider = ({ children, categoryIds }) => {
 export const useFilters = () => {
   const context = useContext(FilterContext);
   if (!context) {
-    throw new Error("useStaticData must be used within FilterContext");
+    throw new Error("useFilters must be used within FilterContext");
   }
   return context;
 };

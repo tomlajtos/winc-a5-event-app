@@ -1,10 +1,11 @@
+import { useRouteLoaderData } from "react-router-dom";
 import { Avatar, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import { useStaticData } from "../../context/StaticDataContext";
 import phantom from "../../assets/phantom_mask.svg";
 import { Logger } from "../../util/Logger";
 export const EventCreator = ({ event }) => {
-  const { users } = useStaticData();
+  const { users } = useRouteLoaderData("root");
   const [user] = users.filter((user) => user.id === Number(event.createdBy));
+
   return (
     <Stack>
       <Logger type="render" target="component" name="Event Creator" level={4} />

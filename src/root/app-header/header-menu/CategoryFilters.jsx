@@ -1,12 +1,12 @@
 import React from "react";
+import { useRouteLoaderData } from "react-router-dom";
 import { MenuItemOption, MenuOptionGroup } from "@chakra-ui/react";
-import { useStaticData } from "../../../context/StaticDataContext";
 import { useFilters } from "../../../context/FilterContext";
 import { Logger } from "../../../util/Logger";
 
 export const CategoryFilters = () => {
   const { filters, setFilters } = useFilters();
-  const { categories } = useStaticData();
+  const { categories } = useRouteLoaderData("root");
 
   const handleFilterChange = (filters, inputValue, setFn) => {
     let newFilters = [...filters];

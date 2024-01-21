@@ -1,9 +1,9 @@
 // React and RRouter imports
 // import { useState } from "react";
 import { Form } from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 
 // Context imports
-import { useStaticData } from "../../context/StaticDataContext.jsx";
 // chakra-ui imports
 import { Stack, Text } from "@chakra-ui/react";
 // component imports
@@ -18,7 +18,7 @@ import { SaveNewButton } from "./buttons/SaveNewButton.jsx";
 import { generateDateTimeStr } from "../../util/datetime.js";
 
 export const NewEventForm = ({ stateProps }) => {
-  const { categories, users } = useStaticData();
+  const { categories, users } = useRouteLoaderData("root");
 
   return (
     <Stack

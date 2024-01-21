@@ -1,6 +1,15 @@
-// TODO: split up to sub components, improve styles, responsive styles
+// TODO:
+// - split up to sub components, improve styles, responsive styles
+// - verify formData in EventPage action > mutate.js
+// - implement toasters to notify user about successful/failed event editing/deletion?
 
-import { useLoaderData, useFetcher } from "react-router-dom";
+// React and React Router imports
+import {
+  useFetcher,
+  useLoaderData,
+  useRouteLoaderData,
+} from "react-router-dom";
+// chakra-ui imports
 import {
   useDisclosure,
   Avatar,
@@ -26,10 +35,13 @@ import {
 import { formatDateAndTime } from "../util/datetime.js";
 import { useStaticData } from "../context/StaticDataContext.jsx";
 import { EditEventForm } from "../components/forms/EditEventForm.jsx";
+// Context and custom hook imports
+// Component imports
 import { PageTitle } from "./PageTitle";
 import phantom from "../assets/phantom_mask.svg";
 // Util and I/O imports
 import { fetchData } from "../io/fetch";
+import { log } from "../util/log";
 import { Logger } from "../util/Logger";
 
 // Loader function to fetch event specific data (dynamic path)
@@ -38,7 +50,6 @@ export const loader = async ({ params }) =>
 
 export const EventPage = () => {
   const event = useLoaderData();
-  const { categories, users } = useStaticData();
 
   const fetcher = useFetcher();
   // console.log("fetcher on event page> data:", fetcher.data);
@@ -52,6 +63,7 @@ export const EventPage = () => {
   console.log(actionIntent, actionResponse, actionState, fetcher.formMethod);
 
   const editModal = useDisclosure();
+  const { categories, users } = useRouteLoaderData("root");
   const deleteModal = useDisclosure();
 
   const start = formatDateAndTime(event.startTime);
