@@ -25,26 +25,31 @@ import { action as eventActions } from "./io/mutate.js";
 const router = createBrowserRouter([
   {
     path: "/",
+    id: "root",
     element: <Root />,
     errorElement: <ErrorBoundary />,
     children: [
       {
         element: <GlobalLayout />,
+        id: "globalLayout",
         errorElement: <ErrorBoundary />,
         children: [
           {
+            id: "events",
             element: <EventsPage />,
             index: true,
             loader: eventsLoader,
           },
           {
             path: "/event/:eventId",
+            id: "event",
             element: <EventPage />,
             loader: eventLoader,
             action: eventActions,
           },
           {
             path: "/event/new",
+            id: "newEvent",
             element: <NewEventPage />,
             action: createEvent,
           },
