@@ -11,6 +11,7 @@ import { theme } from "./styles/index";
 import { StaticDataContextProvider } from "./context/StaticDataContext.jsx";
 // App component imports
 import { Root } from "./root/Root";
+import { GlobalLayout } from "./root/GlobalLayout.jsx";
 import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
 import {
   EventsPage,
@@ -28,23 +29,26 @@ const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
     children: [
       {
-        path: "/",
-        element: <EventsPage />,
-        loader: eventsLoader,
+        element: <GlobalLayout />,
         errorElement: <ErrorBoundary />,
-      },
-      {
-        path: "/event/:eventId",
-        element: <EventPage />,
-        loader: eventLoader,
-        action: eventActions,
-        errorElement: <ErrorBoundary />,
-      },
-      {
-        path: "/event/new",
-        element: <NewEventPage />,
-        action: createEvent,
-        errorElement: <ErrorBoundary />,
+        children: [
+          {
+            element: <EventsPage />,
+            index: true,
+            loader: eventsLoader,
+          },
+          {
+            path: "/event/:eventId",
+            element: <EventPage />,
+            loader: eventLoader,
+            action: eventActions,
+          },
+          {
+            path: "/event/new",
+            element: <NewEventPage />,
+            action: createEvent,
+          },
+        ],
       },
     ],
   },
