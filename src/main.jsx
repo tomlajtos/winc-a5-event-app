@@ -8,9 +8,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "./styles/index";
 // Context imports
-import { StaticDataContextProvider } from "./context/StaticDataContext.jsx";
 // App component imports
-import { Root } from "./root/Root";
+import { Root, loader as rootLoader } from "./root/Root";
 import { GlobalLayout } from "./root/GlobalLayout.jsx";
 import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
 import {
@@ -27,6 +26,7 @@ const router = createBrowserRouter([
     path: "/",
     id: "root",
     element: <Root />,
+    loader: rootLoader,
     errorElement: <ErrorBoundary />,
     children: [
       {
@@ -63,9 +63,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <StaticDataContextProvider>
-        <RouterProvider router={router} />
-      </StaticDataContextProvider>
+      <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>,
 );
