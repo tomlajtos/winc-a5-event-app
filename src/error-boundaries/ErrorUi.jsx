@@ -13,15 +13,18 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
+import { prettifyError } from "../util/error";
+// import { Logger } from "../util/Logger";
 
-export const ErrorUi = ({ error }) => {
+export const ErrorUi = ({ err }) => {
+  const error = prettifyError(err);
+
   const { isOpen, onToggle } = useDisclosure();
-  console.log("ErrorUi > error.stackLines:", error.stackLines);
   return (
     <Container maxW="3xl">
       <Alert
         status="error"
-        px={2}
+        px={[2, 4, 8]}
         py={4}
         display="flex"
         flexDirection="column"
@@ -30,9 +33,11 @@ export const ErrorUi = ({ error }) => {
         rounded="2xl"
       >
         <AlertIcon boxSize="69px" pb={4} />
+
         <AlertTitle fontSize="lg">
           Something ain&apos;t right here...
         </AlertTitle>
+
         <AlertDescription>
           <Flex direction="column" align="start" maxW="full">
             <Button
@@ -48,23 +53,37 @@ export const ErrorUi = ({ error }) => {
             </Button>
             <Spacer height={2} />
             <Collapse in={isOpen} animateOpacity>
-              <Text textAlign="left" fontWeight={600}>
-                {error.name}
-                {":"}
+              <Text
+                py={2}
+                textAlign="left"
+                fontWeight={600}
+                fontSize="lg"
+                textDecor="underline"
+              >
+                {error.name}{" "}
               </Text>
-              <Text pb={2}>{error.message}</Text>
+
+              <Text pb={2}>
+                {error.status
+                  ? `${error.status} - ${error.statusText}: ${error.message}`
+                  : error.message}
+              </Text>
               <Box bg="gray.900" opacity="60%" p={4}>
-                {error.stackLines.map((line) => (
-                  <Text
-                    key={line.line}
-                    textAlign="left"
-                    maxW="full"
-                    my={1}
-                    color="white"
-                  >
-                    {line.line}
-                  </Text>
-                ))}
+                {error.stackLines.map((line, index) =>
+                  index !== 0 ? (
+                    <div key={`stack-fragment_${index}`}>
+                      <Text
+                        key={`stack-line_${index}`}
+                        textAlign="left"
+                        maxW="full"
+                        my={1}
+                        color="white"
+                      >
+                        {line}
+                      </Text>
+                    </div>
+                  ) : null,
+                )}
               </Box>
             </Collapse>
           </Flex>
