@@ -177,3 +177,38 @@ export const validateAll = (idArr, setFn) => {
 
   return { isInvalid: errors.size, errors };
 };
+
+// NOTE:
+// prev method validated data during form-render while new approach validates data in action > before updated/created event renders
+// previous method combined built in input validation methods with custom validation methods (for checkbox group of event categories)
+// TODO:
+// validate new/edit event form data in RR actions after submit before fetch ==> return an error object from the action if error is found
+// TODO: Add jsDOC comments
+export const validateFormDataInAction = (formDataObject, errorObject) => {
+  const formEntries = Object.entries(formDataObject);
+  log.value("formEntries", formEntries);
+
+  // validate for missing input values
+  const hasMissingValue = (entry) => {
+    if (!entry[1]) {
+      console.log(entry[0], "missingValueError");
+      errorObject.error[entry[0]] =
+        `Please provide a valid input for '${formatInputName(entry[0])}'`;
+      errorObject.type = "inputError";
+      errorObject.name = "Missing or invalid value!";
+      errorObject.message = "Please complete the required fields!";
+    }
+    console.log(
+      "Validation > all good",
+      entry[0],
+      ":",
+      entry[1],
+      "inverse",
+      !entry[1],
+    );
+  };
+
+  // TODO: validate for invalid input
+
+  formEntries.map((entry) => hasMissingValue(entry));
+};
