@@ -5,16 +5,22 @@ import { log } from "../util/log.js";
 const formatInputName = (iN) => {
   switch (iN) {
     case "startTime": {
-      return "start time";
+      return "Start Time";
     }
     case "endTime": {
-      return "end time";
+      return "End Time";
     }
     case "categoryIds": {
-      return "category ";
+      return "Categories";
+    }
+    case "createdBy": {
+      return "Created by";
+    }
+    case "image": {
+      return "Image URL";
     }
     default: {
-      return iN;
+      return `${iN[0].toUpperCase()}${iN.slice(1)}`;
     }
   }
 };
@@ -23,7 +29,7 @@ const formatInputName = (iN) => {
 const setErrMsg = (errors, iN) => {
   const missingErrMsg = `Event ${formatInputName(iN)} is required.`;
   const invalidErrMsg = `Please provide a valid value for ${formatInputName(
-    iN
+    iN,
   )}`;
   return errors.includes("valueMissing") && errors.length === 1
     ? missingErrMsg
