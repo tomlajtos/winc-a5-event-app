@@ -1,0 +1,82 @@
+import { useEffect } from "react";
+// import { useToast } from "@chakra-ui/react";
+import { log } from "../util/log";
+
+export const Toaster = ({ fetcher, toast }) => {
+  // const toast = useToast();
+  const editOkId = "edit-ok-toast";
+  const editFailId = "edit-fail-toast";
+  let error = fetcher.data.error;
+
+  switch (fetcher.state) {
+    case "idle": {
+      console.log("fetcher idle:", fetcher.data ?? {});
+      break;
+    }
+    case "submitting": {
+      console.log("fetcher sub:", fetcher.data ?? {});
+      break;
+    }
+    case "loading": {
+      console.log("fetcher loading:", fetcher.data ?? {});
+    }
+  }
+  // if (fetcher.state === "idle" && error) {
+  //   error = null;
+  // }
+
+  // useEffect(() => {
+  // let ignore = false;
+  // if (fetcher.state === "loading" && fetcher.data) {
+  log.value("Toaster > effect > top", [
+    ["fetcher:", fetcher],
+    ["--- details ", "---"],
+    ["data:", fetcher.data],
+    ["state", fetcher.state],
+    ["formMethod", fetcher.formMethod],
+    ["fetcher.data.error", error],
+  ]);
+
+  if (/*!ignore &&*/ fetcher.data === "PATCH") {
+    log.process("method: PATCH confirmed - Toaster");
+    log.value("fetcher.state:", fetcher.state);
+    log.value("error:", fetcher.data?.error, error);
+    if (
+      !error &&
+      // fetcher.state === "loading" &&
+      !toast.isActive(editOkId)
+    ) {
+      toast({
+        id: editOkId,
+        title: "Editing was successful",
+        description: `Event was modified.`,
+        duration: 3000,
+        position: "top",
+        status: "success",
+        isClosable: true,
+      });
+      log.process("~~~~~~~ TOASTING ~~~~~~~");
+    }
+    console.log("toast effect before error:", fetcher.state, "error", error);
+    if (
+      error &&
+      // fetcher.state === "loading" &&
+      !toast.isActive(editFailId)
+    ) {
+      console.log("in error toast:", error);
+      toast({
+        id: editFailId,
+        title: error.name,
+        description: error.message,
+        duration: 3000,
+        position: "top",
+        status: "error",
+        isClosable: true,
+      });
+      log.process("~~~~~~~ TOASTING ~~~~~~~");
+    }
+  }
+  // }
+  // return () => (ignore = true);
+  // }, [fetcher.state, fetcher.data?.requestMethod, error]);
+};
