@@ -7,6 +7,7 @@ export const SaveEditButton = (props) => {
   return (
     <Button
       type="submit"
+      form="edit-event-form"
       variant={variant}
       name="intent"
       value="edit"
