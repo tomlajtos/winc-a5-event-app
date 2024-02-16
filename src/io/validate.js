@@ -1,220 +1,142 @@
-import { createIdArrOnChange } from "./inputUtils.js";
-import { log } from "../util/log.js";
+// Array of input names that are not required, to make custom required validation coherent accross all inputs
+// mainly is necessary because of custom checkbox group in `CheckboxGrControl` where setting the required attr on the checkbox
+// would make all 3 required, however only on is at minimum
+const notRequired = ["image"];
 
-// TODO: add jsDOC comments
-const formatInputName = (iN) => {
+// Helper functions
+// TODO: Learn & add jsDOC comments
+// iN -- inputName
+const generateErrorMessage = (iN, missing) => {
   switch (iN) {
     case "startTime": {
-      return "Start Time";
+      return missing
+        ? "Please type/select a start time!"
+        : "Please type/select a valid start time!";
     }
     case "endTime": {
-      return "End Time";
+      return missing
+        ? "Please type/select an end time!"
+        : "Please type/select a valid end time!";
     }
     case "categoryIds": {
-      return "Categories";
+      return "Plese select at least one category";
     }
     case "createdBy": {
-      return "Created by";
+      return "Please select a user from the list!";
     }
     case "image": {
-      return "Image URL";
+      return missing
+        ? "Please provide an image URL!"
+        : "Please provide a valid URL for the image!";
     }
     default: {
-      return `${iN[0].toUpperCase()}${iN.slice(1)}`;
+      return missing
+        ? `Please type in an ${iN}!`
+        : `Please provide a valid ${iN}!`;
     }
   }
 };
 
-// TODO: add jsDOC comments
-const setErrMsg = (errors, iN) => {
-  const missingErrMsg = `Event ${formatInputName(iN)} is required.`;
-  const invalidErrMsg = `Please provide a valid value for ${formatInputName(
-    iN,
-  )}`;
-  return errors.includes("valueMissing") && errors.length === 1
-    ? missingErrMsg
-    : invalidErrMsg;
-};
+// TODO: Learn & add jsDOC comments
+const hasMissingValue = (formEntry) =>
+  (!formEntry[1] || formEntry[1].length === 0) &&
+  !notRequired.includes(formEntry[0]);
 
-// TODO: add jsDOC comments
-const getErrorsFromValidState = (vS) => {
-  const errors = [];
-  for (let key in vS) {
-    if (vS[key] && key !== "valid") {
-      errors.push(key);
+// TODO: Learn & add jsDOC comments
+const isInvalidString = (entryValue) =>
+  entryValue && typeof entryValue !== "string" && !/\w+/gi.test(entryValue);
+
+// TODO: Learn & add jsDOC comments
+const isInvalidUrl = (entryValue) => {
+  if (entryValue) {
+    try {
+      const url = new URL(entryValue);
+      return url ? url.protocol === "http:" : url.protocol !== "https:";
+    } catch (e) {
+      return true;
     }
   }
-  return errors;
+  return false;
 };
 
-// TODO: add jsDOC comments
-export const getErrMsg = (errors, name) => {
-  if (errors.has(name)) {
-    const msg = errors.get(name).message;
-    return msg;
-  }
-};
+// TODO: Learn & add jsDOC comments
+const isInvalidDateTime = (entryValue) => entryValue && !new Date(entryValue);
 
-// TODO: add jsDOC comments
-export const isInvalidInput = (errors, name) => {
-  return errors.has(name);
-};
-
-// TODO: add jsDOC comments
-export const validate = (errorsMap, input, /*isChecked*/ idArr, setFn) => {
-  console.log("%c validation START: ", "color:white;background:green", "\n");
-  console.log("%c input_name: ", "color:navy;background:#90CDF4", input.name);
-
-  const vS = input.validity; // [v]alidity[S]tate
-  const iN = input.name; //[i]nput[N]ame
-  const eM = new Map(errorsMap); // [e]rrors[M]ap
-  let isRequired = input.required;
-  const errors = getErrorsFromValidState(vS);
-  const cboxErrors = [];
-  let isValid = !errors.length;
-
-  // check if input is a checkbox and validate that first
-  if (iN === "categoryIds") {
-    console.log(
-      "%c VALIDATING CHEKBOX",
-      "color:yellow; font-weight:bold;background:blue"
-    );
-
-    if (createIdArrOnChange(idArr, input).length) {
-      console.log("%cCheckbox group errors:", "color:#38A95A", eM, cboxErrors);
-      eM.has(iN)
-        ? eM.delete(iN)
-        : console.log("%cCheckbox group input is valid", "color:#38A169");
-
-      setFn(eM);
-    } else {
-      cboxErrors.push("valueMissing");
-
-      eM.set(iN, {
-        errors: cboxErrors,
-        message: setErrMsg(cboxErrors, iN),
-        required: true,
-      });
-
-      setFn(eM);
+// TODO: Learn & add jsDOC comments
+const hasInvalidValue = (formEntry) => {
+  switch (formEntry[0]) {
+    case "image": {
+      return isInvalidUrl(formEntry[1]);
     }
-
-    console.log("%c validation END:", "color:white;background:red");
-    return;
-  }
-
-  if (isValid) {
-    if (eM.has(iN)) {
-      console.log(
-        `%c ${iN} valid? | in errors // exp: true > `,
-        "color:#48BB78",
-        isValid
-      );
-      console.log(
-        "%c Removing from errorsMap",
-        "color:orange;font-weight:bold"
-      );
-      eM.delete(iN);
-    } else if (isValid) {
-      console.log("%c valid // exp: true > ", "color:#48BB78", isValid);
-      console.log("%cvalidation END:", "color:white;background:red");
-      return;
+    case "startTime":
+    case "endTime": {
+      return isInvalidDateTime(formEntry[1]);
     }
-  } else {
-    if (eM.has(iN)) {
-      console.warn(
-        `%c${iN} valid? | in errors // exp: false > `,
-        "color:#FC8181",
-        isValid,
-        "| already in errorsMap"
-      );
-      if (
-        eM.get(iN).errors.length === errors.length &&
-        eM.get(iN).errors.every((err) => errors.includes(err))
-      ) {
-        console.warn("same error, input:", iN, eM.get(iN));
-        setFn(eM);
-
-        console.log("%cvalidation END:", "color:white;background:red");
-        return;
-      } else {
-        console.warn(
-          "input valid? | in errors | new error type // exp: false >",
-          isValid,
-          "errors have changed"
-        );
-
-        eM.set(iN, {
-          errors,
-          message: setErrMsg(errors, iN),
-          required: isRequired,
-        });
-      }
-    } else {
-      console.warn(
-        "input valid? | not in errors // exp: false >",
-        isValid,
-        "setting up inputErrors"
-      );
-
-      eM.set(iN, {
-        errors,
-        message: setErrMsg(errors, iN),
-        required: isRequired,
-      });
+    default: {
+      return isInvalidString(formEntry[1]);
     }
   }
-  console.log("%csetting new inputErrors state to", "color:pink", eM);
-  setFn(eM);
-  console.log("%cvalidation END:", "color:white;background:red");
 };
 
-export const validateAll = (idArr, setFn) => {
-  let errors = new Map();
-  const elements = Array.from(
-    document.querySelectorAll("form")[0].elements
-  ).filter((elem) => elem.attributes["name"]);
-
-  elements.forEach((input) =>
-    validate(errors, input, idArr, (errMap) => (errors = new Map([...errMap])))
-  );
-
-  setFn(errors);
-
-  return { isInvalid: errors.size, errors };
+// TODO: Learn & add jsDOC comments
+const generateErrorEntries = (formEntry, missing, errorObject) => {
+  errorObject.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
 };
 
-// NOTE:
-// prev method validated data during form-render while new approach validates data in action > before updated/created event renders
-// previous method combined built in input validation methods with custom validation methods (for checkbox group of event categories)
-// TODO:
-// validate new/edit event form data in RR actions after submit before fetch ==> return an error object from the action if error is found
-// TODO: Add jsDOC comments
+// TODO: Learn & add jsDOC comments
+const generateTypeErrorProps = (data, errorObject) => {
+  errorObject.errorType
+    ? errorObject.errorType
+    : (errorObject.errorType = "Input Error");
+  errorObject.formIntent = data.intent;
+  errorObject.message = "Please complete the required fields!";
+};
+
+// NOTE: (to self,mostly)
+// previous method validated data during form-render while new approach validates data in router action,
+// before updated/created event rendered
+// previous method combined built in input validation methods with custom validation method (for checkbox group of event categories)
+// ---
+// new method:
+// validates new/edit event form data in router `action(s)` after form submit, but before fetch
+// The `action` returns an error object if missing/invalid input or HTTP error occurs
+
+// TODO: Learn & add jsDOC comments
 export const validateFormDataInAction = (formDataObject, errorObject) => {
   const formEntries = Object.entries(formDataObject);
-  log.value("formEntries", formEntries);
 
-  // validate for missing input values
-  const hasMissingValue = (entry) => {
-    if (!entry[1]) {
-      console.log(entry[0], "missingValueError");
-      errorObject.error[entry[0]] =
-        `Please provide a valid input for '${formatInputName(entry[0])}'`;
-      errorObject.type = "inputError";
-      errorObject.name = "Missing or invalid value!";
-      errorObject.message = "Please complete the required fields!";
+  formEntries.map((formEntry) => {
+    const missingValue = hasMissingValue(formEntry);
+    const invalidValue = hasInvalidValue(formEntry);
+
+    if (missingValue) {
+      generateErrorEntries(formEntry, missingValue, errorObject);
+      if (!errorObject.formIntent || !errorObject.message) {
+        console.log("INTENT:", formDataObject.intent);
+        generateTypeErrorProps(formDataObject, errorObject);
+      }
     }
-    console.log(
-      "Validation > all good",
-      entry[0],
-      ":",
-      entry[1],
-      "inverse",
-      !entry[1],
-    );
-  };
 
-  // TODO: validate for invalid input
+    if (invalidValue) {
+      generateErrorEntries(formEntry, missingValue, errorObject);
+      if (!errorObject.formIntent || !errorObject.message) {
+        console.log("INTENT:", formDataObject.intent);
+        generateTypeErrorProps(formDataObject, errorObject);
+      }
+    }
+  });
+};
 
-  formEntries.map((entry) => hasMissingValue(entry));
+// no validation function for HTTP error,
+// it is cought if response comes back with an error code in `action`
+// helper function to generate an error object that is returned from the `action` in case of an error
+// TODO: Learn & add jsDOC comments
+export const generateHttpError = (error, response, formData) => {
+  error.errorType = "HTTP Error";
+  error.status = response.status;
+  error.statusText = response.statusText;
+  error.message = `${error.status} - ${error.statusText}`;
+  error.errorComment = "This is not your fault. Please try again later.";
+  error.data = formData;
+  return error;
 };
