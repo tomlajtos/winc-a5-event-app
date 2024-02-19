@@ -3,7 +3,6 @@ export const styles = {
     "#root": {
       display: "flex",
       flexDirection: "column",
-      bg: "red.600",
       minHeight: "100vh",
     },
   },
