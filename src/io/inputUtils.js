@@ -1,41 +1,12 @@
 // Categories related checkbox handler and support functions
 // TODO: add jsDOC comments
-export const initCheckedStateArr = (template, initValue = true) => {
-  const arr = [];
-  for (let i of template) {
-    arr.push(initValue);
-  }
-  return arr;
-};
-
-// TODO: add jsDOC comments
 export const createCategoryIdsArr = (categories) => {
   return categories.map((category) => Number(category.id));
 };
 
-// TODO: add jsDOC comments
-export const createCheckedStateArr = (template, values) => {
-  const state = initCheckedStateArr(template, false);
-  values.map((e) => (state[Number(e) - 1] = true));
-
-  return state;
-};
-
-// TODO: add jsDOC comments
-export const createIdArrOnChange = (idArr, input) => {
-  let localIds = [...idArr];
-
-  input.checked
-    ? (localIds = Array.from(new Set([Number(input.id), ...localIds])))
-    : (localIds = localIds.filter((id) => id !== Number(input.id)));
-
-  return localIds;
-};
-
-// TODO: add jsDOC comments
-export const handleCheckboxChanges = (e, setFn2) => {
-  console.log("%ccheckbox onChange", "color:#D53F8C;background:white");
-
+// TODO: learn & add jsDOC comments
+// superseded version of checkbox change handler for checkbox groups
+export const handleCheckboxChanges = (e, setFn) => {
   const id = e.target.id;
   let value = e.target.value.length ? e.target.value.split(",") : [];
 
@@ -49,15 +20,29 @@ export const handleCheckboxChanges = (e, setFn2) => {
   e.target.value = value;
 
   // set the array of category IDs as the new checkedIds
-  if (setFn2) {
-    setFn2(value);
-  }
+  setFn(value);
 };
 
-// // TODO: add jsDOC comments
-// // generic function to create an array of checked checkbox Ids from a Map of {id,boolean} key - value pairs
-// export const createCheckedIdsArr = (checkedMap) =>
-//   Array.from(checkedMap).reduce(
-//     (ids, cat) => (cat[1] === true ? (ids = [...ids, cat[0]]) : ids),
-//     []
-//   );
+// TODO: learn & add jsDOC comments
+// new current version of checkbox change handler for checkbox groups
+export const handleCheckboxGroupChange = (grValue, inputValue, setFn) => {
+  let newGrValue = [...grValue];
+  if (!newGrValue.includes(inputValue)) {
+    newGrValue = Array.from(new Set([inputValue, ...newGrValue]));
+  } else {
+    newGrValue = newGrValue.filter((q) => q !== inputValue);
+  }
+  setFn(newGrValue);
+  console.log("new final", newGrValue);
+};
+
+// TODO: add jsDOC comments
+export const handleFilterChange = (filters, inputValue, setFn) => {
+  let newFilters = [...filters];
+  if (!newFilters.includes(inputValue)) {
+    newFilters = Array.from(new Set([Number(inputValue), ...newFilters]));
+  } else {
+    newFilters = newFilters.filter((q) => q !== Number(inputValue));
+  }
+  setFn(newFilters);
+};
