@@ -14,29 +14,26 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { prettifyError } from "../util/error";
-// import { Logger } from "../util/Logger";
 
 export const ErrorUi = ({ err }) => {
   const error = prettifyError(err);
-
   const { isOpen, onToggle } = useDisclosure();
+
   return (
     <Container maxW="3xl">
       <Alert
         status="error"
         px={[2, 4, 8]}
-        py={4}
+        py={6}
         display="flex"
         flexDirection="column"
         color="gray.50"
         bg="blackAlpha.700"
         rounded="2xl"
       >
-        <AlertIcon boxSize="69px" pb={4} />
+        <AlertIcon boxSize="69px" pb={6} />
 
-        <AlertTitle fontSize="lg">
-          Something ain&apos;t right here...
-        </AlertTitle>
+        <AlertTitle fontSize="lg">Something went wrong...</AlertTitle>
 
         <AlertDescription>
           <Flex direction="column" align="start" maxW="full">
@@ -68,7 +65,7 @@ export const ErrorUi = ({ err }) => {
                   ? `${error.status} - ${error.statusText}: ${error.message}`
                   : error.message}
               </Text>
-              <Box bg="gray.900" opacity="60%" p={4}>
+              <Box bg="gray.900" opacity="70%" p={4}>
                 {error.stackLines.map((line, index) =>
                   index !== 0 ? (
                     <div key={`stack-fragment_${index}`}>
