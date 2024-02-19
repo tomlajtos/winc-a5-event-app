@@ -1,40 +1,18 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { getMultiData } from "../io/fetch.js";
-import { createCategoryIdsArr } from "../io/inputUtils.js";
+import { createContext, useContext, useMemo } from "react";
 import { Logger } from "../util/Logger";
 
 export const StaticDataContext = createContext({});
 StaticDataContext.displayName = "StaticDataContext";
 
-export const StaticDataContextProvider = ({ children }) => {
-  const [categories, setCategories] = useState(null);
-  const [users, setUsers] = useState(null);
-  const categoryIds = categories ? createCategoryIdsArr(categories) : null;
-
-  useEffect(() => {
-    getMultiData([
-      { path: "/categories", setState: setCategories },
-      { path: "/users", setState: setUsers },
-    ]);
-  }, []);
-
-  if (!categories && !users) {
-    return null;
-  } else {
-    const staticData = { categories, categoryIds, users };
-
-    return (
-      <StaticDataContext.Provider value={staticData}>
-        <Logger
-          type="render"
-          target="context"
-          name="Static.Data.Context.Provider"
-          level={0}
-        />
+export const StaticDataContextProvider = ({ value, children }) => {
+  const contextValue = useMemo(() => value, [value]);
+  return (
+    <Logger type="context" name="StaticDataContext" level={0}>
+      <StaticDataContext.Provider value={contextValue}>
         {children}
       </StaticDataContext.Provider>
-    );
-  }
+    </Logger>
+  );
 };
 
 export const useStaticData = () => {
