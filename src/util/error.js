@@ -1,13 +1,17 @@
 // TODO: learn & add jsDOC comments
-const generatePrettyErrorObj = (error) => {
+const generatePrettyErrorObj = (error, cause) => {
   const stackLinesArr = error.stack.split("\n");
+  const causeProps = {
+    status: cause ? cause.status : "",
+    statusText: cause ? cause.statusText : "",
+    url: cause ? cause.url : "",
+    data: cause ? cause.data : null,
+  };
   return {
     name: error.name,
-    status: error.status,
-    statusText: error.statusText,
     message: error.message,
     stackLines: stackLinesArr,
-    data: error.data,
+    ...causeProps,
   };
 };
 
@@ -17,6 +21,5 @@ export const prettifyError = (error) => {
   if (!error.cause) {
     return generatePrettyErrorObj(error);
   }
-  const customError = error.cause;
-  return generatePrettyErrorObj(customError);
+  return generatePrettyErrorObj(error, error.cause);
 };

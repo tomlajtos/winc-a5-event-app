@@ -17,7 +17,7 @@ export const ErrorBoundary = () => {
       color="white"
       flex={"1"}
     >
-      <ErrorUi err={error} />;
+      <ErrorUi error={error} />;
     </Box>
   );
 };

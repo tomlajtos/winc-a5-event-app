@@ -11,12 +11,14 @@ import {
   Container,
   Flex,
   Spacer,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import { prettifyError } from "../util/error";
 
-export const ErrorUi = ({ err }) => {
-  const error = prettifyError(err);
+export const ErrorUi = ({ error }) => {
+  const { name, message, stackLines, status, statusText, url } =
+    prettifyError(error);
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -50,35 +52,36 @@ export const ErrorUi = ({ err }) => {
             </Button>
             <Spacer height={2} />
             <Collapse in={isOpen} animateOpacity>
-              <Text
-                py={2}
-                textAlign="left"
-                fontWeight={600}
-                fontSize="lg"
-                textDecor="underline"
-              >
-                {error.name}{" "}
-              </Text>
-
-              <Text pb={2}>
-                {error.status
-                  ? `${error.status} - ${error.statusText}: ${error.message}`
-                  : error.message}
-              </Text>
+              <Stack py={2} spacing={2}>
+                <Text textAlign="left" fontWeight={600} fontSize="lg">
+                  {message}
+                </Text>
+                <Text textAlign="left" fontSize="lg" textDecor="underline">
+                  {name}:
+                </Text>
+                <Text textAlign="left" pl={2}>
+                  <Text as="span" mr={3} fontWeight="bolder">
+                    {status && status}
+                  </Text>
+                  <Text as="span" mr={2}>
+                    {statusText && statusText}
+                  </Text>
+                  <Text as="span">{url && `(${url})`}</Text>
+                </Text>
+              </Stack>
               <Box bg="gray.900" opacity="70%" p={4}>
-                {error.stackLines.map((line, index) =>
+                {stackLines.map((line, index) =>
                   index !== 0 ? (
-                    <div key={`stack-fragment_${index}`}>
-                      <Text
-                        key={`stack-line_${index}`}
-                        textAlign="left"
-                        maxW="full"
-                        my={1}
-                        color="white"
-                      >
-                        {line}
-                      </Text>
-                    </div>
+                    <Text
+                      key={`stack-line_${index}`}
+                      textAlign="left"
+                      maxW="full"
+                      my={1}
+                      color="white"
+                    >
+                      {">> "}
+                      {line}
+                    </Text>
                   ) : null,
                 )}
               </Box>
