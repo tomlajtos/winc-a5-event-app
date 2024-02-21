@@ -1,72 +1,62 @@
-import { json as routerJson } from "react-router-dom";
 import { log } from "../util/log";
 
 // TODO: learn & add jsDOC comments
-const handleHttpError = (response, routerJson) => {
+const handleHttpError = (response) => {
   if (!response.ok) {
-    // throw custom React-Router-json >> name, error, stack is for prettyError and ErrorUi
-    console.log("handleHttpError > !ok response", response);
-    throw routerJson(
-      {
-        name: "HTTP Error",
-        message: "There was an error while talking to the server...",
-        stack: `Error: HTTP error - ${response.status}\n  ${response.statusText} > ${response.url}\n  at (async) 'fetchData' in 'fetch.js' (url:${response.url})`,
-        url: response.url,
-      },
-      {
-        status: response.status,
-        statusText: response.statusText,
-        url: response.url,
-      },
-    );
+    const isServerError = response.status >= 500;
+    let errorMessage = "";
+    switch (response.status) {
+      case 404: {
+        errorMessage = "Sorry, I don't have what you're looking for...";
+        break;
+      }
+      default: {
+        errorMessage = isServerError
+          ? "There was an error while talking to the server..."
+          : "It seems theat something was wrong with your request...,";
+      }
+    }
+    const error = new Error(errorMessage, { cause: response });
+    error.name = "HTTP Error";
+    throw error;
   }
 };
 
 // TODO: learn & add jsDOC comments
-const handleCatch = async (e) => {
-  // throw custom Error if e is a RRouter JSON Response
-  if (!e.ok) {
-    const data = await e.json();
-    throw new Error(data.message, {
-      cause: {
-        ...data,
-        status: e.status,
-        statusText: e.statusText,
-        url: e.url,
-      },
-    });
-  }
-  // throw error if error is not a response
-  throw new Error(e);
-};
-
-// TODO: learn & add jsDOC comments
-export const getData = async (endpoint, setState) => {
+export const getData = async (endpoint, setState, throwAsyncError) => {
   //example: (endpoint: "/categories", setState: setCategories)
   const baseUrl = "http://localhost:3003";
   const url = `${baseUrl}/${endpoint}`;
   try {
     const response = await fetch(url);
-    handleHttpError(response, routerJson);
-    let data = await response.json();
+    handleHttpError(response);
+    const data = await response.json();
     setState(data);
   } catch (e) {
-    await handleCatch(e);
+    console.error(e);
+    log.error(e);
+    throwAsyncError(e);
   }
 };
 
 // TODO: learn & add jsDOC comments
-export const getMultiData = (endpointArr) => {
-  //example: (endpointArr: [{  path: "/categories", setState: setCategories}])
-  endpointArr.map((endpoint) => getData(endpoint[0], endpoint[1]));
+export const getMultiData = (endpointArr, throwAsyncError) => {
+  //example: (endpointArr: [[ "/categories",  setCategories],...], fn to handle async error)
+  endpointArr.map((endpoint) =>
+    getData(endpoint[0], endpoint[1], throwAsyncError),
+  );
 };
 
 // TODO: learn & add jsDOC comments
-export const getAllMultiData = (endpoints, setState) => {
-  //example: (endpoints: ["categories","users"], setState: setCategories)
+export const getAllData = (endpoints, setState, throwAsyncError) => {
+  //example: (endpoints: ["categories","users"], setState: setData)
   const baseUrl = "http://localhost:3003";
   const multiFetch = endpoints.map((endpoint) => {
-    return () => fetch(`${baseUrl}/${endpoint}`).then((data) => data.json());
+    return () =>
+      fetch(`${baseUrl}/${endpoint}`).then((response) => {
+        handleHttpError(response);
+        return response.json();
+      });
   });
   Promise.all([...multiFetch.map((fetchFn) => fetchFn())])
     .then((args) => {
@@ -78,7 +68,8 @@ export const getAllMultiData = (endpoints, setState) => {
       );
     })
     .catch((e) => {
-      throw new Error(e);
+      console.error(e);
+      throwAsyncError(e);
     });
 };
 
@@ -87,16 +78,14 @@ export const fetchData = async (endpoint) => {
   const baseUrl = "http://localhost:3003";
   const url = `${baseUrl}/${endpoint}`;
 
-  // using try/catch - this way it can chatch more then just http errors
-  // still needs conditional react router `json` throw in `try` so it can be retreaved in `catch`
-  // r.r. json is imported as rrjson because of the use of promise proto method .json()
   try {
     const response = await fetch(url);
-    handleHttpError(response, routerJson);
-
+    handleHttpError(response);
     const json = await response.json();
     return json;
   } catch (e) {
-    await handleCatch(e);
+    console.error(e);
+    log.error(e);
+    throw e;
   }
 };
