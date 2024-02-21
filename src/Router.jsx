@@ -17,35 +17,41 @@ export const router = createBrowserRouter(
       errorElement: <ErrorBoundary />,
       children: [
         {
-          path: "/",
-          id: "events",
-          loader: eventsLoader,
-          element: <EventsPage />,
-        },
-        {
-          path: "event/:eventId",
-          id: "event",
-          async lazy() {
-            let { EventPage, loader } = await import("./pages/EventPage");
-            let { action } = await import("./io/mutate");
-            return {
-              loader: loader,
-              action: action,
-              element: <EventPage />,
-            };
-          },
-        },
-        {
-          path: "event/new",
-          id: "newEvent",
-          async lazy() {
-            let { NewEventPage } = await import("./pages/NewEventPage");
-            let { action } = await import("./io/add");
-            return {
-              action: action,
-              element: <NewEventPage />,
-            };
-          },
+          id: "rootOutletErrorBoundary",
+          errorElement: <ErrorBoundary />,
+          children: [
+            {
+              path: "/",
+              id: "events",
+              loader: eventsLoader,
+              element: <EventsPage />,
+            },
+            {
+              path: "event/:eventId",
+              id: "event",
+              async lazy() {
+                let { EventPage, loader } = await import("./pages/EventPage");
+                let { action } = await import("./io/mutate");
+                return {
+                  loader: loader,
+                  action: action,
+                  element: <EventPage />,
+                };
+              },
+            },
+            {
+              path: "event/new",
+              id: "newEvent",
+              async lazy() {
+                let { NewEventPage } = await import("./pages/NewEventPage");
+                let { action } = await import("./io/add");
+                return {
+                  action: action,
+                  element: <NewEventPage />,
+                };
+              },
+            },
+          ],
         },
       ],
     },
