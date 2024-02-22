@@ -6,19 +6,25 @@ import { StaticDataContextProvider } from "./context/StaticDataContext";
 import { Box, Center } from "@chakra-ui/react";
 import { getMultiData } from "./io/fetch";
 import { createCategoryIdsArr } from "./io/inputUtils";
+import { useMyAsyncError } from "./hooks/useMyAsyncError";
 
-export const App = (/*{ children }*/) => {
+export const App = () => {
   const [categories, setCategories] = useState(null);
   const [users, setUsers] = useState(null);
   const categoryIds = categories ? createCategoryIdsArr(categories) : null;
+  const throwAsyncError = useMyAsyncError();
 
-  // a component outside router seems the best way for data fatching that should only happen once
+  // a component outside router seems the best way for data fatching
+  // that should only happen once at inital app render
   // this is the sole puprpose of the App component
   useEffect(() => {
-    getMultiData([
-      ["categories", setCategories],
-      ["users", setUsers],
-    ]);
+    getMultiData(
+      [
+        ["categories", setCategories],
+        ["users", setUsers],
+      ],
+      throwAsyncError,
+    );
   }, []);
 
   const contextValue = { categories, categoryIds, users };
@@ -42,7 +48,7 @@ export const App = (/*{ children }*/) => {
       <StaticDataContextProvider value={contextValue}>
         <FilterContextProvider>
           <SearchContextProvider>
-            <Router fallbackElement={<AppFallback />} />
+            <Router />
           </SearchContextProvider>
         </FilterContextProvider>
       </StaticDataContextProvider>
