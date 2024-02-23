@@ -1,38 +1,43 @@
-import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { FormControl, FormLabel, Text } from "@chakra-ui/react";
 import { Select } from "../../ui/Select";
-import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
+import { useStaticData } from "../../../context/StaticDataContext";
 
 export const SelectControl = ({
   label,
   inputName,
   defaultValue,
-  isRequired,
-  users,
-  categoryIds,
   errors,
-  setErrors,
+  showAsRequired,
 }) => {
+  const { users } = useStaticData();
+
   return (
-    <FormControl
-      isRequired={isRequired}
-      isInvalid={isInvalidInput(errors, inputName)}
-    >
-      <FormLabel fontWeight="bolder">{label}</FormLabel>
+    <FormControl>
+      <FormLabel fontWeight="bolder">
+        {label}
+        {showAsRequired && (
+          <Text as="span" pl={1} color="red.500">
+            *
+          </Text>
+        )}
+      </FormLabel>
       <Select
         name={inputName}
         placeholder="Select a user"
         defaultValue={defaultValue}
-        onChange={(e) => validate(errors, e.target, categoryIds, setErrors)}
-        onInvalid={(e) => e.preventDefault()}
       >
         <option name="createdBy">{"Phantom of the EventApp"}</option>
-        {users.map((user) => (
+        {users?.map((user) => (
           <option key={user.id} name="createdBy" value={user.id}>
             {user.name}
           </option>
         ))}
       </Select>
-      <FormErrorMessage>{getErrMsg(errors, inputName)}</FormErrorMessage>
+      {errors && errors[inputName] && (
+        <Text color="red.500" fontStyle="italic" py={1} px={2}>
+          {errors[inputName]}
+        </Text>
+      )}
     </FormControl>
   );
 };

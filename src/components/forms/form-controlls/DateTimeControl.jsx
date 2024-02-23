@@ -1,45 +1,36 @@
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Stack,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
 import { Input } from "../../ui/Input";
-import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
 
 export const DateTimeControl = ({
   label,
   inputName,
   defaultValue,
-  isRequired,
-  categoryIds,
   errors,
-  setErrors,
+  showAsRequired,
 }) => {
   return (
-    <FormControl
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems={"start"}
-      isRequired={isRequired}
-      isInvalid={isInvalidInput(errors, inputName)}
-    >
+    <FormControl display={"flex"} flexDirection={"column"} alignItems={"start"}>
       <Stack direction="row" spacing={2} align="center" width="full">
         <FormLabel margin={0} px={2}>
           {label}
+          {showAsRequired && (
+            <Text as="span" pl={1} color="red.500">
+              *
+            </Text>
+          )}
         </FormLabel>
         <Input
           type="datetime-local"
           name={inputName}
           defaultValue={defaultValue}
           flex={1}
-          onChange={(e) => validate(errors, e.target, categoryIds, setErrors)}
-          onInvalid={(e) => e.preventDefault()}
         />
       </Stack>
-      <FormErrorMessage alignSelf="end" py={1}>
-        {getErrMsg(errors, inputName)}
-      </FormErrorMessage>
+      {errors && errors[inputName] && (
+        <Text color="red.500" fontStyle="italic" py={1} px={2}>
+          {errors[inputName]}
+        </Text>
+      )}
     </FormControl>
   );
 };

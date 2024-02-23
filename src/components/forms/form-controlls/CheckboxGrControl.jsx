@@ -1,24 +1,21 @@
-import { FormControl, FormErrorMessage, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { FormControl, Stack, Text } from "@chakra-ui/react";
 import { Checkbox } from "../../ui/Checkbox";
-import { validate, getErrMsg, isInvalidInput } from "../../../io/validate";
-import { handleCheckboxChanges } from "../../../io/inputUtils.js";
+import { useStaticData } from "../../../context/StaticDataContext";
+import { handleCheckboxGroupChange } from "../../../io/inputUtils";
 
 export const CheckboxGrControl = ({
   grTitle,
   inputName,
   showAsRequired,
-  categories,
-  categoryIds,
-  setCategoryIds,
+  defaultValue,
   errors,
-  setErrors,
 }) => {
+  const { categories } = useStaticData();
+  const [groupValue, setGroupValue] = useState(defaultValue);
+
   return (
-    <FormControl
-      as={"fieldset"}
-      className="checkbox-group-control"
-      isInvalid={isInvalidInput(errors, inputName)}
-    >
+    <FormControl as={"fieldset"} className="checkbox-group-control">
       <Text as="legend" fontWeight="bolder" pb={1}>
         {grTitle}
         {showAsRequired && (
@@ -28,30 +25,30 @@ export const CheckboxGrControl = ({
         )}
       </Text>
       <Stack
-        spacing={[1, 5]}
+        spacing={[1, 4]}
         direction={["column", "row"]}
         className="checkbox-group"
       >
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <Checkbox
+            key={`${index}.${category.id}`}
             id={category.id}
-            key={category.id}
             name={inputName}
-            isChecked={categoryIds.includes(category.id)}
-            value={categoryIds}
+            isChecked={groupValue.includes(`${category.id}`)}
+            value={groupValue}
             onChange={(e) => {
-              handleCheckboxChanges(e, setCategoryIds);
-              validate(errors, e.target, categoryIds, setErrors);
+              handleCheckboxGroupChange(groupValue, e.target.id, setGroupValue);
             }}
-            onInvalid={(e) => e.preventDefault()}
           >
             {category.name}
           </Checkbox>
         ))}
       </Stack>
-      <FormErrorMessage alignSelf="end" py={1}>
-        {getErrMsg(errors, inputName)}
-      </FormErrorMessage>
+      {errors && errors[inputName] && (
+        <Text color="red.500" fontStyle="italic" py={1} px={2}>
+          {errors[inputName]}
+        </Text>
+      )}
     </FormControl>
   );
 };
