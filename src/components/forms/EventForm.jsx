@@ -29,6 +29,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
         inputName="title"
         defaultValue={defaultValues.title}
         errors={errors}
+        showAsRequired={true}
       />
       {/* SELECT for event creator(users)*/}
       <SelectControl
@@ -36,6 +37,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
         inputName="createdBy"
         defaultValue={defaultValues.createdBy}
         errors={errors}
+        showAsRequired={true}
       />
 
       {/* FIELDSET for start/endTime */}
@@ -49,6 +51,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
           inputName="startTime"
           defaultValue={defaultValues.startTime}
           errors={errors}
+          showAsRequired={true}
         />
         {/* INPUT for endTime */}
         <DateTimeControl
@@ -56,6 +59,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
           inputName="endTime"
           defaultValue={defaultValues.endTime}
           errors={errors}
+          showAsRequired={true}
         />
       </Stack>
 
@@ -65,6 +69,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
         inputName="location"
         defaultValue={defaultValues.location}
         errors={errors}
+        showAsRequired={true}
       />
       {/* INPUT for description */}
       <TextareaControl
@@ -72,22 +77,23 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
         inputName="description"
         defaultValue={defaultValues.description}
         errors={errors}
+        showAsRequired={true}
       />
       {/* CHECKBOX GR. for categories */}
       <CheckboxGrControl
         grTitle="Categories"
-        showAsRequired={true}
         inputName="categoryIds"
         defaultValue={defaultValues.categoryIds}
         errors={errors}
+        showAsRequired={true}
       />
       {/*Hacky CHECKBOX GR. implementation */}
       {/* <HackyCheckboxGrControl */}
       {/*   grTitle=" Categories" */}
-      {/*   showAsRequired={true} */}
       {/*   inputName="categoryIds" */}
       {/*   defaultValue={defaultValues.categoryIds} */}
       {/*   errors={errors} */}
+      {/*   showAsRequired={true} */}
       {/* /> */}
 
       {/* INPUT for image(url) */}
@@ -96,6 +102,7 @@ export const EventForm = ({ as, id, method, defaultValues, errors }) => {
         inputName="image"
         defaultValue={defaultValues.image}
         errors={errors}
+        showAsRequired={false}
       />
     </Stack>
   );
