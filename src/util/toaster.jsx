@@ -1,10 +1,9 @@
-import { useRef } from "react";
 import { SuccessToast } from "../components/ui/toast/SuccessToast";
 import { ErrorToast } from "../components/ui/toast/ErrorToast";
 // import { log } from "../util/log";
 
-export const toaster = (toast, fetcher, navigation) => {
-  const state = fetcher.state;
+export const toaster = (toast, fetcher, navigation, toastIdRef) => {
+  const fetcherState = fetcher.state;
   const formMethod = fetcher.formMethod;
   const data = fetcher.data;
   const requestMethod = fetcher.data?.requestMethod;
@@ -15,21 +14,18 @@ export const toaster = (toast, fetcher, navigation) => {
   const errorComment = data?.errorComment;
   const navState = navigation ? navigation.state : "";
 
-  // toast
-  const toastIdRef = useRef(""); // ref to make toasts closable
-
   const handleToastClose = () => {
     toast.close(toastIdRef.current);
   };
 
   const defaultToastProps = {
-    duration: 4000,
+    duration: 3000,
     position: "top",
   };
 
   const errorToastProps = {
     position: "top",
-    duration: 5000,
+    duration: 4000,
     render: () => (
       <ErrorToast
         title={data.name}
@@ -44,11 +40,12 @@ export const toaster = (toast, fetcher, navigation) => {
   // setTimeout makes sure that there is no collision of component renders caused by the active toast and editOnClose function
   // without this there is a warning of state update while rendering another component
   // There should be a setTimout implemented in the coresponding modal(s) as well
+  // const toastThatShit = useCallback(() => {}, []);
   setTimeout(() => {
     /* match condition of fetcher state: idle
      * applies to:
      *  - add new event --error */
-    if (state === "idle") {
+    if (fetcherState === "idle") {
       const addFailId = "add-fail-toast"; // checking for active id prevents double toast
 
       if (
@@ -62,6 +59,7 @@ export const toaster = (toast, fetcher, navigation) => {
           id: addFailId,
           ...errorToastProps,
         });
+        return;
       }
     }
 
@@ -72,7 +70,7 @@ export const toaster = (toast, fetcher, navigation) => {
      *  - edit event --error
      *  - delete event --success
      *  - delete event --error */
-    if (state === "loading") {
+    if (fetcherState === "loading") {
       // checking for active id prevents double toast firing
       const addOkId = "add-ok-toast";
       const editOkId = "edit-ok-toast";
@@ -98,7 +96,7 @@ export const toaster = (toast, fetcher, navigation) => {
           ),
           ...defaultToastProps,
         });
-        console.log("TOAST!");
+        return;
       }
 
       // EDIT EVENT TOASTS
@@ -116,7 +114,7 @@ export const toaster = (toast, fetcher, navigation) => {
             ),
             ...defaultToastProps,
           });
-          console.log("TOAST!");
+          return;
         }
 
         if (error && !toast.isActive(editFailId)) {
@@ -125,34 +123,38 @@ export const toaster = (toast, fetcher, navigation) => {
             id: editFailId,
             ...errorToastProps,
           });
+          return;
         }
       }
 
       // DELETE EVENT TOASTS
-      if (!data && formMethod === "DELETE" && !toast.isActive(deleteOkId)) {
-        // set to ref.current to make toast closable
-        toastIdRef.current = toast({
-          id: deleteOkId,
-          render: () => (
-            <SuccessToast
-              title="Successful Action: delete event"
-              handleClose={handleToastClose}
-            />
-          ),
-          ...defaultToastProps,
-        });
-        console.log("TOAST!");
-      }
+      if (formMethod === "DELETE") {
+        if (!error && !toast.isActive(deleteOkId)) {
+          // set to ref.current to make toast closable
+          toastIdRef.current = toast({
+            id: deleteOkId,
+            render: () => (
+              <SuccessToast
+                title="Successful Action: delete event"
+                handleClose={handleToastClose}
+              />
+            ),
+            ...defaultToastProps,
+          });
+          return;
+        }
 
-      if (error && formMethod === "DELETE" && !toast.isActive(deleteFailId)) {
-        // set to ref.current to make toast closable
-        toastIdRef.current = toast({
-          id: deleteFailId,
-          ...errorToastProps,
-        });
-        console.log("TOAST!");
+        if (error && !toast.isActive(deleteFailId)) {
+          // set to ref.current to make toast closable
+          toastIdRef.current = toast({
+            id: deleteFailId,
+            ...errorToastProps,
+          });
+          return;
+        }
       }
     }
   }, 0);
+
   return;
 };
