@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { useDeleteEvent } from "../../context/DeleteEventContext";
 import {
   Button,
   Modal,
@@ -9,10 +11,21 @@ import {
   ModalCloseButton,
   Stack,
 } from "@chakra-ui/react";
+import { toaster } from "../../util/toaster";
 
-export const DeleteEventModal = ({ event, fetcher, isOpen, onClose }) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+export const DeleteEventModal = () => {
+  const { event, fetcher, deleteIsOpen, deleteOnClose, toast } =
+    useDeleteEvent();
+
+  const toastIdRef = useRef("");
+
+  if (deleteIsOpen) {
+    // toast
+    toaster(toast, fetcher, { state: "><DEL><" }, toastIdRef);
+  }
+
+  return event ? (
+    <Modal isOpen={deleteIsOpen} onClose={deleteOnClose}>
       <ModalOverlay
         bg="blackAlpha.500"
         backdropFilter="auto"
@@ -26,7 +39,7 @@ export const DeleteEventModal = ({ event, fetcher, isOpen, onClose }) => {
           </ModalBody>
           <ModalFooter>
             <Stack direction="row" spacing={4}>
-              <fetcher.Form method="delete" action={`/event/${event.id}`}>
+              <fetcher.Form method="delete">
                 <Button
                   type="submit"
                   name="intent"
@@ -45,7 +58,12 @@ export const DeleteEventModal = ({ event, fetcher, isOpen, onClose }) => {
                   Delete
                 </Button>
               </fetcher.Form>
-              <Button text="Cancel" variant="base" size="sm" onClick={onClose}>
+              <Button
+                text="Cancel"
+                variant="base"
+                size="sm"
+                onClick={deleteOnClose}
+              >
                 Cancel
               </Button>
             </Stack>
@@ -53,5 +71,5 @@ export const DeleteEventModal = ({ event, fetcher, isOpen, onClose }) => {
         </ModalContent>
       </ModalOverlay>
     </Modal>
-  );
+  ) : null;
 };
