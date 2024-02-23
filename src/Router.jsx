@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // App component imports
 import { Root } from "./root/Root";
-import { ErrorBoundary } from "./error-boundaries/ErrorBoundary";
+import { RouteErrorElement } from "./error-boundaries/RouteErrorElement";
 import {
   EventsPage,
   loader as eventsLoader,
@@ -14,11 +14,11 @@ export const router = createBrowserRouter(
       path: "/",
       id: "root",
       element: <Root />,
-      errorElement: <ErrorBoundary />,
+      errorElement: <RouteErrorElement />,
       children: [
         {
           id: "rootOutletErrorBoundary",
-          errorElement: <ErrorBoundary />,
+          errorElement: <RouteErrorElement />,
           children: [
             {
               path: "/",
