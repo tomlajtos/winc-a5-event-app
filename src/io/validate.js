@@ -1,6 +1,6 @@
 // Array of input names that are not required, to make custom required validation coherent accross all inputs
 // mainly is necessary because of custom checkbox group in `CheckboxGrControl` where setting the required attr on the checkbox
-// would make all 3 required, however only on is at minimum
+// would make all 3 required, however only one is required at minimum
 const notRequired = ["image"];
 
 // Helper functions
@@ -41,6 +41,18 @@ const generateErrorMessage = (iN, missing) => {
 const hasMissingValue = (formEntry) =>
   (!formEntry[1] || formEntry[1].length === 0) &&
   !notRequired.includes(formEntry[0]);
+
+// separate validation for checkbox group 'categoryIds'
+// if no selection >>> value is [] >>> entry won't be added to formData
+const validateCategoryIds = (formDataObject, errorObject) => {
+  if (!formDataObject.categoryIds) {
+    const entry = ["categoryIds", ""];
+    generateErrorEntries(entry, hasMissingValue(entry), errorObject);
+    if (!errorObject.formIntent || !errorObject.message) {
+      generateTypeErrorProps(formDataObject, errorObject);
+    }
+  }
+};
 
 // TODO: Learn & add jsDOC comments
 const isInvalidString = (entryValue) =>
@@ -105,6 +117,8 @@ const generateTypeErrorProps = (data, errorObject) => {
 export const validateFormDataInAction = (formDataObject, errorObject) => {
   const formEntries = Object.entries(formDataObject);
 
+  validateCategoryIds(formDataObject, errorObject);
+
   formEntries.map((formEntry) => {
     const missingValue = hasMissingValue(formEntry);
     const invalidValue = hasInvalidValue(formEntry);
@@ -112,7 +126,6 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
     if (missingValue) {
       generateErrorEntries(formEntry, missingValue, errorObject);
       if (!errorObject.formIntent || !errorObject.message) {
-        console.log("INTENT:", formDataObject.intent);
         generateTypeErrorProps(formDataObject, errorObject);
       }
     }
@@ -120,7 +133,6 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
     if (invalidValue) {
       generateErrorEntries(formEntry, missingValue, errorObject);
       if (!errorObject.formIntent || !errorObject.message) {
-        console.log("INTENT:", formDataObject.intent);
         generateTypeErrorProps(formDataObject, errorObject);
       }
     }

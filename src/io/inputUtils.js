@@ -33,7 +33,6 @@ export const handleCheckboxGroupChange = (grValue, inputValue, setFn) => {
     newGrValue = newGrValue.filter((q) => q !== inputValue);
   }
   setFn(newGrValue);
-  console.log("new final", newGrValue);
 };
 
 // TODO: add jsDOC comments
