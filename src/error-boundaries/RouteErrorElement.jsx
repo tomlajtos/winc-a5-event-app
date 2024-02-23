@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { ErrorUi } from "./ErrorUi";
 import { log } from "../util/log";
 
-export const ErrorBoundary = () => {
+export const RouteErrorElement = () => {
   const error = useRouteError();
   log.value("error @ ErrorBoundary", error);
   return (
