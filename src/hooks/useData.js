@@ -4,7 +4,7 @@ import { useMyAsyncError } from "./useMyAsyncError";
 
 export const useData = (url) => {
   const throwAsyncError = useMyAsyncError();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   useEffect(() => {
     getData(url, setData, throwAsyncError);
   }, []);
