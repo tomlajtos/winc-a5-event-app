@@ -1,5 +1,4 @@
 // React and RRouter imports
-import React from "react";
 // Chakra-ui imports
 import { Box, Flex } from "@chakra-ui/react";
 // Context imports

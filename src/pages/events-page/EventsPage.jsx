@@ -1,5 +1,4 @@
 // React imports
-import React from "react";
 import { useLoaderData } from "react-router-dom";
 // React Router imports
 // ChakraUi imports

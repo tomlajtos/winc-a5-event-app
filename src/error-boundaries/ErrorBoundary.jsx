@@ -1,5 +1,3 @@
-// TODO: not catching response errors, find solution, fetch function should expose error...
-
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import { ErrorUi } from "./ErrorUi";

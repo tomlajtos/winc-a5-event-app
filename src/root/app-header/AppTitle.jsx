@@ -1,5 +1,4 @@
 // React and RRouter imports
-import React from "react";
 import { Link as RRLink } from "react-router-dom";
 // Chakra-ui imports
 import { Heading } from "@chakra-ui/react";
@@ -11,7 +10,7 @@ import { Logger } from "../../util/Logger";
 export const AppTitle = ({ title }) => {
   return (
     <RRLink to="/">
-      <Logger name="AppTitle" level={5}  >
+      <Logger name="AppTitle" level={5}>
         <Heading
           as="h1"
           // NOTE: if lineH. is not defined, Chakra-ui will change it on the sm/md breakpoint > causing shift-glitch

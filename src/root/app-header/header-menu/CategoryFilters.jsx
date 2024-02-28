@@ -1,4 +1,3 @@
-import React from "react";
 import { MenuItemOption, MenuOptionGroup } from "@chakra-ui/react";
 import { useStaticData } from "../../../context/StaticDataContext";
 import { useFilterContext } from "../../../context/FilterContext";

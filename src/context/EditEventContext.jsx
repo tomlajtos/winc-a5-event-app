@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from "react";
+import { useContext, createContext } from "react";
 export const EditEventContext = createContext(null);
 
 export const EditEventContextProvider = ({ value, children }) => {
