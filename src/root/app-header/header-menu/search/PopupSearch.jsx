@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useSearchQuery } from "../../../../context/SearchContext";
-import { PopupSearchErrorBoundary } from "../../../../error-boundaries/PopupSearchErrorBoundary";
+import { ErrorBoundary } from "../../../../error-boundaries/ErrorBoundary";
 import { CompactEventList } from "./CompactEventList";
 // Utils import
 import { Logger } from "../../../../util/Logger";
@@ -51,11 +51,11 @@ export const PopupSearch = ({ inputRef, isOpen, onClose }) => {
             }}
           />
           <Spacer h={6} />
-          <PopupSearchErrorBoundary>
             <CompactEventList onClose={onClose} />
-          </PopupSearchErrorBoundary>
         </ModalBody>
       </ModalContent>
     </Modal>
+            <ErrorBoundary>
+            </ErrorBoundary>
   );
 };
