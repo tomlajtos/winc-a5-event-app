@@ -8,6 +8,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { useStaticData } from "../../../../context/StaticDataContext.jsx";
+import { EventImage } from "../../../../components/ui/EventImage.jsx";
 import { formatDateAndTime } from "../../../../util/datetime.js";
 import placeholderImgUrl from "../../../../assets/eventImgPlaceholder_300.svg";
 import { Logger } from "../../../../util/Logger.jsx";
@@ -34,12 +35,6 @@ export const EventCardSmall = ({ event }) => {
         target="component"
         name="EventCardSmall"
         level={5}
-      />
-      <Image
-        boxSize="100px"
-        objectFit="cover"
-        src={event.image}
-        fallbackSrc={placeholderImgUrl}
       />
       <CardBody fontSize="1rem" px={2} py={2}>
         <Stack flex={1} spacing={1} m={0} py={0}>
@@ -83,6 +78,7 @@ export const EventCardSmall = ({ event }) => {
                   {category.slice(0, 2)}
                 </Tag>
               ))}
+          <EventImage event={event} size="100px" />
             </Stack>
           </Stack>
         </Stack>
