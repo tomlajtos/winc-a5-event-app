@@ -80,7 +80,6 @@ export const EventPage = () => {
             <Button
               variant="base"
               onClick={() => {
-                console.log("fetcher on edit", fetcher);
                 editOnOpen();
               }}
             >

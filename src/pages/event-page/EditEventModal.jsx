@@ -34,7 +34,6 @@ export const EditEventModal = () => {
     image: event.image,
   };
 
-  const editModBefore = performance.now();
   if (editIsOpen) {
     // toast
     toaster(toast, fetcher, { state: "~EDIT~" }, toastIdRef);
@@ -42,15 +41,12 @@ export const EditEventModal = () => {
     // without this there is a warning of state update while rendering another component
     // There should be a setTimout implemented in the toaster function as well
     if (fetcher.data?.success && fetcher.state === "loading") {
-      console.log("success > editIsOpen:", editIsOpen, "CLOSING EDIT MODAL");
       setTimeout(() => {
         editOnClose();
         return null;
       }, 0);
     }
   }
-  const editModAfter = performance.now() - editModBefore;
-  console.log("edit-mod-if perf:", editModAfter.toFixed(3));
 
   return (
     <Logger name="EditEventModal" level={5}>
