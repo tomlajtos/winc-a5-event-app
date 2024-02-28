@@ -1,4 +1,4 @@
-import { Link as RRLink, useRouteLoaderData } from "react-router-dom";
+import { Link as RRLink } from "react-router-dom";
 import { Stack, StackItem } from "@chakra-ui/react";
 import { EventCardSmall } from "./EventCardSmall";
 import { useSearchContext } from "../../../../context/SearchContext";
@@ -11,11 +11,13 @@ export const CompactEventList = ({ onClose }) => {
   const { categories } = useStaticData();
   const { searchValue } = useSearchContext();
 
-  const searchResults = events.filter(
-    (e) =>
-      e.title.toLowerCase().includes(searchQ.toLowerCase()) &&
-      searchQ.length > 0,
-  );
+  const searchResults = events
+    ? events.filter(
+        (e) =>
+          searchValue.length > 0 &&
+          e.title.toLowerCase().includes(searchValue.toLowerCase()),
+      )
+    : null;
 
   return searchQ.length > 0 ? (
     <Stack>
