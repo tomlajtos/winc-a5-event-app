@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link as RRLink } from "react-router-dom";
 import { Stack, StackItem } from "@chakra-ui/react";
 import { EventCardSmall } from "./EventCardSmall";
@@ -19,21 +20,21 @@ export const CompactEventList = ({ onClose }) => {
       )
     : null;
 
-  return searchQ.length > 0 ? (
-    <Stack>
-      <Logger
-        type="render"
-        target="component"
-        name="compact-event-list"
-        level={5}
-      />
-      {searchResults.map((event) => (
-        <StackItem key={event.id}>
-          <RRLink to={`/event/${event.id}`} onClick={onClose}>
-            <EventCardSmall event={event} categories={categories} />
-          </RRLink>
-        </StackItem>
-      ))}
-    </Stack>
+  const list = useMemo(() => {
+    return searchResults?.length
+      ? searchResults.map((event) => (
+          <StackItem key={event.id}>
+            <RRLink to={`event/${event.id}`} onClick={onClose}>
+              <EventCardSmall event={event} categories={categories} />
+            </RRLink>
+          </StackItem>
+        ))
+      : null;
+  }, [searchResults]);
+
+  return list ? (
+    <Logger type="component" name="CompactEventList" level={6}>
+      <Stack pt={6}>{list}</Stack>
+    </Logger>
   ) : null;
 };
