@@ -1,4 +1,3 @@
-import { useRouteLoaderData } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -8,14 +7,15 @@ import {
   Text,
   Tag,
 } from "@chakra-ui/react";
+import { useStaticData } from "../../../../context/StaticDataContext.jsx";
 import { formatDateAndTime } from "../../../../util/datetime.js";
 import placeholderImgUrl from "../../../../assets/eventImgPlaceholder_300.svg";
 import { Logger } from "../../../../util/Logger.jsx";
 
 export const EventCardSmall = ({ event }) => {
-  const { categories } = useRouteLoaderData("root");
   const start = formatDateAndTime(event.startTime);
   const end = formatDateAndTime(event.endTime);
+  const { categories } = useStaticData();
   const eventCategories = categories
     .filter((category) => event.categoryIds.includes(category.id))
     .map((cat) => ` ${cat.name}`);
