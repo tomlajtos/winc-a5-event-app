@@ -4,7 +4,7 @@ import { CategoryFilters } from "../CategoryFilters";
 
 export const CategoryFiltersMenu = () => {
   return (
-    <Menu closeOnSelect={false} gutter={12}>
+    <Menu isLazy="true" closeOnSelect={false} gutter={12}>
       <MenuButton
         as={Button}
         fontSize={"xl"}
