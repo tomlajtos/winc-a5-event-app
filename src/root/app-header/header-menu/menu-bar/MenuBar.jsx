@@ -6,10 +6,11 @@ import { Logger } from "../../../../util/Logger";
 // container for navigation and filter components
 export const MenuBar = () => {
   return (
-    <Stack direction="row" padding={0} alignItems="center" spacing={0}>
-      <Logger type="render" target="component" name="MenuBar" level={3} />
-      <NavBar />
-      <CategoryFiltersMenu />
-    </Stack>
+    <Logger name="MenuBar" level={7}  >
+      <Stack direction="row" padding={0} alignItems="center" spacing={0}>
+        <NavBar />
+        <CategoryFiltersMenu />
+      </Stack>
+    </Logger>
   );
 };
