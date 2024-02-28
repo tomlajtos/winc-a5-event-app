@@ -4,37 +4,44 @@ import { Logger } from "../../../../util/Logger";
 
 export const NavBar = () => {
   return (
-    <Stack as="nav" direction="row" padding={0} alignItems="center" spacing={0}>
-      <Logger type="render" target="component" name="NavBar" level={4} />
-      <Button
-        as={RRLink}
-        to="/"
-        py={2}
-        px={4}
-        rounded="full"
-        fontSize="xl"
-        fontWeight="thin"
-        variant="ghost"
-        color="gray.300"
-        colorScheme="whiteAlpha"
+    <Logger name="NavBar" level={8}>
+      <Stack
+        as="nav"
+        direction="row"
+        padding={0}
+        alignItems="center"
+        spacing={0}
       >
-        Events
-      </Button>
+        <Button
+          as={RRLink}
+          to="/"
+          py={2}
+          px={4}
+          rounded="full"
+          fontSize="xl"
+          fontWeight="thin"
+          variant="ghost"
+          color="gray.300"
+          colorScheme="whiteAlpha"
+        >
+          Events
+        </Button>
 
-      <Button
-        as={RRLink}
-        to="/event/new"
-        py={2}
-        px={4}
-        fontSize="xl"
-        fontWeight="thin"
-        rounded="full"
-        variant="ghost"
-        color="gray.300"
-        colorScheme="whiteAlpha"
-      >
-        Create new
-      </Button>
-    </Stack>
+        <Button
+          as={RRLink}
+          to="event/new"
+          py={2}
+          px={4}
+          fontSize="xl"
+          fontWeight="thin"
+          rounded="full"
+          variant="ghost"
+          color="gray.300"
+          colorScheme="whiteAlpha"
+        >
+          Create new
+        </Button>
+      </Stack>
+    </Logger>
   );
 };
