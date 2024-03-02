@@ -10,8 +10,14 @@ export const DateTimeControl = ({
 }) => {
   return (
     <FormControl display={"flex"} flexDirection={"column"} alignItems={"start"}>
-      <Stack direction="row" spacing={2} align="center" width="full">
-        <FormLabel margin={0} px={2}>
+      <Stack
+        direction="row"
+        spacing={2}
+        align="center"
+        justify="space-between"
+        width="full"
+      >
+        <FormLabel margin={0} px={[0, 2]} minWidth={["44px", "62px"]}>
           {label}
           {showAsRequired && (
             <Text as="span" pl={1} color="red.500">
