@@ -6,7 +6,7 @@ export const Checkbox = (props) => {
       colorScheme="purple"
       borderColor="gray.500"
       focusBorderColor="purple.400"
-      size="mlg"
+      size={["lg", "mlg"]}
       iconSize="12px"
       {...props}
     />

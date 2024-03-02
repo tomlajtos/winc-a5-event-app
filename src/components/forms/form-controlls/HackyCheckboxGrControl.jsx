@@ -44,7 +44,6 @@ export const HackyCheckboxGrControl = ({
               value={`${category.id}`}
               borderColor="gray.500"
               focusBorderColor="purple.400"
-              size="mlg"
               iconSize="12px"
             >
               {category.name}
