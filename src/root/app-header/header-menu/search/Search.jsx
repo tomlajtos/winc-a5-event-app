@@ -1,16 +1,12 @@
-import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useDisclosure, Center, Input as CInput } from "@chakra-ui/react";
 import { PopupSearch } from "./PopupSearch";
 import { useSearchContext } from "../../../../context/SearchContext";
-import { Logger } from "../../../../util/Logger";
 
 export const Search = ({ inputProps, props }) => {
   const { searchValue, setSearchValue } = useSearchContext();
-
   const { pathname } = useLocation();
   const popupSearchModal = useDisclosure();
-  const popupSearch = useRef("");
 
   // handle popupSearchModal closing
   const closePopupSearch = () => {
@@ -45,33 +41,30 @@ export const Search = ({ inputProps, props }) => {
   };
 
   return (
-    <Logger name="search" level={7}>
-      <Center {...props}>
-        <CInput
-          type="search"
-          name="search"
-          variant={"outline"}
-          placeholder="Search for an event..."
-          rounded={"full"}
-          minW="225px"
-          maxW="500px"
-          px={6}
-          color="gray.200"
-          focusBorderColor="purple.300"
-          defaultValue={searchValue}
-          onChange={handleChange}
-          onClick={handleClick}
-          onKeyDown={handleKeyDown}
-          {...inputProps}
+    <Center className="search-input-container" {...props}>
+      <CInput
+        type="search"
+        name="search"
+        size={["sm", "md"]}
+        variant={"outline"}
+        placeholder="Search for event names..."
+        rounded={"full"}
+        maxW="500px"
+        px={4}
+        color="gray.200"
+        focusBorderColor="purple.300"
+        defaultValue={searchValue}
+        onChange={handleChange}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        {...inputProps}
+      />
+      {pathname !== "/" && (
+        <PopupSearch
+          isOpen={popupSearchModal.isOpen}
+          onClose={closePopupSearch}
         />
-        {pathname !== "/" && (
-          <PopupSearch
-            inputRef={popupSearch}
-            isOpen={popupSearchModal.isOpen}
-            onClose={closePopupSearch}
-          />
-        )}
-      </Center>
-    </Logger>
+      )}
+    </Center>
   );
 };
