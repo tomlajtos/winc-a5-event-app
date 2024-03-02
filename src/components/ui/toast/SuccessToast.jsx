@@ -3,7 +3,7 @@ import { CloseIcon, CheckCircleIcon } from "@chakra-ui/icons";
 export const SuccessToast = ({ title, description, handleClose }) => {
   return (
     <Container
-      size="md"
+      maxW="98%"
       p={0}
       pt={1}
       pb={4}
@@ -12,12 +12,12 @@ export const SuccessToast = ({ title, description, handleClose }) => {
       color="gray.100"
     >
       <Stack direction="row" align="start" spacing={6} pl={4} pr={1}>
-        <CheckCircleIcon w={8} h={8} color="gray.50" mt={2} />
+        <CheckCircleIcon w={[6, 8]} h={[6, 8]} color="gray.50" mt={[4, 2]} />
         <Stack>
-          <Heading size="md" pt={1} pb={2} mt={2}>
+          <Heading size={["sm", "md"]} pt={1} pb={2} mt={[3, 1]}>
             {title}
           </Heading>
-          <Text fontSize="1.1rem">{description}</Text>
+          <Text fontSize={["1rem", "1.1rem"]}>{description}</Text>
         </Stack>
         <IconButton
           m={0}
