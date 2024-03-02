@@ -7,6 +7,7 @@ export const Search = ({ inputProps, props }) => {
   const { searchValue, setSearchValue } = useSearchContext();
   const { pathname } = useLocation();
   const popupSearchModal = useDisclosure();
+  const readOnlyInput = pathname !== "/";
 
   // handle popupSearchModal closing
   const closePopupSearch = () => {
@@ -36,13 +37,14 @@ export const Search = ({ inputProps, props }) => {
         ? popupSearchModal.onOpen()
         : e.key === "Escape"
           ? closePopupSearch()
-          : e.preventDefault();
+          : e.key;
     }
   };
 
   return (
     <Center className="search-input-container" {...props}>
       <CInput
+        isReadOnly={readOnlyInput}
         type="search"
         name="search"
         size={["sm", "md"]}
