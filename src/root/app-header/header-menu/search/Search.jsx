@@ -21,7 +21,7 @@ export const Search = ({ inputProps, props }) => {
   }
 
   // event handlers for search input
-  const handleChange = () => (e) => setSearchValue(e.target.value);
+  const handleChange = (e) => setSearchValue(e.target.value);
   const handleClick = () => {
     if (pathname !== "/") {
       searchValue !== "" ? setSearchValue("") : searchValue;
