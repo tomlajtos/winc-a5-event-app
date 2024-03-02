@@ -1,23 +1,19 @@
-import { Button } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
 
 export const SaveNewButton = (props) => {
-  const variant = props.variant ? props.variant : "base";
-  const size = props.size ? props.size : "lg";
   return (
-    <Button
+    <IconButton
       type="submit"
       form="new-event-form"
       name="intent"
-      value="addNew"
-      variant={variant}
-      size={size}
-      colorScheme="purple"
-      onClick={() => {
-        console.log("saving new event");
-      }}
+      value="add"
+      aria-label="Save new event"
+      icon={<CheckIcon fontSize={["12px", "14px"]} />}
+      variant={["smRound", "mdRound"]}
+      justifySelf="flex-start"
+      isRound
       {...props}
-    >
-      Save
-    </Button>
+    />
   );
 };
