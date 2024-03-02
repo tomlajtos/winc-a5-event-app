@@ -1,7 +1,5 @@
 import { useState, useMemo, createContext, useContext } from "react";
 import { useStaticData } from "./StaticDataContext";
-import { Logger } from "../util/Logger";
-// import { log } from "../util/log";
 
 export const FilterContext = createContext({});
 FilterContext.displayName = "FilterContext";
@@ -32,9 +30,7 @@ export const FilterContextProvider = ({ children }) => {
 
   return (
     <FilterContext.Provider value={contextValue}>
-      <Logger type="context" name="filter-context" level={1}>
-        {children}
-      </Logger>
+      {children}
     </FilterContext.Provider>
   );
 };

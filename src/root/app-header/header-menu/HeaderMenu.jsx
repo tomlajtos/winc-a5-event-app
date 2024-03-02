@@ -8,7 +8,6 @@ import { DropdownMenu } from "./dropdown-menu/DropdownMenu";
 import { MenuBar } from "./menu-bar/MenuBar";
 import { Search } from "./search/Search";
 // Util import
-import { Logger } from "../../../util/Logger";
 
 export const HeaderMenu = () => {
   const [layout, setLayout] = useState("");
@@ -32,14 +31,12 @@ export const HeaderMenu = () => {
   }, []);
 
   return (
-    <Logger name="HeaderMenu" level={6}>
-      <Flex align="center" gap={6}>
-        {layout !== "min" && <Search justifySelf="center" order={1} />}
-        {layout === "full" && <MenuBar />}
-        {(layout === "min" || layout === "mid") && (
-          <DropdownMenu layout={layout} />
-        )}
-      </Flex>
-    </Logger>
+    <Flex align="center" gap={6}>
+      {layout !== "min" && <Search justifySelf="center" order={1} />}
+      {layout === "full" && <MenuBar />}
+      {(layout === "min" || layout === "mid") && (
+        <DropdownMenu layout={layout} />
+      )}
+    </Flex>
   );
 };

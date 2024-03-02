@@ -5,7 +5,6 @@ import { EventCardSmall } from "./EventCardSmall";
 import { useSearchContext } from "../../../../context/SearchContext";
 import { useStaticData } from "../../../../context/StaticDataContext";
 import { useData } from "../../../../hooks/useData";
-import { Logger } from "../../../../util/Logger";
 
 export const CompactEventList = ({ onClose }) => {
   const events = useData("events");
@@ -32,9 +31,5 @@ export const CompactEventList = ({ onClose }) => {
       : null;
   }, [searchResults]);
 
-  return list ? (
-    <Logger type="component" name="CompactEventList" level={6}>
-      <Stack pt={6}>{list}</Stack>
-    </Logger>
-  ) : null;
+  return list ? <Stack pt={6}>{list}</Stack> : null;
 };
