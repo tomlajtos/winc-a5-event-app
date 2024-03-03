@@ -15,7 +15,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <Box flex="1" pt="10%" bg="">
+        <Box flex="1" pt="10%">
           <ErrorUi error={this.state.error} />;
         </Box>
       );
