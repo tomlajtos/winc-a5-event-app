@@ -4,7 +4,15 @@
 import { useMemo } from "react";
 // chakra-ui imports
 import { Heading } from "@chakra-ui/react";
-import { Card, CardBody, CardFooter, Stack, Text, Tag } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Spacer,
+  Stack,
+  Text,
+  Tag,
+} from "@chakra-ui/react";
 // context
 import { useStaticData } from "../../context/StaticDataContext.jsx";
 //components
@@ -28,23 +36,35 @@ export const EventCard = ({ event }) => {
   const card = useMemo(() => {
     return (
       <Card
-        background="gray.50"
-        width="lg"
-        height="240px"
-        direction="row"
+        width={["95vw", null, "lg"]}
+        maxW={["95vw", "md", "lg"]}
+        height={["330px", null, "240px"]}
+        pt={[0, null, 4]}
+        pb={[3.5, 4]}
+        px={[0, null, 3]}
+        direction={["column", null, "row"]}
         variant="outline"
-        py={4}
-        px={3}
+        overflow="hidden"
+        background="gray.50"
+        borderColor="purple.100"
       >
-        <EventImage event={event} size="206px" />
+        <EventImage
+          event={event}
+          height={["140px", "160px", "206px"]}
+          width={["full", null, "206px"]}
+          rounded={[null, null, "md"]}
+        />
+
         <Stack flex={1}>
-          <CardBody pt={0} pb={2} pr={0}>
+          <CardBody px={[2, null, 4]} pb={0} pt={0}>
+            <Spacer height={[3, null, 0]} />
             <Heading size="lg" noOfLines={1}>
               {event.title}
             </Heading>
-            <Stack pt={0} spacing={1} w="full">
+            <Spacer height={[2]} />
+            <Stack spacing={3} w="full">
               {start.date === end.date ? (
-                <Text py={1} maxH={14} fontSize="lg">
+                <Text py={1} maxH={14} fontSize="md">
                   {start.date}
                   {", "}
                   {start.time}
@@ -52,7 +72,7 @@ export const EventCard = ({ event }) => {
                   {end.time}
                 </Text>
               ) : (
-                <Text py={1} maxH={14} fontSize="lg">
+                <Text maxH={14} fontSize="md">
                   {start.date}
                   {", "}
                   {start.time}
@@ -62,12 +82,16 @@ export const EventCard = ({ event }) => {
                   {end.time}
                 </Text>
               )}
-              <Text pt={4} height={16} noOfLines={2} color="gray.700">
+              <Text
+                noOfLines={1}
+                color="gray.700"
+                fontSize={["sm", "md", "lg"]}
+              >
                 {event.description}
               </Text>
             </Stack>
           </CardBody>
-          <CardFooter align="start" pt={0} pb={2}>
+          <CardFooter align="start" p={0} px={[2, 2, 4]}>
             <Stack direction="row" spacing={2} pt={1}>
               {eventCategories.map((category) => (
                 <Tag key={category} colorScheme="purple">
