@@ -32,6 +32,7 @@ export const App = () => {
   const AppFallback = () => {
     return (
       <Center
+        minW="300px"
         flex="1"
         fontSize="6xl"
         align="center"
@@ -44,7 +45,7 @@ export const App = () => {
   };
 
   return categoryIds ? (
-    <Box flex="1" display="flex">
+    <Box flex="1" display="flex" minWidth="300px">
       <StaticDataContextProvider value={contextValue}>
         <FilterContextProvider>
           <SearchContextProvider>
