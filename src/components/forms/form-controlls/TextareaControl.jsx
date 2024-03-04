@@ -22,6 +22,7 @@ export const TextareaControl = ({
         name={inputName}
         defaultValue={defaultValue}
         placeholder={`Please write a short ${inputName}...`}
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
         resize="none"
         overflowY="auto"
       />

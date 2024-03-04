@@ -42,7 +42,7 @@ export const HackyCheckboxGrControl = ({
               id={category.id}
               name={inputName}
               value={`${category.id}`}
-              borderColor="gray.500"
+              borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
               focusBorderColor="purple.400"
               iconSize="12px"
             >

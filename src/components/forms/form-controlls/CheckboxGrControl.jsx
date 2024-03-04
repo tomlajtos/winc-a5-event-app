@@ -36,6 +36,7 @@ export const CheckboxGrControl = ({
             name={inputName}
             isChecked={groupValue.includes(`${category.id}`)}
             value={groupValue}
+            borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
             onChange={(e) => {
               handleCheckboxGroupChange(groupValue, e.target.id, setGroupValue);
             }}

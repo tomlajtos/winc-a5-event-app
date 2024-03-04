@@ -23,6 +23,7 @@ export const UrlInputControl = ({
         name={inputName}
         defaultValue={defaultValue}
         placeholder="https://eventimagesource.com/eventimage"
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
       />
       {errors && errors[inputName] && (
         <Text color="red.500" fontStyle="italic" py={1} px={2}>

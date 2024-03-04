@@ -24,6 +24,7 @@ export const SelectControl = ({
       <Select
         name={inputName}
         placeholder="Select a user"
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
         defaultValue={defaultValue}
       >
         <option name="createdBy">{"Phantom of the EventApp"}</option>

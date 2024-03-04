@@ -1,5 +1,4 @@
-import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
-import { Input } from "../../ui/Input";
+import { FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
 
 export const DateTimeControl = ({
   label,
@@ -27,9 +26,11 @@ export const DateTimeControl = ({
         </FormLabel>
         <Input
           type="datetime-local"
+          // size={["sm", "md"]}
           name={inputName}
           defaultValue={defaultValue}
           flex={1}
+          borderColor={errors && errors[inputName] ? "" : "gray.500"}
         />
       </Stack>
       {errors && errors[inputName] && (
