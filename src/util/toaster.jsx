@@ -2,7 +2,7 @@ import { SuccessToast } from "../components/ui/toast/SuccessToast";
 import { ErrorToast } from "../components/ui/toast/ErrorToast";
 // import { log } from "../util/log";
 
-export const toaster = (toast, fetcher, navigation, toastIdRef) => {
+export const toaster = (toast, fetcher, toastIdRef, navigation) => {
   const fetcherState = fetcher.state;
   const formMethod = fetcher.formMethod;
   const data = fetcher.data;
