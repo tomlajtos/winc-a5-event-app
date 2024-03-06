@@ -1,13 +1,17 @@
+// React and React Router imports
 import { useLocation } from "react-router-dom";
-import { useDisclosure, Center, Input as CInput } from "@chakra-ui/react";
-import { PopupSearch } from "./PopupSearch";
+// Chakra-ui imports
+import { useDisclosure, Center, Input } from "@chakra-ui/react";
+// Context and custom hook imports
 import { useSearchContext } from "../../../../context/SearchContext";
+// Component imports
+import { PopupSearch } from "./PopupSearch";
 
 export const Search = ({ inputProps, props }) => {
   const { searchValue, setSearchValue } = useSearchContext();
   const { pathname } = useLocation();
   const popupSearchModal = useDisclosure();
-  const readOnlyInput = pathname !== "/";
+  const isReadOnly = pathname !== "/" && !inputProps.ref;
 
   // handle popupSearchModal closing
   const closePopupSearch = () => {
@@ -24,7 +28,7 @@ export const Search = ({ inputProps, props }) => {
   // event handlers for search input
   const handleChange = (e) => setSearchValue(e.target.value);
   const handleClick = () => {
-    if (pathname !== "/") {
+    if (pathname !== "/" && !inputProps.ref) {
       searchValue !== "" ? setSearchValue("") : searchValue;
       popupSearchModal.onOpen();
     }
@@ -32,7 +36,7 @@ export const Search = ({ inputProps, props }) => {
 
   // open/close popupSearchModal on search input keydown
   const handleKeyDown = (e) => {
-    if (pathname !== "/") {
+    if (pathname !== "/" && !inputProps.ref) {
       e.key === "Enter"
         ? popupSearchModal.onOpen()
         : e.key === "Escape"
@@ -43,19 +47,15 @@ export const Search = ({ inputProps, props }) => {
 
   return (
     <Center className="search-input-container" {...props}>
-      <CInput
-        isReadOnly={readOnlyInput}
+      <Input
         type="search"
         name="search"
-        size={["sm", "md"]}
-        variant={"outline"}
-        placeholder="Search for event names..."
-        rounded={"full"}
-        maxW="500px"
-        px={4}
-        color="gray.200"
-        focusBorderColor="purple.300"
+        variant={"search"}
+        isReadOnly={isReadOnly}
         defaultValue={searchValue}
+        placeholder="Type an event title..."
+        maxW="500px"
+        color="gray.200"
         onChange={handleChange}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
