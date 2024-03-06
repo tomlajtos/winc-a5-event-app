@@ -47,9 +47,9 @@ const hasMissingValue = (formEntry) =>
 const validateCategoryIds = (formDataObject, errorObject) => {
   if (!formDataObject.categoryIds) {
     const entry = ["categoryIds", ""];
-    generateErrorEntries(entry, hasMissingValue(entry), errorObject);
+    generateErrorPropEntries(entry, hasMissingValue(entry), errorObject);
     if (!errorObject.formIntent || !errorObject.message) {
-      generateTypeErrorProps(formDataObject, errorObject);
+      generateErrorObjectProps(formDataObject, errorObject);
     }
   }
 };
@@ -91,12 +91,12 @@ const hasInvalidValue = (formEntry) => {
 };
 
 // TODO: Learn & add jsDOC comments
-const generateErrorEntries = (formEntry, missing, errorObject) => {
+const generateErrorPropEntries = (formEntry, missing, errorObject) => {
   errorObject.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
 };
 
 // TODO: Learn & add jsDOC comments
-const generateTypeErrorProps = (data, errorObject) => {
+const generateErrorObjectProps = (data, errorObject) => {
   errorObject.errorType
     ? errorObject.errorType
     : (errorObject.errorType = "Input Error");
@@ -124,16 +124,16 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
     const invalidValue = hasInvalidValue(formEntry);
 
     if (missingValue) {
-      generateErrorEntries(formEntry, missingValue, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, errorObject);
       if (!errorObject.formIntent || !errorObject.message) {
-        generateTypeErrorProps(formDataObject, errorObject);
+        generateErrorObjectProps(formDataObject, errorObject);
       }
     }
 
     if (invalidValue) {
-      generateErrorEntries(formEntry, missingValue, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, errorObject);
       if (!errorObject.formIntent || !errorObject.message) {
-        generateTypeErrorProps(formDataObject, errorObject);
+        generateErrorObjectProps(formDataObject, errorObject);
       }
     }
   });
