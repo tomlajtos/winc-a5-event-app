@@ -1,3 +1,5 @@
+// React and React Router imports
+import { useMemo } from "react";
 // Chakra-ui imports
 import {
   useDisclosure,
@@ -15,9 +17,11 @@ import { ErrorDetails } from "./ErrorDetails";
 import { prettifyError } from "../util/error";
 
 export const ErrorUi = ({ error }) => {
-  const { name, message, stackLines, status, statusText, url } =
-    prettifyError(error);
   const { isOpen, onToggle } = useDisclosure();
+
+  const prettyError = useMemo(() => {
+    return prettifyError(error);
+  }, [error]);
 
   return (
     <Container
