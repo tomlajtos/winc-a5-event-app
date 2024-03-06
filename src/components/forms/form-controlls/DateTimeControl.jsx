@@ -9,6 +9,11 @@ export const DateTimeControl = ({
 }) => {
   return (
     <FormControl display={"flex"} flexDirection={"column"} alignItems={"start"}>
+      {errors && inputName === "startTime" && errors.startEndMismatch && (
+        <Text color="red.500" fontStyle="italic" py={1} px={2}>
+          {errors.startEndMismatch}
+        </Text>
+      )}
       <Stack
         direction="row"
         spacing={2}
