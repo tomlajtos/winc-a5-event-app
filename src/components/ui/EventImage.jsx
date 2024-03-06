@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Image } from "@chakra-ui/react";
-import { ImagePlaceholder } from "./ImagePlaceholder";
+import { ImagePlaceholder } from "../fallback/ImagePlaceholder";
 
 export const EventImage = ({ event, ...props }) => {
   const height = props.height
