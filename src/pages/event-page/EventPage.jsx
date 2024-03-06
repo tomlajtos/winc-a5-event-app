@@ -11,19 +11,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 // Context and custom hook imports
-import { DeleteEventContextProvider } from "../context/DeleteEventContext";
-import { EditEventContextProvider } from "../context/EditEventContext";
+import { DeleteEventContextProvider } from "../../context/DeleteEventContext";
+import { EditEventContextProvider } from "../../context/EditEventContext";
 // Component imports
-import { DeleteEventModal } from "./event-page/DeleteEventModal";
-import { EventPageButtons } from "./event-page/EventPageButtons";
-import { EventImage } from "../components/ui/EventImage";
-import { EventDates } from "./event-page/EventDates";
-import { EventCreator } from "./event-page/EventCreator";
-import { EventCategories } from "./event-page/EventCategories";
-import { EditEventModal } from "./event-page/EditEventModal";
-import { PageTitle } from "./PageTitle";
+import { DeleteEventModal } from "./DeleteEventModal";
+import { EventPageButtons } from "./EventPageButtons";
+import { EventImage } from "../../components/ui/EventImage";
+import { EventDates } from "../../components/EventDates";
+import { EventCreator } from "./EventCreator";
+import { EventCategories } from "../../components/EventCategories";
+import { EditEventModal } from "./EditEventModal";
+import { PageTitle } from "../PageTitle";
 // Util and I/O imports
-import { fetchData } from "../io/fetch";
+import { fetchData } from "../../io/fetch";
 
 export const loader = async ({ params }) => {
   const event = await fetchData(`events/${params.eventId}`);
