@@ -1,12 +1,26 @@
+// React and React Router imports
+// Chakra-ui imports
+// Context and custom hook imports
+// Component imports
+// Error component imports
+// Util and I/O imports
+// Assets imports
+
+// React and React Router imports
 import { useEffect, useState } from "react";
-import { Router } from "./Router";
+// Chakra-ui imports
+import { Box } from "@chakra-ui/react";
+// Context and custom hook imports
 import { FilterContextProvider } from "./context/FilterContext";
 import { SearchContextProvider } from "./context/SearchContext";
 import { StaticDataContextProvider } from "./context/StaticDataContext";
-import { Box, Center } from "@chakra-ui/react";
-import { getMultiData } from "./io/fetch";
-import { createCategoryIdsArr } from "./io/inputUtils";
 import { useMyAsyncError } from "./hooks/useMyAsyncError";
+// Component imports
+import { AppLoadingFallback } from "./components/forms/fallback/AppLoadingFallback";
+import { Router } from "./Router";
+// Util and I/O imports
+import { createCategoryIdsArr } from "./io/inputUtils";
+import { getMultiData } from "./io/fetch";
 
 export const App = () => {
   const [categories, setCategories] = useState(null);
@@ -29,21 +43,6 @@ export const App = () => {
 
   const contextValue = { categories, categoryIds, users };
 
-  const AppFallback = () => {
-    return (
-      <Center
-        minW="300px"
-        flex="1"
-        fontSize="6xl"
-        align="center"
-        bg="purple.900"
-        color="teal.100"
-      >
-        <Box>{"Loading..."}</Box>
-      </Center>
-    );
-  };
-
   return categoryIds ? (
     <Box flex="1" display="flex" minWidth="300px">
       <StaticDataContextProvider value={contextValue}>
@@ -55,6 +54,6 @@ export const App = () => {
       </StaticDataContextProvider>
     </Box>
   ) : (
-    <AppFallback />
+    <AppLoadingFallback />
   );
 };
