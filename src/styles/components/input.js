@@ -1,5 +1,6 @@
+// chakra-ui multi-component style utils
 import { inputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(inputAnatomy.keys);
@@ -9,12 +10,12 @@ const commonStyles = {
     height: [8, 10],
     width: "full",
     fontSize: ["sm", "md"],
-    background: "none",
+    background: "transparent",
     border: "1px solid",
     borderColor: "gray.500",
     _focus: {
       border: "2px solid",
-      borderColor: "neonVio.500",
+      borderColor: "neonVio.400",
     },
     _placeholder: {
       fontSize: ["sm", "md"],
@@ -35,8 +36,9 @@ const customBaseStyles = {
 const autofillStyles = {
   border: "2px solid",
   borderColor: "neonVio.400",
-  WebkitTextFillColor: "#c4b5fd",
-  WebkitBoxShadow: "0 0 0px 40px #1f1040 inset",
+  WebkitTextFillColor: "#dabfff",
+  WebkitBoxShadow: "0 0 0px 40px #1a202c inset",
+  WebkitBackgroundClip: "text",
 };
 
 const customBase = definePartsStyle(customBaseStyles);
@@ -46,6 +48,7 @@ const search = definePartsStyle({
     ...commonStyles.field,
     borderRadius: "full",
     _autofill: {
+      ...autofillStyles,
       _hover: {
         ...autofillStyles,
       },
