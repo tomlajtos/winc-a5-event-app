@@ -1,8 +1,9 @@
-// React Router imports
+// React and React Router imports
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// App component imports
-import { Root } from "./root/Root";
+// Error component imports
 import { RouteErrorElement } from "./error-boundaries/RouteErrorElement";
+// Root and Page imports
+import { Root } from "./root/Root";
 import {
   EventsPage,
   loader as eventsLoader,
@@ -30,7 +31,9 @@ export const router = createBrowserRouter(
               path: "event/:eventId",
               id: "event",
               async lazy() {
-                let { EventPage, loader } = await import("./pages/EventPage");
+                let { EventPage, loader } = await import(
+                  "./pages/event-page/EventPage"
+                );
                 let { action } = await import("./io/mutate");
                 return {
                   loader: loader,
