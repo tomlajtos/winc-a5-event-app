@@ -1,5 +1,4 @@
-import { FormControl, FormLabel, Text } from "@chakra-ui/react";
-import { Input } from "../../ui/Input";
+import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 export const TextInputControl = ({
   label,
