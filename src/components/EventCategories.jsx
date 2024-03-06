@@ -12,8 +12,8 @@ export const EventCategories = ({ event, tagProps, ...props }) => {
         event.categoryIds.includes(category.id) ? (
           <Tag
             key={category.name}
-            colorScheme="neonVioDark"
-            color="neonVioLight.50"
+            variant="solid"
+            colorScheme="neonVio"
             {...tagProps}
           >
             {category.name}
