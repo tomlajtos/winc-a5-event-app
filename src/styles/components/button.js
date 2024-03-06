@@ -28,6 +28,27 @@ const cancel = defineStyle({
   _dark: {},
 });
 
+const smRound = defineStyle(
+  Object.assign(
+    { ...baseStyle },
+    {
+      px: "0",
+      mx: "0",
+      h: "8",
+    },
+  ),
+);
+
+const mdRound = defineStyle(
+  Object.assign(
+    { ...baseStyle },
+    {
+      px: "0",
+      h: "10",
+    },
+  ),
+);
+
 export const buttonTheme = defineStyleConfig({
-  variants: { base, permDel, cancel },
+  variants: { base, permDel, cancel, smRound, mdRound },
 });
