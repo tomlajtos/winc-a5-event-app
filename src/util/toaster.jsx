@@ -1,6 +1,6 @@
+// Component imports
 import { SuccessToast } from "../components/ui/toast/SuccessToast";
 import { ErrorToast } from "../components/ui/toast/ErrorToast";
-// import { log } from "../util/log";
 
 export const toaster = (toast, fetcher, toastIdRef, navigation) => {
   const fetcherState = fetcher.state;
@@ -89,7 +89,7 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
           id: addOkId,
           render: () => (
             <SuccessToast
-              title="New event was added successfuly"
+              title="Succesful Action: add new event"
               message="Have fun!"
               handleClose={handleToastClose}
             />
