@@ -6,23 +6,25 @@ export const EventPageButtons = ({ onEditClick, onDeleteClick }) => {
     <Flex
       width="98%"
       mx="auto"
+      px={[2, 4, 6]}
+      py={[1, 1.5, 2]}
+      position="sticky"
+      top={[1.5, 2]}
       flexDir="row"
       gap={2}
       border="1px solid"
-      borderColor="gray.200"
-      px={[2, 4, 8]}
-      py={[2, 4]}
-      position="sticky"
-      top={[1.5, 2]}
-      zIndex="docked"
-      bg="whiteAlpha.800"
+      borderColor="gray.300"
       borderRadius={"2xl"}
+      zIndex="docked"
+      bg="whiteAlpha.400"
+      backdropFilter="auto"
+      backdropBlur="5px"
     >
       <IconButton
         as={Link}
         to="/"
         aria-label="Close event"
-        icon={<CloseIcon fontSize={["8px", "12px"]} />}
+        icon={<CloseIcon fontSize={["12px", "12px"]} />}
         variant={["smRound", "mdRound"]}
         justifySelf="flex-start"
         isRound

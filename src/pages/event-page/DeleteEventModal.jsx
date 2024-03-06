@@ -21,15 +21,19 @@ export const DeleteEventModal = () => {
 
   if (deleteIsOpen) {
     // toast
-    toaster(toast, fetcher, { state: "><DEL><" }, toastIdRef);
+    toaster(toast, fetcher, toastIdRef);
   }
 
   return event ? (
-    <Modal isOpen={deleteIsOpen} onClose={deleteOnClose}>
+    <Modal
+      isOpen={deleteIsOpen}
+      onClose={deleteOnClose}
+      size={["xs", "md", "lg"]}
+    >
       <ModalOverlay
-        bg="blackAlpha.500"
+        bg="blackAlpha.600"
         backdropFilter="auto"
-        backdropBlur="5px"
+        backdropBlur="2px"
       >
         <ModalContent>
           <ModalHeader>Delete Event</ModalHeader>
@@ -38,7 +42,7 @@ export const DeleteEventModal = () => {
             Are you sure that you want to delete this event?
           </ModalBody>
           <ModalFooter>
-            <Stack direction="row" spacing={4}>
+            <Stack direction="row" spacing={[2, 3]}>
               <fetcher.Form method="delete">
                 <Button
                   type="submit"
