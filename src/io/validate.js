@@ -44,12 +44,35 @@ const hasMissingValue = (formEntry) =>
 
 // separate validation for checkbox group 'categoryIds'
 // if no selection >>> value is [] >>> entry won't be added to formData
+// TODO: Learn & add jsDOC comments
 const validateCategoryIds = (formDataObject, errorObject) => {
   if (!formDataObject.categoryIds) {
     const entry = ["categoryIds", ""];
     generateErrorPropEntries(entry, hasMissingValue(entry), errorObject);
     if (!errorObject.formIntent || !errorObject.message) {
       generateErrorObjectProps(formDataObject, errorObject);
+    }
+  }
+};
+
+// separate validation for start time and endt time order
+// called at the end of validateFormDataInAction
+// TODO: Learn & add jsDOC comments
+const validateStartToEndMismatch = (formDataObject, errorObject) => {
+  const numericStartTime = Date.parse(formDataObject.startTime);
+  const numericEndTime = Date.parse(formDataObject.endTime);
+
+  if (!errorObject.error.startTime && !errorObject.error.endTime) {
+    if (numericStartTime > numericEndTime) {
+      errorObject.error.startEndMismatch =
+        "This app only works under normal* space-time conditions! (*in accordance with Einstein's General Relativity)";
+      errorObject.error["startTime"] = "Please set this before the end-time...";
+      errorObject.error["endTime"] =
+        "...or this after the start-time. Thank you!";
+
+      if (!errorObject.formIntent || !errorObject.message) {
+        generateErrorObjectProps(formDataObject, errorObject);
+      }
     }
   }
 };
@@ -136,6 +159,7 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
         generateErrorObjectProps(formDataObject, errorObject);
       }
     }
+    validateStartToEndMismatch(formDataObject, errorObject);
   });
 };
 
