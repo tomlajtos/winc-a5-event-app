@@ -120,10 +120,7 @@ const generateErrorPropEntries = (formEntry, missing, errorObject) => {
 
 // TODO: Learn & add jsDOC comments
 const generateErrorObjectProps = (data, errorObject) => {
-  errorObject.errorType
-    ? errorObject.errorType
-    : (errorObject.errorType = "Input Error");
-  errorObject.formIntent = data.intent;
+  errorObject.errorType = "Input Error";
   errorObject.message = "Please complete the required fields!";
 };
 
@@ -155,7 +152,7 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
 
     if (invalidValue) {
       generateErrorPropEntries(formEntry, missingValue, errorObject);
-      if (!errorObject.formIntent || !errorObject.message) {
+      if (!errorObject.message || !errorObject.errorType) {
         generateErrorObjectProps(formDataObject, errorObject);
       }
     }
