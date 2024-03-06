@@ -1,19 +1,17 @@
+// Chakra-ui imports
 import {
   useDisclosure,
-  Box,
   Button,
   Alert,
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  Collapse,
   Container,
-  Flex,
-  Spacer,
   Stack,
-  Text,
-  Wrap,
 } from "@chakra-ui/react";
+// Component imports
+import { ErrorDetails } from "./ErrorDetails";
+// Util and I/O imports
 import { prettifyError } from "../util/error";
 
 export const ErrorUi = ({ error }) => {
@@ -22,22 +20,29 @@ export const ErrorUi = ({ error }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Container maxW={["full", null, "3xl"]}>
+    <Container
+      className="error-alert-container"
+      maxW={["full", null, "3xl"]}
+      maxH="100%"
+      px={[2, 4]}
+      py={6}
+      overflowY="auto"
+    >
       <Alert
         status="error"
         px={[2, 4, 8]}
-        py={6}
+        maxW="full"
         display="flex"
         flexDirection="column"
         color="gray.50"
-        bg="blackAlpha.500"
+        bg="blackAlpha.700"
         rounded="2xl"
       >
         <AlertIcon boxSize="69px" pb={6} />
 
         <AlertTitle fontSize="lg">Something went wrong...</AlertTitle>
 
-        <AlertDescription width="full">
+        <AlertDescription maxW="full">
           <Stack direction="column" align="start" maxW="full">
             <Button
               onClick={onToggle}
@@ -50,61 +55,9 @@ export const ErrorUi = ({ error }) => {
             >
               Toggle details
             </Button>
-            <Collapse
-              w={"250px"}
-              in={isOpen}
-              p={0}
-              m={0}
-              animateOpacity
-              bg="purple.400"
-            >
-              {!status && (
-                <Stack py={2} spacing={3}>
-                  <Text textAlign="left" fontSize="lg" textDecor="underline">
-                    {name}:
-                  </Text>
-                  <Text textAlign="left" fontWeight={600} fontSize="lg">
-                    {message}
-                  </Text>
-                </Stack>
-              )}
-              {status && (
-                <Stack py={2} spacing={2}>
-                  <Text textAlign="left" fontWeight={600} fontSize="lg">
-                    {message}
-                  </Text>
-                  <Text textAlign="left" fontSize="lg" textDecor="underline">
-                    {name}:
-                  </Text>
-                  <Text textAlign="left" pl={2}>
-                    <Text as="span" mr={3} fontWeight="bolder">
-                      {status}
-                    </Text>
-                    <Text as="span" mr={2}>
-                      {statusText && statusText}
-                    </Text>
-                    <Text as="span">{url && `(${url})`}</Text>
-                  </Text>
-                </Stack>
-              )}
-              <Spacer height={2} />
-              <Stack bg="blackAlpha.500" px={0} maxW="full">
-                {stackLines.map((line, index) =>
-                  index !== 0 ? (
-                    <Text
-                      key={`stack-line_${index}`}
-                      textAlign="left"
-                      maxW="full"
-                      my={1}
-                      color="white"
-                    >
-                      {">> "}
-                      {line}
-                    </Text>
-                  ) : null,
-                )}
-              </Stack>
-            </Collapse>
+
+            {/* Error details : name, message, status etc. */}
+            <ErrorDetails error={prettyError} show={isOpen} />
           </Stack>
         </AlertDescription>
       </Alert>
