@@ -16,7 +16,7 @@ import { SearchContextProvider } from "./context/SearchContext";
 import { StaticDataContextProvider } from "./context/StaticDataContext";
 import { useMyAsyncError } from "./hooks/useMyAsyncError";
 // Component imports
-import { AppLoadingFallback } from "./components/forms/fallback/AppLoadingFallback";
+import { AppLoadingFallback } from "./components/fallback/AppLoadingFallback";
 import { Router } from "./Router";
 // Util and I/O imports
 import { createCategoryIdsArr } from "./io/inputUtils";
