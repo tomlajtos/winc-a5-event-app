@@ -1,4 +1,4 @@
-// chakra-ui multi-component style utils
+// Chakra-ui multi part component style utils imports
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 

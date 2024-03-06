@@ -1,12 +1,4 @@
 // React and React Router imports
-// Chakra-ui imports
-// Context and custom hook imports
-// Component imports
-// Error component imports
-// Util and I/O imports
-// Assets imports
-
-// React and React Router imports
 import { useEffect, useState } from "react";
 // Chakra-ui imports
 import { Box } from "@chakra-ui/react";

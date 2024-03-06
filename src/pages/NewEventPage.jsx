@@ -1,16 +1,16 @@
-// React and RRouter imports
+// React and React Router imports
 import { useRef } from "react";
 import { useFetcher, useNavigation } from "react-router-dom";
-//chakra-ui imports
+// Chakra-ui imports
 import { useToast, Box, Flex, Stack } from "@chakra-ui/react";
-// component imports
-import { PageTitle } from "./PageTitle";
-import { SaveNewButton } from "../components/forms/buttons/SaveNewButton";
+// Component imports
 import { CancelNewButton } from "../components/forms/buttons/CancelNewButton";
 import { EventForm } from "../components/forms/EventForm";
-// util imports
-import { toaster } from "../util/toaster";
+import { PageTitle } from "./PageTitle";
+import { SaveNewButton } from "../components/forms/buttons/SaveNewButton";
+// Util and I/O imports
 import { generateDateTimeStr } from "../util/datetime";
+import { toaster } from "../util/toaster";
 
 export const NewEventPage = () => {
   const fetcher = useFetcher();
@@ -74,7 +74,7 @@ export const NewEventPage = () => {
       >
         <EventForm
           as={fetcher.Form}
-          id={"new-event-form"}
+          id="new-event-form"
           method="POST"
           defaultValues={defaultFormValues}
           errors={errors}

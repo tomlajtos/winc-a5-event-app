@@ -1,8 +1,9 @@
-import { Select as CSelect } from "@chakra-ui/react";
+// Chakra-ui imports
+import { Select as ChakraSelect } from "@chakra-ui/react";
 
 export const Select = (props) => {
   return (
-    <CSelect
+    <ChakraSelect
       borderColor="gray.500"
       focusBorderColor="purple.400"
       width="full"

@@ -1,3 +1,4 @@
+// React and React Router imports
 import { createContext, useContext, useMemo } from "react";
 
 export const StaticDataContext = createContext({});

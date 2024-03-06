@@ -1,3 +1,4 @@
+// Chakra-ui imports
 import { Heading } from "@chakra-ui/react";
 
 export const AppTitle = ({ title }) => {

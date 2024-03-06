@@ -1,11 +1,13 @@
-import { Link as RRLink } from "react-router-dom";
+// React and React Router imports
+import { Link } from "react-router-dom";
+// Chakra-ui imports
 import { Button, Stack } from "@chakra-ui/react";
 
 export const NavBar = () => {
   return (
     <Stack as="nav" direction="row" padding={0} alignItems="center" spacing={0}>
       <Button
-        as={RRLink}
+        as={Link}
         to="/"
         py={2}
         px={4}
@@ -20,7 +22,7 @@ export const NavBar = () => {
       </Button>
 
       <Button
-        as={RRLink}
+        as={Link}
         to="event/new"
         py={2}
         px={4}

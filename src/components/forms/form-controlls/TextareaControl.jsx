@@ -1,4 +1,6 @@
+// React and React Router imports
 import { FormControl, FormLabel, Text } from "@chakra-ui/react";
+// Component imports
 import { Textarea } from "../../ui/Textarea";
 
 export const TextareaControl = ({
@@ -18,6 +20,7 @@ export const TextareaControl = ({
           </Text>
         )}
       </FormLabel>
+
       <Textarea
         name={inputName}
         defaultValue={defaultValue}

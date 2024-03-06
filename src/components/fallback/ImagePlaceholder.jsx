@@ -1,3 +1,4 @@
+// Chakra-ui imports
 import { Center, Text } from "@chakra-ui/react";
 
 export const ImagePlaceholder = ({ ...props }) => {
@@ -15,6 +16,7 @@ export const ImagePlaceholder = ({ ...props }) => {
 
   const text = props.text ? props.text : "No Image...";
   const fontSize = props.fontSize ? props.fontSize : ["lg", "xl", "2xl"];
+
   return (
     <Center
       height={height}

@@ -1,3 +1,4 @@
+// React and React Router imports
 import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 export const TextInputControl = ({
@@ -17,6 +18,7 @@ export const TextInputControl = ({
           </Text>
         )}
       </FormLabel>
+
       <Input
         type="text"
         name={inputName}

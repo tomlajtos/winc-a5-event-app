@@ -1,4 +1,6 @@
+// Chakra-ui imports
 import { Stack } from "@chakra-ui/react";
+// Component imports
 import { CategoryFiltersMenu } from "./CategoryFiltersMenu";
 import { NavBar } from "./NavBar";
 

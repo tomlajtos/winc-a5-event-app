@@ -1,3 +1,4 @@
+// global style overrides
 export const styles = {
   global: {
     "#root": {

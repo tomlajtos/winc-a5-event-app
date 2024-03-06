@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { createContext, useContext } from "react";
+// React and React Router imports
+import { createContext, useContext, useMemo, useState } from "react";
 
 export const SearchContext = createContext(null);
 SearchContext.displayName = "SearchContext";

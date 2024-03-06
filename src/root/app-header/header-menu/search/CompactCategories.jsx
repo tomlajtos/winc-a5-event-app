@@ -7,14 +7,14 @@ export const CompactCategories = ({ categories, full, ...props }) => {
   const spacing = props.gap ? props.gap : 1;
 
   return (
-    <Stack direction={"row"} spacing={spacing}>
+    <Stack direction="row" spacing={spacing}>
       {categories.map((category) => (
         <Stack key={category} direction="row" gap={0}>
           <Tag
             variant={variant}
-            height={"28px"}
-            width={"28px"}
-            lineHeight={"14px"}
+            height="28px"
+            width="28px"
+            lineHeight="14px"
             justifyContent="center"
             p={0}
             fontWeight={800}

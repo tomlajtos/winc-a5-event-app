@@ -3,15 +3,15 @@ import { useMemo } from "react";
 // Chakra-ui imports
 import {
   useDisclosure,
-  Button,
   Alert,
+  AlertDescription,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
+  Button,
   Container,
   Stack,
 } from "@chakra-ui/react";
-// Component imports
+// Error component imports
 import { ErrorDetails } from "./ErrorDetails";
 // Util and I/O imports
 import { prettifyError } from "../util/error";

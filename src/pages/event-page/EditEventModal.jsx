@@ -1,21 +1,26 @@
+// React and React Router imports
 import { useRef } from "react";
+// Chakra-ui imports
 import {
   Flex,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
+// Context and custom hook imports
 import { useEditEvent } from "../../context/EditEventContext";
+// Component imports
+import { CancelEditButton } from "../../components/forms/buttons/CancelEditButton";
 import { EventForm } from "../../components/forms/EventForm";
 import { SaveEditButton } from "../../components/forms/buttons/SaveEditButton";
-import { CancelEditButton } from "../../components/forms/buttons/CancelEditButton";
-import { toaster } from "../../util/toaster";
-import { handleResetOnModalClose } from "../../util/uiUtils";
+// Util and I/O imports
 import { generateDateTimeStr } from "../../util/datetime";
+import { handleResetOnModalClose } from "../../util/uiUtils";
+import { toaster } from "../../util/toaster";
 
 export const EditEventModal = () => {
   const { event, fetcher, editIsOpen, editOnClose, toast } = useEditEvent();

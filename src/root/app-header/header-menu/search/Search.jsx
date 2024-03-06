@@ -50,7 +50,7 @@ export const Search = ({ inputProps, props }) => {
       <Input
         type="search"
         name="search"
-        variant={"search"}
+        variant="search"
         isReadOnly={isReadOnly}
         defaultValue={searchValue}
         placeholder="Type an event title..."

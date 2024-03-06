@@ -1,4 +1,4 @@
-// React and React Router imports
+// React and Ract Router imports
 import { useRouteError } from "react-router-dom";
 // Chakra-ui imports
 import { Box } from "@chakra-ui/react";
@@ -19,7 +19,7 @@ export const RouteErrorElement = () => {
       marginX="auto"
       bg="blackAlpha.700"
       color="white"
-      flex={"1"}
+      flex="1"
     >
       <ErrorUi error={error} />
     </Box>

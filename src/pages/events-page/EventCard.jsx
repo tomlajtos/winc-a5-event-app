@@ -1,6 +1,6 @@
 // React and React Router imports
 import { useMemo } from "react";
-// chakra-ui imports
+// Chakra-ui imports
 import {
   Card,
   CardBody,
@@ -9,10 +9,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-//components
+// Component imports
 import { EventCategories } from "../../components/EventCategories";
 import { EventDates } from "../../components/EventDates";
-import { EventImage } from "../../components/ui/EventImage.jsx";
+import { EventImage } from "../../components/ui/EventImage";
 
 export const EventCard = ({ event }) => {
   const card = useMemo(() => {

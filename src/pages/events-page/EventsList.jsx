@@ -1,15 +1,13 @@
-// React imports
+// React and React Router imports
 import { useMemo } from "react";
-// React Router imports
-import { Link as RRLink } from "react-router-dom";
-// ChakraUi imports
+import { Link } from "react-router-dom";
+// Chakra-ui imports
 import { Wrap } from "@chakra-ui/react";
 // Context and custom hook imports
-import { useSearchContext } from "../../context/SearchContext";
 import { useFilterContext } from "../../context/FilterContext";
-// App component imports
+import { useSearchContext } from "../../context/SearchContext";
+// Component imports
 import { EventCard } from "./EventCard";
-// Util imports
 
 export const EventsList = ({ events }) => {
   const { filterEventsByCategories, categoryFilters } = useFilterContext();
@@ -20,15 +18,15 @@ export const EventsList = ({ events }) => {
 
   const list = useMemo(() => {
     return searchResults.map((event) => (
-      <RRLink key={event.id} to={`event/${event.id}`}>
+      <Link key={event.id} to={`event/${event.id}`}>
         <EventCard event={event} />
-      </RRLink>
+      </Link>
     ));
   }, [searchResults]);
 
   return searchResults.length > 0 ? (
     <Wrap
-      direction={"row"}
+      direction="row"
       width="100%"
       justify="center"
       spacing={4}

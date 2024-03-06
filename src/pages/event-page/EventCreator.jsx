@@ -1,6 +1,8 @@
-// import { useOutletContext } from "react-router-dom";
+// Chakra-ui imports
 import { Avatar, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+// Context and custom hook imports
 import { useStaticData } from "../../context/StaticDataContext";
+// Assets imports
 import phantom from "../../assets/phantom_mask.svg";
 
 export const EventCreator = ({ event }) => {

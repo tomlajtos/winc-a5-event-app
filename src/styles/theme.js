@@ -1,3 +1,4 @@
+// default Chakra-ui theme extensions
 export const themeXtra = {
   colors: {
     snow: {

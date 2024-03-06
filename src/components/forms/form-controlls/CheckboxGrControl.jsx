@@ -1,7 +1,12 @@
+// React and React Router imports
 import { useState } from "react";
+// Chakra-ui imports
 import { FormControl, Stack, Text } from "@chakra-ui/react";
-import { Checkbox } from "../../ui/Checkbox";
+// Context and custom hook imports
 import { useStaticData } from "../../../context/StaticDataContext";
+// Component imports
+import { Checkbox } from "../../ui/Checkbox";
+// Util and I/O imports
 import { handleCheckboxGroupChange } from "../../../io/inputUtils";
 
 export const CheckboxGrControl = ({
@@ -15,7 +20,7 @@ export const CheckboxGrControl = ({
   const [groupValue, setGroupValue] = useState(defaultValue);
 
   return (
-    <FormControl as={"fieldset"} className="checkbox-group-control">
+    <FormControl as="fieldset" className="checkbox-group-control">
       <Text as="legend" fontWeight="bolder" pb={1}>
         {grTitle}
         {showAsRequired && (

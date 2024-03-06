@@ -1,5 +1,7 @@
+// Chakra-ui imports
 import { Container, Heading, IconButton, Stack, Text } from "@chakra-ui/react";
 import { CloseIcon, WarningIcon } from "@chakra-ui/icons";
+
 export const ErrorToast = ({ title, type, message, comment, handleClose }) => {
   return (
     <Container
@@ -14,10 +16,13 @@ export const ErrorToast = ({ title, type, message, comment, handleClose }) => {
     >
       <Stack direction="row" align="start" spacing={6} pl={4} pr={1}>
         <WarningIcon w={[6, 8]} h={[6, 8]} color="gray.50" mt={[4, 2]} />
+
+        {/* toast text section: title, comment, message, error type */}
         <Stack>
           <Heading size={["sm", "md"]} pt={1} pb={2} mt={[3, 1]}>
             {title}
           </Heading>
+
           {type.includes("HTTP") ? (
             <Stack>
               <Text fontSize={["sm", "md"]} fontWeight="600">
@@ -37,6 +42,8 @@ export const ErrorToast = ({ title, type, message, comment, handleClose }) => {
             </Stack>
           )}
         </Stack>
+
+        {/* custom close button */}
         <IconButton
           m={0}
           size="sm"

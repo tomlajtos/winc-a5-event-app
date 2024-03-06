@@ -1,4 +1,6 @@
+// React and React Router imports
 import { useState, useMemo, createContext, useContext } from "react";
+// Context and custom hook imports
 import { useStaticData } from "./StaticDataContext";
 
 export const FilterContext = createContext({});

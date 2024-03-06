@@ -1,3 +1,4 @@
+// Chakra-ui imports
 import { FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
 
 export const DateTimeControl = ({
@@ -8,7 +9,7 @@ export const DateTimeControl = ({
   showAsRequired,
 }) => {
   return (
-    <FormControl display={"flex"} flexDirection={"column"} alignItems={"start"}>
+    <FormControl display="flex" flexDirection="column" alignItems="start">
       {errors && inputName === "startTime" && errors.startEndMismatch && (
         <Text color="red.500" fontStyle="italic" py={1} px={2}>
           {errors.startEndMismatch}
@@ -29,6 +30,7 @@ export const DateTimeControl = ({
             </Text>
           )}
         </FormLabel>
+
         <Input
           type="datetime-local"
           // size={["sm", "md"]}

@@ -1,5 +1,8 @@
+// Chakra-ui imports
 import { FormControl, FormLabel, Text } from "@chakra-ui/react";
+// Chakra-ui imports
 import { Select } from "../../ui/Select";
+// Context and custom hook imports
 import { useStaticData } from "../../../context/StaticDataContext";
 
 export const SelectControl = ({
@@ -21,6 +24,7 @@ export const SelectControl = ({
           </Text>
         )}
       </FormLabel>
+
       <Select
         name={inputName}
         placeholder="Select a user"
@@ -34,6 +38,7 @@ export const SelectControl = ({
           </option>
         ))}
       </Select>
+
       {errors && errors[inputName] && (
         <Text color="red.500" fontStyle="italic" py={1} px={2}>
           {errors[inputName]}

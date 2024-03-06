@@ -1,8 +1,9 @@
-import { Checkbox as CCheckbox } from "@chakra-ui/react";
+// Chakra-ui imports
+import { Checkbox as ChakraCheckbox } from "@chakra-ui/react";
 
 export const Checkbox = (props) => {
   return (
-    <CCheckbox
+    <ChakraCheckbox
       colorScheme="purple"
       borderColor="gray.500"
       focusBorderColor="purple.400"

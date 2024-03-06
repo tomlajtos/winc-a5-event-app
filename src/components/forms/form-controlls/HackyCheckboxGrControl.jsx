@@ -1,5 +1,8 @@
+// React and React Router imports
 import { useState } from "react";
+// Context and custom hook imports
 import { useStaticData } from "../../../context/StaticDataContext";
+// Chakra-ui imports
 import {
   CheckboxGroup,
   FormControl,
@@ -7,6 +10,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+// Component imports
 import { Checkbox } from "../../ui/Checkbox";
 
 export const HackyCheckboxGrControl = ({
@@ -29,6 +33,7 @@ export const HackyCheckboxGrControl = ({
           </Text>
         )}
       </FormLabel>
+
       <CheckboxGroup
         defaultValue={value}
         name={inputName}

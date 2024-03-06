@@ -1,5 +1,6 @@
+// Chakra-ui imports
 import { Button, Menu, MenuButton, MenuList } from "@chakra-ui/react";
-
+// Component imports
 import { CategoryFilters } from "../CategoryFilters";
 
 export const CategoryFiltersMenu = () => {

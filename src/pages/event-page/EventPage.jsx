@@ -15,12 +15,12 @@ import { DeleteEventContextProvider } from "../../context/DeleteEventContext";
 import { EditEventContextProvider } from "../../context/EditEventContext";
 // Component imports
 import { DeleteEventModal } from "./DeleteEventModal";
-import { EventPageButtons } from "./EventPageButtons";
-import { EventImage } from "../../components/ui/EventImage";
-import { EventDates } from "../../components/EventDates";
-import { EventCreator } from "./EventCreator";
-import { EventCategories } from "../../components/EventCategories";
 import { EditEventModal } from "./EditEventModal";
+import { EventCategories } from "../../components/EventCategories";
+import { EventCreator } from "./EventCreator";
+import { EventDates } from "../../components/EventDates";
+import { EventImage } from "../../components/ui/EventImage";
+import { EventPageButtons } from "./EventPageButtons";
 import { PageTitle } from "../PageTitle";
 // Util and I/O imports
 import { fetchData } from "../../io/fetch";
@@ -71,7 +71,7 @@ export const EventPage = () => {
       {/*Event Page content section*/}
       <Stack
         className="event-page-content"
-        direction={"column"}
+        direction="column"
         spacing={[4, 6, 8]}
         px={[2, 4, 6, 8, 10]}
         width="full"

@@ -1,6 +1,17 @@
+// React and React Router imports
+// Chakra-ui imports
+// Context and custom hook imports
+// Component imports
+// Error component imports
+// Util and I/O imports
+// Assets imports
+
+// React and React Router imports
 import { Link } from "react-router-dom";
+// Chakra-ui imports
 import { Flex, IconButton, Spacer } from "@chakra-ui/react";
 import { CloseIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+
 export const EventPageButtons = ({ onEditClick, onDeleteClick }) => {
   return (
     <Flex

@@ -1,5 +1,8 @@
+// React and React Router imports
 import { useMemo } from "react";
+// Chakra-ui imports
 import { Image } from "@chakra-ui/react";
+// Component imports
 import { ImagePlaceholder } from "../fallback/ImagePlaceholder";
 
 export const EventImage = ({ event, ...props }) => {
@@ -28,7 +31,7 @@ export const EventImage = ({ event, ...props }) => {
       <ImagePlaceholder
         height={height}
         width={width}
-        text={"No Image..."}
+        text="No Image..."
         {...props}
       />
     );

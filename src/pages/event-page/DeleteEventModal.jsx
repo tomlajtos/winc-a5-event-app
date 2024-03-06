@@ -1,5 +1,6 @@
+// React and React Router imports
 import { useRef } from "react";
-import { useDeleteEvent } from "../../context/DeleteEventContext";
+// Chakra-ui imports
 import {
   Button,
   Modal,
@@ -11,6 +12,9 @@ import {
   ModalCloseButton,
   Stack,
 } from "@chakra-ui/react";
+// Context and custom hook imports
+import { useDeleteEvent } from "../../context/DeleteEventContext";
+// Util and I/O imports
 import { toaster } from "../../util/toaster";
 
 export const DeleteEventModal = () => {
