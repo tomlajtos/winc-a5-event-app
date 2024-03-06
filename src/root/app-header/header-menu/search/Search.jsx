@@ -52,7 +52,7 @@ export const Search = ({ inputProps, props }) => {
         name="search"
         variant="search"
         isReadOnly={isReadOnly}
-        defaultValue={searchValue}
+        value={searchValue}
         placeholder="Type an event title..."
         maxW="500px"
         color="gray.200"
