@@ -1,5 +1,5 @@
-import { FormControl, FormLabel, Text } from "@chakra-ui/react";
-import { Input } from "../../ui/Input";
+// React and React Router imports
+import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 export const TextInputControl = ({
   label,
@@ -18,7 +18,13 @@ export const TextInputControl = ({
           </Text>
         )}
       </FormLabel>
-      <Input type="text" name={inputName} defaultValue={defaultValue} />
+
+      <Input
+        type="text"
+        name={inputName}
+        defaultValue={defaultValue}
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
+      />
       {errors && errors[inputName] && (
         <Text color="red.500" fontStyle="italic" py={1} px={2}>
           {errors[inputName]}

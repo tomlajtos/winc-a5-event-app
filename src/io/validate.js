@@ -44,12 +44,35 @@ const hasMissingValue = (formEntry) =>
 
 // separate validation for checkbox group 'categoryIds'
 // if no selection >>> value is [] >>> entry won't be added to formData
+// TODO: Learn & add jsDOC comments
 const validateCategoryIds = (formDataObject, errorObject) => {
   if (!formDataObject.categoryIds) {
     const entry = ["categoryIds", ""];
-    generateErrorEntries(entry, hasMissingValue(entry), errorObject);
+    generateErrorPropEntries(entry, hasMissingValue(entry), errorObject);
     if (!errorObject.formIntent || !errorObject.message) {
-      generateTypeErrorProps(formDataObject, errorObject);
+      generateErrorObjectProps(formDataObject, errorObject);
+    }
+  }
+};
+
+// separate validation for start time and endt time order
+// called at the end of validateFormDataInAction
+// TODO: Learn & add jsDOC comments
+const validateStartToEndMismatch = (formDataObject, errorObject) => {
+  const numericStartTime = Date.parse(formDataObject.startTime);
+  const numericEndTime = Date.parse(formDataObject.endTime);
+
+  if (!errorObject.error.startTime && !errorObject.error.endTime) {
+    if (numericStartTime > numericEndTime) {
+      errorObject.error.startEndMismatch =
+        "This app only works under normal* space-time conditions! (*in accordance with Einstein's General Relativity)";
+      errorObject.error["startTime"] = "Please set this before the end-time...";
+      errorObject.error["endTime"] =
+        "...or this after the start-time. Thank you!";
+
+      if (!errorObject.formIntent || !errorObject.message) {
+        generateErrorObjectProps(formDataObject, errorObject);
+      }
     }
   }
 };
@@ -91,16 +114,13 @@ const hasInvalidValue = (formEntry) => {
 };
 
 // TODO: Learn & add jsDOC comments
-const generateErrorEntries = (formEntry, missing, errorObject) => {
+const generateErrorPropEntries = (formEntry, missing, errorObject) => {
   errorObject.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
 };
 
 // TODO: Learn & add jsDOC comments
-const generateTypeErrorProps = (data, errorObject) => {
-  errorObject.errorType
-    ? errorObject.errorType
-    : (errorObject.errorType = "Input Error");
-  errorObject.formIntent = data.intent;
+const generateErrorObjectProps = (data, errorObject) => {
+  errorObject.errorType = "Input Error";
   errorObject.message = "Please complete the required fields!";
 };
 
@@ -124,18 +144,19 @@ export const validateFormDataInAction = (formDataObject, errorObject) => {
     const invalidValue = hasInvalidValue(formEntry);
 
     if (missingValue) {
-      generateErrorEntries(formEntry, missingValue, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, errorObject);
       if (!errorObject.formIntent || !errorObject.message) {
-        generateTypeErrorProps(formDataObject, errorObject);
+        generateErrorObjectProps(formDataObject, errorObject);
       }
     }
 
     if (invalidValue) {
-      generateErrorEntries(formEntry, missingValue, errorObject);
-      if (!errorObject.formIntent || !errorObject.message) {
-        generateTypeErrorProps(formDataObject, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, errorObject);
+      if (!errorObject.message || !errorObject.errorType) {
+        generateErrorObjectProps(formDataObject, errorObject);
       }
     }
+    validateStartToEndMismatch(formDataObject, errorObject);
   });
 };
 

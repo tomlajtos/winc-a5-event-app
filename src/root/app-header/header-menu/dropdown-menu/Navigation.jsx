@@ -1,29 +1,35 @@
-import { Link as RRLink } from "react-router-dom";
+// React and React Router imports
+import { Link } from "react-router-dom";
+// Chakra-ui imports
 import { MenuItem, Stack } from "@chakra-ui/react";
 
 export const Navigation = () => {
   return (
-    <Stack as="nav" spacing={0}>
+    <Stack as="nav" spacing={[0.5, 1]}>
       <MenuItem
-        as={RRLink}
+        as={Link}
         to={"/"}
         closeOnSelect="true"
         px={6}
-        fontSize={"xl"}
+        py={0}
+        fontSize={["md", "lg", "xl"]}
         fontWeight="thin"
         color="gray.900"
+        bg="transparent"
       >
         Events
       </MenuItem>
 
       <MenuItem
-        as={RRLink}
+        as={Link}
         to={"event/new"}
         closeOnSelect="true"
         px={6}
-        fontSize={"xl"}
+        py={0}
+        fontSize={["md", "lg", "xl"]}
         fontWeight="thin"
         color="gray.900"
+        bg="transparent"
       >
         Create new
       </MenuItem>

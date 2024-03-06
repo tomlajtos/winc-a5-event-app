@@ -1,31 +1,41 @@
+// React and React Router imports
+import { useMemo } from "react";
+// Chakra-ui imports
 import {
   useDisclosure,
-  Box,
-  Button,
   Alert,
+  AlertDescription,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
-  Collapse,
+  Button,
   Container,
-  Flex,
-  Spacer,
   Stack,
-  Text,
 } from "@chakra-ui/react";
+// Error component imports
+import { ErrorDetails } from "./ErrorDetails";
+// Util and I/O imports
 import { prettifyError } from "../util/error";
 
 export const ErrorUi = ({ error }) => {
-  const { name, message, stackLines, status, statusText, url } =
-    prettifyError(error);
   const { isOpen, onToggle } = useDisclosure();
 
+  const prettyError = useMemo(() => {
+    return prettifyError(error);
+  }, [error]);
+
   return (
-    <Container maxW="3xl">
+    <Container
+      className="error-alert-container"
+      maxW={["full", null, "3xl"]}
+      maxH="100%"
+      px={[2, 4]}
+      py={6}
+      overflowY="auto"
+    >
       <Alert
         status="error"
         px={[2, 4, 8]}
-        py={6}
+        maxW="full"
         display="flex"
         flexDirection="column"
         color="gray.50"
@@ -36,56 +46,23 @@ export const ErrorUi = ({ error }) => {
 
         <AlertTitle fontSize="lg">Something went wrong...</AlertTitle>
 
-        <AlertDescription>
-          <Flex direction="column" align="start" maxW="full">
+        <AlertDescription maxW="full">
+          <Stack direction="column" align="start" maxW="full">
             <Button
               onClick={onToggle}
               width="fit-content"
               size="sm"
               variant="unstyled"
-              textColor="gray.400"
+              textColor="gray.300"
               mt={4}
               alignSelf="center"
             >
               Toggle details
             </Button>
-            <Spacer height={2} />
-            <Collapse in={isOpen} animateOpacity>
-              <Stack py={2} spacing={2}>
-                <Text textAlign="left" fontWeight={600} fontSize="lg">
-                  {message}
-                </Text>
-                <Text textAlign="left" fontSize="lg" textDecor="underline">
-                  {name}:
-                </Text>
-                <Text textAlign="left" pl={2}>
-                  <Text as="span" mr={3} fontWeight="bolder">
-                    {status && status}
-                  </Text>
-                  <Text as="span" mr={2}>
-                    {statusText && statusText}
-                  </Text>
-                  <Text as="span">{url && `(${url})`}</Text>
-                </Text>
-              </Stack>
-              <Box bg="gray.900" opacity="70%" p={4}>
-                {stackLines.map((line, index) =>
-                  index !== 0 ? (
-                    <Text
-                      key={`stack-line_${index}`}
-                      textAlign="left"
-                      maxW="full"
-                      my={1}
-                      color="white"
-                    >
-                      {">> "}
-                      {line}
-                    </Text>
-                  ) : null,
-                )}
-              </Box>
-            </Collapse>
-          </Flex>
+
+            {/* Error details : name, message, status etc. */}
+            <ErrorDetails error={prettyError} show={isOpen} />
+          </Stack>
         </AlertDescription>
       </Alert>
     </Container>

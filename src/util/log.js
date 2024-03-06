@@ -1,4 +1,6 @@
 // helpers functions
+// TODO: learn & add jsDOC comments
+
 const testObjPrototypeName = (obj, regEx) =>
   regEx.test(Object.getPrototypeOf(obj, regEx).name);
 

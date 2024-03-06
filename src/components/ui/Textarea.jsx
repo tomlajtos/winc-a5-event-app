@@ -1,11 +1,12 @@
-import { Textarea as CTextarea } from "@chakra-ui/react";
+// Chakra-ui imports
+import { Textarea as ChakraTextarea } from "@chakra-ui/react";
 
 export const Textarea = (props) => {
   return (
-    <CTextarea
+    <ChakraTextarea
       borderColor="gray.500"
       focusBorderColor="purple.400"
-      size={"md"}
+      size="md"
       width="full"
       {...props}
     />

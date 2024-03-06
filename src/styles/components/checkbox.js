@@ -1,3 +1,4 @@
+// Chakra-ui multi part component style utils imports
 import { checkboxAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
 

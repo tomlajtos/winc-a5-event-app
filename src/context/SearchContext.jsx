@@ -1,6 +1,5 @@
-import { useState, useMemo } from "react";
-import { createContext, useContext } from "react";
-import { Logger } from "./../util/Logger";
+// React and React Router imports
+import { createContext, useContext, useMemo, useState } from "react";
 
 export const SearchContext = createContext(null);
 SearchContext.displayName = "SearchContext";
@@ -22,11 +21,9 @@ export const SearchContextProvider = ({ children }) => {
   }, [searchValue, setSearchValue, filterEventsBySearchValue]);
 
   return (
-    <Logger type="context" name="search-context" level={2}>
-      <SearchContext.Provider value={contextValue}>
-        {children}
-      </SearchContext.Provider>
-    </Logger>
+    <SearchContext.Provider value={contextValue}>
+      {children}
+    </SearchContext.Provider>
   );
 };
 

@@ -1,61 +1,50 @@
+// React and React Router imports
+import { useRef } from "react";
+// Chakra-ui imports
 import {
-  Input as CInput,
   Modal,
   ModalContent,
   ModalBody,
   ModalCloseButton,
   ModalOverlay,
 } from "@chakra-ui/react";
-
-import { useSearchContext } from "../../../../context/SearchContext";
+// Error component imports
 import { ErrorBoundary } from "../../../../error-boundaries/ErrorBoundary";
+// Component imports
 import { CompactEventList } from "./CompactEventList";
-// Utils import
-import { Logger } from "../../../../util/Logger";
+import { Search } from "./Search";
 
-export const PopupSearch = ({ inputRef, isOpen, onClose }) => {
-  const { searchValue, setSearchValue } = useSearchContext();
-
+export const PopupSearch = ({ isOpen, onClose }) => {
+  const focusRef = useRef("");
   return (
-    <Logger name="PopupSearch" level={8}>
-      <Modal
-        size={["full", null, "xl"]}
-        initialFocusRef={inputRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay
-          backdropFilter="auto"
-          backdropBlur="50px"
-          backdropSaturate="500%"
-        />
-        <ModalContent bg="whiteAlpha.300">
-          <ModalCloseButton size="sm" />
-          <ModalBody px={[0, 0, 4]} py={10} align="center">
-            <CInput
-              ref={inputRef}
-              w={["330px"]}
-              name="search"
-              variant="outline"
-              type="input"
-              aria-label="popup-search"
-              placeholder="Type an event title..."
-              _placeholder={{ color: "gray.300" }}
-              rounded="xl"
-              borderColor={"gray.300"}
-              color="gray.200"
-              focusBorderColor="purple.300"
-              defaultValue={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-              }}
-            />
-            <ErrorBoundary>
-              <CompactEventList onClose={onClose} />
-            </ErrorBoundary>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Logger>
+    <Modal
+      size={["full", null, "xl"]}
+      initialFocusRef={focusRef}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <ModalOverlay
+        backdropFilter="auto"
+        backdropBlur="4px"
+        backdropSaturate="150%"
+      />
+      <ModalContent bg="blackAlpha.400">
+        <ModalCloseButton size="sm" color="gray.400" />
+        <ModalBody px={[0, null, 4]} py={10} align="center">
+          <Search
+            inputProps={{
+              ref: focusRef,
+              w: ["280px", "330px"],
+              _placeholder: { color: "gray.300" },
+              borderColor: "gray.200",
+              color: "gray.200",
+            }}
+          />
+          <ErrorBoundary>
+            <CompactEventList onClose={onClose} />
+          </ErrorBoundary>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };

@@ -1,11 +1,9 @@
-// import { log } from "./log";
-
-// TODO: add jsDOC comments
+// TODO: learn & add jsDOC comments
 //
 // function to format date-time unti strings from single digit to double digit (i.e. 1 to 01)
 const addZeroToDT = (unit) => (unit < 10 ? `0${unit}` : unit);
 
-// TODO: add jsDOC comments
+// TODO: learn & add jsDOC comments
 export const formatDateAndTime = (dateStr) => {
   const date = new Date(dateStr);
   const longDateOpt = {
@@ -48,7 +46,7 @@ export const formatDateAndTime = (dateStr) => {
   };
 };
 
-// TODO: add jsDOC comments
+// TODO: learn & add jsDOC comments
 //
 // function to generate date-time str compatible with <input type=datetime-local>
 // dateTime (string) to be used as default value for input element

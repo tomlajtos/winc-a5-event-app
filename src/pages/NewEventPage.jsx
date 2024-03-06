@@ -1,18 +1,16 @@
-// React and RRouter imports
+// React and React Router imports
 import { useRef } from "react";
 import { useFetcher, useNavigation } from "react-router-dom";
-//Context imports
-//chakra-ui imports
+// Chakra-ui imports
 import { useToast, Box, Flex, Stack } from "@chakra-ui/react";
-// component imports
-import { PageTitle } from "./PageTitle";
-import { SaveNewButton } from "../components/forms/buttons/SaveNewButton";
+// Component imports
 import { CancelNewButton } from "../components/forms/buttons/CancelNewButton";
 import { EventForm } from "../components/forms/EventForm";
-// util imports
-import { toaster } from "../util/toaster";
+import { PageTitle } from "./PageTitle";
+import { SaveNewButton } from "../components/forms/buttons/SaveNewButton";
+// Util and I/O imports
 import { generateDateTimeStr } from "../util/datetime";
-import { Logger } from "../util/Logger";
+import { toaster } from "../util/toaster";
 
 export const NewEventPage = () => {
   const fetcher = useFetcher();
@@ -32,58 +30,56 @@ export const NewEventPage = () => {
     image: "",
   };
 
-  toaster(toast, fetcher, navigation, toastIdRef);
+  toaster(toast, fetcher, toastIdRef, navigation);
 
   return (
-    <Logger type="page" name="NewEventPage" level={4}>
-      <Box
-        pb={6}
-        width="100%"
-        maxW="1280px"
-        flexGrow="1"
-        marginX="auto"
-        bg="gray.100"
-        overflowY="auto"
+    <Box
+      pb={6}
+      width="100%"
+      maxW="1280px"
+      flex="1"
+      marginX="auto"
+      bg="gray.50"
+      overflowY="auto"
+    >
+      <Flex
+        align="center"
+        justify="space-between"
+        borderBottom="1px solid"
+        borderColor="gray.300"
+        position="sticky"
+        top={0}
+        zIndex="docked"
+        bg="inherit"
       >
-        <Flex
-          align="center"
-          justify="space-between"
-          borderBottom="1px solid"
-          borderColor="gray.300"
-        >
-          <PageTitle
-            title="New Event"
-            position="sticky"
-            top="95"
-            border="none"
-          />
+        <PageTitle title="New Event" pb={[2, 3, 4]} />
 
-          {/* form button group */}
-          <Stack direction="row" spacing={2} pr={8} justifyContent="end">
-            <SaveNewButton />
-            <CancelNewButton />
-          </Stack>
-        </Flex>
+        {/* form button group */}
+        <Stack direction="row" spacing={2} pr={[2, 4, 8]} justifyContent="end">
+          <SaveNewButton />
+          <CancelNewButton />
+        </Stack>
+      </Flex>
 
-        {/* New Event Form */}
-        <Flex
-          mx="auto"
-          px={[4, 8]}
-          py={8}
-          maxWidth={["full", "container.sm"]}
-          direction="column"
-          alignItems="stretch"
-          backgroundColor="transparent"
-        >
-          <EventForm
-            as={fetcher.Form}
-            id={"new-event-form"}
-            method="POST"
-            defaultValues={defaultFormValues}
-            errors={errors}
-          />
-        </Flex>
-      </Box>
-    </Logger>
+      {/* New Event Form */}
+      <Flex
+        mx="auto"
+        px={[4, 8]}
+        py={[4, 6, 8]}
+        bg="blue.400"
+        maxWidth={["full", "container.sm"]}
+        direction="column"
+        alignItems="stretch"
+        backgroundColor="transparent"
+      >
+        <EventForm
+          as={fetcher.Form}
+          id="new-event-form"
+          method="POST"
+          defaultValues={defaultFormValues}
+          errors={errors}
+        />
+      </Flex>
+    </Box>
   );
 };

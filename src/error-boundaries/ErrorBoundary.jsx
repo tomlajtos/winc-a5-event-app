@@ -1,5 +1,8 @@
+// React and React Router imports
 import React from "react";
+// Chakra-ui imports
 import { Box } from "@chakra-ui/react";
+// Component imports
 import { ErrorUi } from "./ErrorUi";
 
 class ErrorBoundary extends React.Component {
@@ -15,8 +18,8 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <Box flex="1" pt="10%" bg="">
-          <ErrorUi error={this.state.error} />;
+        <Box flex="1" className="error-ui-containter_error-boundary">
+          <ErrorUi error={this.state.error} />
         </Box>
       );
     }

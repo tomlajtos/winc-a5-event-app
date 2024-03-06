@@ -1,22 +1,26 @@
+// React and React Router imports
 import { useRef } from "react";
+// Chakra-ui imports
 import {
   Flex,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
+// Context and custom hook imports
 import { useEditEvent } from "../../context/EditEventContext";
+// Component imports
+import { CancelEditButton } from "../../components/forms/buttons/CancelEditButton";
 import { EventForm } from "../../components/forms/EventForm";
 import { SaveEditButton } from "../../components/forms/buttons/SaveEditButton";
-import { CancelEditButton } from "../../components/forms/buttons/CancelEditButton";
-import { toaster } from "../../util/toaster";
-import { handleResetOnModalClose } from "../../util/uiUtils";
+// Util and I/O imports
 import { generateDateTimeStr } from "../../util/datetime";
-import { Logger } from "../../util/Logger";
+import { handleResetOnModalClose } from "../../util/uiUtils";
+import { toaster } from "../../util/toaster";
 
 export const EditEventModal = () => {
   const { event, fetcher, editIsOpen, editOnClose, toast } = useEditEvent();
@@ -36,7 +40,7 @@ export const EditEventModal = () => {
 
   if (editIsOpen) {
     // toast
-    toaster(toast, fetcher, { state: "~EDIT~" }, toastIdRef);
+    toaster(toast, fetcher, toastIdRef);
     // setTimeout makes sure that there is no collision of component renders caused by the active toast and editOnClose function
     // without this there is a warning of state update while rendering another component
     // There should be a setTimout implemented in the toaster function as well
@@ -49,58 +53,55 @@ export const EditEventModal = () => {
   }
 
   return (
-    <Logger name="EditEventModal" level={5}>
-      <Modal
-        isOpen={editIsOpen}
-        onClose={() => handleResetOnModalClose(fetcher, event, editOnClose)}
-        closeOnEsc
-        size={["full", null, "lg"]}
+    <Modal
+      isOpen={editIsOpen}
+      onClose={() => handleResetOnModalClose(fetcher, event, editOnClose)}
+      closeOnEsc
+      size={["full", null, "lg"]}
+    >
+      <ModalOverlay
+        bg="blackAlpha.600"
+        backdropFilter="auto"
+        backdropBlur="3px"
       >
-        <ModalOverlay
-          bg="blackAlpha.500"
-          backdropFilter="auto"
-          backdropBlur="5px"
-        >
-          <ModalContent backgroundColor="whiteAlpha.900">
-            <ModalHeader fontSize="2xl" background="transparent">
-              Edit event
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody background="transparent">
-              <Flex
+        <ModalContent backgroundColor="whiteAlpha.900">
+          <ModalHeader fontSize="2xl" background="transparent" px={[2, 3, 4]}>
+            Edit event
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody background="transparent" px={[3, 6, 8]}>
+            <Flex
+              width="full"
+              direction="column"
+              alignItems="stretch"
+              backgroundColor="transparent"
+            >
+              <EventForm
+                as={fetcher.Form}
+                id="edit-event-form"
+                method="PATCH"
+                defaultValues={defaultFormValues}
+                errors={errors}
+              />
+              {/* edit-form button group */}
+              <Stack
+                direction="row"
+                spacing={2}
+                py={4}
+                justifyContent="end"
                 width="full"
-                direction="column"
-                alignItems="stretch"
-                backgroundColor="transparent"
               >
-                <EventForm
-                  as={fetcher.Form}
-                  id="edit-event-form"
-                  method="PATCH"
-                  defaultValues={defaultFormValues}
-                  errors={errors}
+                <SaveEditButton errors={errors} />
+                <CancelEditButton
+                  onClick={() =>
+                    handleResetOnModalClose(fetcher, event, editOnClose)
+                  }
                 />
-                {/* edit-form button group */}
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  py={4}
-                  px={0}
-                  justifyContent="end"
-                  width="full"
-                >
-                  <SaveEditButton errors={errors} />
-                  <CancelEditButton
-                    onClick={() =>
-                      handleResetOnModalClose(fetcher, event, editOnClose)
-                    }
-                  />
-                </Stack>
-              </Flex>
-            </ModalBody>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
-    </Logger>
+              </Stack>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
   );
 };

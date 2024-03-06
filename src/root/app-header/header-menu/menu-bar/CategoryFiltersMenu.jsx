@@ -1,10 +1,16 @@
+// Chakra-ui imports
 import { Button, Menu, MenuButton, MenuList } from "@chakra-ui/react";
-
+// Component imports
 import { CategoryFilters } from "../CategoryFilters";
 
 export const CategoryFiltersMenu = () => {
   return (
-    <Menu isLazy="true" closeOnSelect={false} gutter={12}>
+    <Menu
+      isLazy="true"
+      closeOnSelect={false}
+      gutter={12}
+      placement="auto-start"
+    >
       <MenuButton
         as={Button}
         fontSize={"xl"}

@@ -1,5 +1,5 @@
-import { FormControl, FormLabel, Text } from "@chakra-ui/react";
-import { Input } from "../../ui/Input";
+// Chakra-ui imports
+import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 export const UrlInputControl = ({
   label,
@@ -18,11 +18,13 @@ export const UrlInputControl = ({
           </Text>
         )}
       </FormLabel>
+
       <Input
         type="url"
         name={inputName}
         defaultValue={defaultValue}
         placeholder="https://eventimagesource.com/eventimage"
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
       />
       {errors && errors[inputName] && (
         <Text color="red.500" fontStyle="italic" py={1} px={2}>

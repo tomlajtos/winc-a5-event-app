@@ -1,9 +1,12 @@
+// Chakra-ui imports
 import { Container, Heading, IconButton, Stack, Text } from "@chakra-ui/react";
 import { CloseIcon, WarningIcon } from "@chakra-ui/icons";
+
 export const ErrorToast = ({ title, type, message, comment, handleClose }) => {
   return (
     <Container
-      size="md"
+      // size={["sm", null, "md"]}
+      maxW="98%"
       p={0}
       pt={1}
       pb={4}
@@ -12,29 +15,35 @@ export const ErrorToast = ({ title, type, message, comment, handleClose }) => {
       color="gray.100"
     >
       <Stack direction="row" align="start" spacing={6} pl={4} pr={1}>
-        <WarningIcon w={8} h={8} color="gray.50" mt={2} />
+        <WarningIcon w={[6, 8]} h={[6, 8]} color="gray.50" mt={[4, 2]} />
+
+        {/* toast text section: title, comment, message, error type */}
         <Stack>
-          <Heading size="md" pt={1} pb={2} mt={2}>
+          <Heading size={["sm", "md"]} pt={1} pb={2} mt={[3, 1]}>
             {title}
           </Heading>
+
           {type.includes("HTTP") ? (
             <Stack>
-              <Text fontSize="md" fontWeight="600">
+              <Text fontSize={["sm", "md"]} fontWeight="600">
                 {comment}
               </Text>
               <Text fontSize="sm">
-                ( {type}: {message} )
+                {type}
+                {":"} {message}
               </Text>
             </Stack>
           ) : (
             <Stack>
-              <Text fontWeight="600" fontSize="1.1rem">
+              <Text fontWeight="600" fontSize={["0.9rem", "1rem", "1.1rem"]}>
                 {type}:
               </Text>
-              <Text fontSize="1.1rem">{message}</Text>
+              <Text fontSize={["0.9rem", "1rem", "1.1rem"]}>{message}</Text>
             </Stack>
           )}
         </Stack>
+
+        {/* custom close button */}
         <IconButton
           m={0}
           size="sm"

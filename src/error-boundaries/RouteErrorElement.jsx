@@ -1,23 +1,27 @@
-import { useRouteError /*, isRouteErrorResponse*/ } from "react-router-dom";
+// React and Ract Router imports
+import { useRouteError } from "react-router-dom";
+// Chakra-ui imports
 import { Box } from "@chakra-ui/react";
+// Component imports
 import { ErrorUi } from "./ErrorUi";
+// Util and I/O imports
 import { log } from "../util/log";
 
 export const RouteErrorElement = () => {
   const error = useRouteError();
-  log.value("error @ ErrorBoundary", error);
+  log.error(error);
+
   return (
     <Box
-      className="error-boundary-container"
+      className="error-element-container"
       width="100%"
       maxW="1280px"
       marginX="auto"
       bg="blackAlpha.700"
-      pt="10%"
       color="white"
-      flex={"1"}
+      flex="1"
     >
-      <ErrorUi error={error} />;
+      <ErrorUi error={error} />
     </Box>
   );
 };

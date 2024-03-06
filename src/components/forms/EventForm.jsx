@@ -1,15 +1,13 @@
-// chakra-ui imports
+// Chakra-ui imports
 import { Stack, Text } from "@chakra-ui/react";
-// component imports
-import { TextInputControl } from "./form-controlls/TextInputControl";
+// Component imports
+import { CheckboxGrControl } from "./form-controlls/CheckboxGrControl";
 import { DateTimeControl } from "./form-controlls/DateTimeControl";
 import { TextareaControl } from "./form-controlls/TextareaControl";
-import { CheckboxGrControl } from "./form-controlls/CheckboxGrControl";
-// import { HackyCheckboxGrControl } from "./form-controlls/HackyCheckboxGrControl.jsx"; // >> ALT hacky implementation of a working cbGr
-import { UrlInputControl } from "./form-controlls/UrlInputControl";
+import { TextInputControl } from "./form-controlls/TextInputControl";
+// import { HackyCheckboxGrControl } from "./form-controlls/HackyCheckboxGrControl"; // >> ALT hacky implementation of a working cbGr
 import { SelectControl } from "./form-controlls/SelectControl";
-// util imports
-// import { log } from "../../util/log.js";
+import { UrlInputControl } from "./form-controlls/UrlInputControl";
 
 export const EventForm = ({ as, id, method, defaultValues, errors }) => {
   return (

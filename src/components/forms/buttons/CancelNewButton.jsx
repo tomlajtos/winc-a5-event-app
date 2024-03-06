@@ -1,18 +1,28 @@
-import { Link as RRLink } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
+// React and React Router imports
+// Chakra-ui imports
+// Context and custom hook imports
+// Component imports
+// Error component imports
+// Util and I/O imports
+// Assets imports
+
+// React and React Router imports
+import { Link } from "react-router-dom";
+// Chakra-ui imports
+import { IconButton } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+
 export const CancelNewButton = (props) => {
-  const variant = props.variant ? props.variant : "base";
-  const size = props.size ? props.size : "lg";
   return (
-    <Button
-      as={RRLink}
+    <IconButton
+      as={Link}
       to="/"
-      variant={variant}
-      size={size}
-      colorScheme="red"
+      aria-label="Close event"
+      icon={<CloseIcon fontSize={["8px", "12px"]} />}
+      variant={["smRound", "mdRound"]}
+      justifySelf="flex-start"
+      isRound
       {...props}
-    >
-      Cancel
-    </Button>
+    />
   );
 };

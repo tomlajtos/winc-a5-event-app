@@ -1,5 +1,5 @@
-import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
-import { Input } from "../../ui/Input";
+// Chakra-ui imports
+import { FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
 
 export const DateTimeControl = ({
   label,
@@ -9,9 +9,20 @@ export const DateTimeControl = ({
   showAsRequired,
 }) => {
   return (
-    <FormControl display={"flex"} flexDirection={"column"} alignItems={"start"}>
-      <Stack direction="row" spacing={2} align="center" width="full">
-        <FormLabel margin={0} px={2}>
+    <FormControl display="flex" flexDirection="column" alignItems="start">
+      {errors && inputName === "startTime" && errors.startEndMismatch && (
+        <Text color="red.500" fontStyle="italic" py={1} px={2}>
+          {errors.startEndMismatch}
+        </Text>
+      )}
+      <Stack
+        direction="row"
+        spacing={2}
+        align="center"
+        justify="space-between"
+        width="full"
+      >
+        <FormLabel margin={0} px={[0, 2]} minWidth={["44px", "62px"]}>
           {label}
           {showAsRequired && (
             <Text as="span" pl={1} color="red.500">
@@ -19,11 +30,14 @@ export const DateTimeControl = ({
             </Text>
           )}
         </FormLabel>
+
         <Input
           type="datetime-local"
+          // size={["sm", "md"]}
           name={inputName}
           defaultValue={defaultValue}
           flex={1}
+          borderColor={errors && errors[inputName] ? "" : "gray.500"}
         />
       </Stack>
       {errors && errors[inputName] && (

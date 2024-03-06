@@ -1,4 +1,6 @@
+// React and React Router imports
 import { FormControl, FormLabel, Text } from "@chakra-ui/react";
+// Component imports
 import { Textarea } from "../../ui/Textarea";
 
 export const TextareaControl = ({
@@ -18,10 +20,12 @@ export const TextareaControl = ({
           </Text>
         )}
       </FormLabel>
+
       <Textarea
         name={inputName}
         defaultValue={defaultValue}
         placeholder={`Please write a short ${inputName}...`}
+        borderColor={errors && errors[inputName] ? "red.500" : "gray.500"}
         resize="none"
         overflowY="auto"
       />

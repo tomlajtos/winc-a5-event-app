@@ -1,4 +1,6 @@
+// React and React Router imports
 import { useContext, createContext } from "react";
+
 export const DeleteEventContext = createContext(null);
 
 export const DeleteEventContextProvider = ({ value, children }) => {
