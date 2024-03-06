@@ -1,11 +1,9 @@
 // React and React Router imports
 import { useFetcher, useLoaderData } from "react-router-dom";
-// chakra-ui imports
+// Chakra-ui imports
 import {
   useDisclosure,
   useToast,
-  Button,
-  Box,
   Flex,
   Heading,
   Spacer,
@@ -13,19 +11,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 // Context and custom hook imports
-import { EditEventContextProvider } from "../context/EditEventContext";
 import { DeleteEventContextProvider } from "../context/DeleteEventContext";
+import { EditEventContextProvider } from "../context/EditEventContext";
 // Component imports
-import { PageTitle } from "./PageTitle";
+import { DeleteEventModal } from "./event-page/DeleteEventModal";
+import { EventPageButtons } from "./event-page/EventPageButtons";
 import { EventImage } from "../components/ui/EventImage";
 import { EventDates } from "./event-page/EventDates";
 import { EventCreator } from "./event-page/EventCreator";
 import { EventCategories } from "./event-page/EventCategories";
 import { EditEventModal } from "./event-page/EditEventModal";
-import { DeleteEventModal } from "./event-page/DeleteEventModal";
+import { PageTitle } from "./PageTitle";
 // Util and I/O imports
 import { fetchData } from "../io/fetch";
-import { Logger } from "../util/Logger";
 
 export const loader = async ({ params }) => {
   const event = await fetchData(`events/${params.eventId}`);
@@ -52,97 +50,103 @@ export const EventPage = () => {
   } = useDisclosure();
 
   return (
-    <Logger type="page" name="EventPage" level={4}>
-      <Box
-        className="event-page-container"
-        width="100%"
-        maxW="1280px"
-        marginX="auto"
-        bg="gray.100"
-        pl={[4, 4, 0]}
+    <Flex
+      className="event-page-container"
+      flexDir="column"
+      width="100%"
+      maxW="1280px"
+      marginX="auto"
+      bg="gray.50"
+      rowGap={3}
+      overflowY="auto"
+    >
+      {/*Event page title & buttons section*/}
+      <EventPageButtons onEditClick={editOnOpen} onDeleteClick={deleteOnOpen} />
+      <PageTitle
+        title={event.title}
+        borderBottom="none"
+        fontSize={["1.6rem", "2rem", "2.5rem"]}
+      />
+
+      {/*Event Page content section*/}
+      <Stack
+        className="event-page-content"
+        direction={"column"}
+        spacing={[4, 6, 8]}
+        px={[2, 4, 6, 8, 10]}
+        width="full"
       >
-        <Spacer height={4} />
+        {/* Image, Dates, Creator */}
+        <Stack
+          className="main-info"
+          flexDir={["column", null, "row"]}
+          spacing={[4, null, 12]}
+          justify="start"
+        >
+          <EventImage event={event} rounded={["md", "lg", "2xl"]} />
+          <Stack direction="column" spacing={[2, 3, 4]}>
+            <EventDates event={event} />
+            <EventCreator event={event} />
+          </Stack>
+        </Stack>
 
-        {/*Event page title & buttons section*/}
-        <Flex align="center" justify="space-between">
-          <PageTitle
-            title={event.title}
-            borderBottom="none"
-            fontSize="2.5rem"
+        {/* Location, Description, Categories */}
+        <Stack spacing={3}>
+          <Stack spacing={1}>
+            <Heading fontSize={["1.1rem", "1.25rem", "1.40rem"]}>
+              Location:
+            </Heading>
+            <Text px={2} fontSize={["1rem", "1.1rem", "1.25rem"]}>
+              {event.location}
+            </Text>
+          </Stack>
+
+          <Stack spacing={1}>
+            <Heading fontSize={["1.1rem", "1.25rem", "1.40rem"]}>
+              About the event:
+            </Heading>
+            <Text px={2} fontSize={["1rem", "1.1rem", "1.25rem"]}>
+              {event.description}
+            </Text>
+          </Stack>
+
+          <Spacer />
+          <EventCategories
+            event={event}
+            pb={[3, 5]}
+            tagProps={{ size: ["md", "lg"] }}
           />
-          {/* // TODO:  make buttons the last two elements in tab-order */}
-          <Stack
-            direction="row"
-            justify="end"
-            justifySelf="end"
-            pr={[4, 8, 14]}
-          >
-            <Button
-              variant="base"
-              onClick={() => {
-                editOnOpen();
-              }}
-            >
-              Edit
-            </Button>
-            <Button variant="base" onClick={deleteOnOpen}>
-              Delete
-            </Button>
-          </Stack>
-        </Flex>
+          <Spacer />
+        </Stack>
+      </Stack>
 
-        {/*Event Page content section*/}
-        <Flex direction={"column"} rowGap={8} px={10} py={12} width="full">
-          <Flex directon="row" gap={8} flex={1} justify="start">
-            <EventImage event={event} size="300px" rounded="2xl" />
-            <Stack direction="column" rowGap={4}>
-              <EventDates event={event} />
-              <EventCreator event={event} />
-            </Stack>
-          </Flex>
+      {/* Edit */}
+      <EditEventContextProvider
+        value={{
+          event,
+          editIsOpen,
+          editOnOpen,
+          editOnClose,
+          fetcher,
+          toast,
+        }}
+      >
+        <EditEventModal />
+      </EditEventContextProvider>
 
-          <Stack spacing={3}>
-            <Stack spacing={1}>
-              <Heading size={"md"}>Location:</Heading>
-              <Text>{event.location}</Text>
-            </Stack>
-
-            <Stack spacing={1}>
-              <Heading size={"md"}>About the event:</Heading>
-              <Text>{event.description}</Text>
-            </Stack>
-            <EventCategories event={event} />
-          </Stack>
-        </Flex>
-
-        {/*Edit modal in context*/}
-        <EditEventContextProvider
-          value={{
-            event,
-            editIsOpen,
-            editOnOpen,
-            editOnClose,
-            fetcher,
-            toast,
-          }}
-        >
-          <EditEventModal />
-        </EditEventContextProvider>
-
-        {/*Delete modal in context*/}
-        <DeleteEventContextProvider
-          value={{
-            event,
-            deleteOnOpen,
-            deleteIsOpen,
-            deleteOnClose,
-            fetcher,
-            toast,
-          }}
-        >
-          <DeleteEventModal />
-        </DeleteEventContextProvider>
-      </Box>
-    </Logger>
+      {/* Delete */}
+      <DeleteEventContextProvider
+        value={{
+          event,
+          deleteOnOpen,
+          deleteIsOpen,
+          deleteOnClose,
+          fetcher,
+          toast,
+        }}
+      >
+        <DeleteEventModal />
+      </DeleteEventContextProvider>
+    </Flex>
   );
 };

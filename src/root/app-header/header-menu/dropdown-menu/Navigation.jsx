@@ -3,15 +3,17 @@ import { MenuItem, Stack } from "@chakra-ui/react";
 
 export const Navigation = () => {
   return (
-    <Stack as="nav" spacing={0}>
+    <Stack as="nav" spacing={[0.5, 1]}>
       <MenuItem
         as={RRLink}
         to={"/"}
         closeOnSelect="true"
         px={6}
-        fontSize={"xl"}
+        py={0}
+        fontSize={["md", "lg", "xl"]}
         fontWeight="thin"
         color="gray.900"
+        bg="transparent"
       >
         Events
       </MenuItem>
@@ -21,9 +23,11 @@ export const Navigation = () => {
         to={"event/new"}
         closeOnSelect="true"
         px={6}
-        fontSize={"xl"}
+        py={0}
+        fontSize={["md", "lg", "xl"]}
         fontWeight="thin"
         color="gray.900"
+        bg="transparent"
       >
         Create new
       </MenuItem>
