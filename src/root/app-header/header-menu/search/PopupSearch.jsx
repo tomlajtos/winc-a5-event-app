@@ -1,25 +1,25 @@
+// React and React Router imports
 import { useRef } from "react";
+// Chakra-ui imports
 import {
-  Input as CInput,
   Modal,
   ModalContent,
   ModalBody,
   ModalCloseButton,
   ModalOverlay,
 } from "@chakra-ui/react";
-
-import { useSearchContext } from "../../../../context/SearchContext";
+// Error component imports
 import { ErrorBoundary } from "../../../../error-boundaries/ErrorBoundary";
+// Component imports
 import { CompactEventList } from "./CompactEventList";
-// Utils import
+import { Search } from "./Search";
 
 export const PopupSearch = ({ isOpen, onClose }) => {
-  const { searchValue, setSearchValue } = useSearchContext();
-  const ref = useRef();
+  const focusRef = useRef("");
   return (
     <Modal
       size={["full", null, "xl"]}
-      initialFocusRef={ref}
+      initialFocusRef={focusRef}
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -28,25 +28,16 @@ export const PopupSearch = ({ isOpen, onClose }) => {
         backdropBlur="4px"
         backdropSaturate="150%"
       />
-      <ModalContent bg="blackAlpha.300">
+      <ModalContent bg="blackAlpha.400">
         <ModalCloseButton size="sm" color="gray.400" />
-        <ModalBody px={[0, 0, 4]} py={10} align="center">
-          <CInput
-            ref={ref}
-            w={["280px", "330px"]}
-            name="search"
-            variant="outline"
-            type="input"
-            aria-label="popup-search"
-            placeholder="Type an event title..."
-            _placeholder={{ color: "gray.300" }}
-            rounded="xl"
-            borderColor={"gray.300"}
-            color="gray.200"
-            focusBorderColor="purple.300"
-            defaultValue={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
+        <ModalBody px={[0, null, 4]} py={10} align="center">
+          <Search
+            inputProps={{
+              ref: focusRef,
+              w: ["280px", "330px"],
+              _placeholder: { color: "gray.300" },
+              borderColor: "gray.200",
+              color: "gray.200",
             }}
           />
           <ErrorBoundary>
