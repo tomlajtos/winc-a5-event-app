@@ -8,8 +8,8 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
   const data = fetcher.data;
   const requestMethod = fetcher.data?.requestMethod;
   const success = fetcher.data?.success;
-  const error = fetcher.data?.error;
   const errorType = data?.errorType;
+  const isError = errorType;
   const errorMessage = data?.message;
   const errorComment = data?.errorComment;
   const navState = navigation ? navigation.state : "";
@@ -46,6 +46,7 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
      * applies to:
      *  - add new event --error */
     if (fetcherState === "idle") {
+      // console.log("FETCHER IDLE");
       const addFailId = "add-fail-toast"; // checking for active id prevents double toast
 
       if (
@@ -54,6 +55,7 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
         requestMethod === "POST" &&
         !toast.isActive(addFailId)
       ) {
+        // console.log("NAV IS NOT LOADING && POST");
         // set to ref.current to make toast closable
         toastIdRef.current = toast({
           id: addFailId,
@@ -71,6 +73,7 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
      *  - delete event --success
      *  - delete event --error */
     if (fetcherState === "loading") {
+      // console.log("FETCHER LOADING");
       // checking for active id prevents double toast firing
       const addOkId = "add-ok-toast";
       const editOkId = "edit-ok-toast";
@@ -84,6 +87,7 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
         formMethod === "POST" &&
         !toast.isActive(addOkId)
       ) {
+        // console.log("NAV LOADING && POST");
         // set to ref.current to make toast closable
         toastIdRef.current = toast({
           id: addOkId,
@@ -101,7 +105,9 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
 
       // EDIT EVENT TOASTS
       if (data && formMethod === "PATCH") {
+        // console.log("FETCHER DATA && PATCH");
         if (success && !toast.isActive(editOkId)) {
+          // console.log("EDIT SUCCESS");
           // set to ref.current to make toast closable
           toastIdRef.current = toast({
             id: editOkId,
@@ -117,7 +123,8 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
           return;
         }
 
-        if (error && !toast.isActive(editFailId)) {
+        if (isError && !toast.isActive(editFailId)) {
+          // console.log("EDIT FAILED");
           // set to ref.current to make toast closable
           toastIdRef.current = toast({
             id: editFailId,
@@ -129,7 +136,8 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
 
       // DELETE EVENT TOASTS
       if (formMethod === "DELETE") {
-        if (!error && !toast.isActive(deleteOkId)) {
+        if (!isError && !toast.isActive(deleteOkId)) {
+          // console.log("DELETE SUCCESS");
           // set to ref.current to make toast closable
           toastIdRef.current = toast({
             id: deleteOkId,
@@ -144,7 +152,8 @@ export const toaster = (toast, fetcher, toastIdRef, navigation) => {
           return;
         }
 
-        if (error && !toast.isActive(deleteFailId)) {
+        if (isError && !toast.isActive(deleteFailId)) {
+          // console.log("DELETE FAILED");
           // set to ref.current to make toast closable
           toastIdRef.current = toast({
             id: deleteFailId,
