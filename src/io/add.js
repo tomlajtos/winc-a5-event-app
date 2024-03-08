@@ -8,16 +8,16 @@ export const action = async ({ request }) => {
   const method = request.method;
   const formData = Object.fromEntries(await request.formData());
 
-  // base obj to return on error with edit/delete
-  const error = {
+  // template obj to return on error with edit/delete
+  const errorTemplate = {
     requestMethod: method,
     name: "Unsuccessful Action: create new event",
-    error: {},
-    data: {},
+    errorType: "",
+    message: "",
   };
 
   // validate form data before fetch
-  validateFormDataInAction(formData, error);
+  const error = validateFormDataInAction(formData, errorTemplate);
 
   if (Object.keys(error.error).length > 0) {
     log.error("Input Error @add.js>action", error);

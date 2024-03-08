@@ -5,38 +5,37 @@ import { validateFormDataInAction, generateHttpError } from "./validate";
 import { log } from "../util/log";
 
 export const action = async ({ request, params, signal }) => {
-  const formData = await request.formData();
-  const formDataObject = Object.fromEntries(await formData);
-  const intent = formData.get("intent");
+  const formData = Object.fromEntries(await request.formData());
+  const intent = formData.intent;
   const method = request.method;
 
   // obj to return as result on edit success
   const result = {
-    requestMethod: method,
-    success: false,
-  };
-
-  // base obj to return on error with edit/delete
-  const error = {
     id: params.eventId,
     requestMethod: method,
-    name: `Unsuccessful Action: ${intent} event`,
-    error: {},
-    data: {},
+    success: "",
   };
 
-  /* UPDATE event */
-  if (request.method === "PATCH" && intent === "edit") {
-    validateFormDataInAction(formDataObject, error);
+  // teplate obj to return on error with edit/delete
+  const errorTemplate = {
+    id: params.eventId,
+    requestMethod: method,
+    errorType: "",
+    name: `Unsuccessful Action: ${intent} event`,
+    message: "",
+  };
 
+  /* EDIT event */
+  if (request.method === "PATCH" && intent === "edit") {
+    const error = validateFormDataInAction(formData, errorTemplate);
+    console.log(error);
     // validate form data before fetch
     if (Object.keys(error.error).length > 0) {
-      log.error("Input Error @mutate>action", error);
+      log.error(error);
       return error;
     }
-
     // convert categoryIds from strings to numbers - to addhere to original events.json formatting
-    formDataObject.categoryIds = formDataObject.categoryIds
+    formData.categoryIds = formData.categoryIds
       .split("")
       .reduce((resArr, char) => {
         if (char !== ",") {
@@ -50,7 +49,7 @@ export const action = async ({ request, params, signal }) => {
       {
         signal,
         method: "PATCH",
-        body: JSON.stringify(formDataObject),
+        body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
         },
@@ -59,11 +58,10 @@ export const action = async ({ request, params, signal }) => {
 
     if (!response.ok) {
       log.error("HTTP error @mutate>UPDATE:", response, "\n", request);
-      return generateHttpError(error, response, formDataObject);
+      return generateHttpError(errorTemplate, response, formData);
     }
-
     result.success = response.ok;
-    result.formData = formDataObject;
+    result.formData = formData;
     return result;
   }
 
@@ -77,7 +75,7 @@ export const action = async ({ request, params, signal }) => {
     );
     if (!response.ok) {
       log.error("HTTP error @mutate>DELETE:", response, "\n", request);
-      return generateHttpError(error, response, formDataObject);
+      return generateHttpError(errorTemplate, response, formData);
     }
     return redirect("/");
   }

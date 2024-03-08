@@ -1,13 +1,13 @@
 // Array of input names that are not required, to make custom required validation coherent accross all inputs
 // mainly is necessary because of custom checkbox group in `CheckboxGrControl` where setting the required attr on the checkbox
 // would make all 3 required, however only one is required at minimum
-const notRequired = ["image"];
+
+const notRequiredInputs = ["image"];
 
 // Helper functions
 // TODO: Learn & add jsDOC comments
-// iN -- inputName
-const generateErrorMessage = (iN, missing) => {
-  switch (iN) {
+const generateErrorMessage = (inputName, missing) => {
+  switch (inputName) {
     case "startTime": {
       return missing
         ? "Please type/select a start time!"
@@ -31,8 +31,8 @@ const generateErrorMessage = (iN, missing) => {
     }
     default: {
       return missing
-        ? `Please type in an ${iN}!`
-        : `Please provide a valid ${iN}!`;
+        ? `Please type in an ${inputName}!`
+        : `Please provide a valid ${inputName}!`;
     }
   }
 };
@@ -40,17 +40,17 @@ const generateErrorMessage = (iN, missing) => {
 // TODO: Learn & add jsDOC comments
 const hasMissingValue = (formEntry) =>
   (!formEntry[1] || formEntry[1].length === 0) &&
-  !notRequired.includes(formEntry[0]);
+  !notRequiredInputs.includes(formEntry[0]);
 
 // separate validation for checkbox group 'categoryIds'
 // if no selection >>> value is [] >>> entry won't be added to formData
 // TODO: Learn & add jsDOC comments
-const validateCategoryIds = (formDataObject, errorObject) => {
-  if (!formDataObject.categoryIds) {
+const validateCategoryIds = (formData, error) => {
+  if (!formData.categoryIds) {
     const entry = ["categoryIds", ""];
-    generateErrorPropEntries(entry, hasMissingValue(entry), errorObject);
-    if (!errorObject.formIntent || !errorObject.message) {
-      generateErrorObjectProps(formDataObject, errorObject);
+    generateErrorPropEntries(entry, hasMissingValue(entry), error);
+    if (!error.errorType || !error.message) {
+      generateErrorProps(error);
     }
   }
 };
@@ -58,20 +58,19 @@ const validateCategoryIds = (formDataObject, errorObject) => {
 // separate validation for start time and endt time order
 // called at the end of validateFormDataInAction
 // TODO: Learn & add jsDOC comments
-const validateStartToEndMismatch = (formDataObject, errorObject) => {
-  const numericStartTime = Date.parse(formDataObject.startTime);
-  const numericEndTime = Date.parse(formDataObject.endTime);
+const validateStartToEndMismatch = (formData, error) => {
+  const numericStartTime = Date.parse(formData.startTime);
+  const numericEndTime = Date.parse(formData.endTime);
 
-  if (!errorObject.error.startTime && !errorObject.error.endTime) {
+  if (!error.error?.startTime && !error.error?.endTime) {
     if (numericStartTime > numericEndTime) {
-      errorObject.error.startEndMismatch =
+      error.error.startEndMismatch =
         "This app only works under normal* space-time conditions! (*in accordance with Einstein's General Relativity)";
-      errorObject.error["startTime"] = "Please set this before the end-time...";
-      errorObject.error["endTime"] =
-        "...or this after the start-time. Thank you!";
+      error.error["startTime"] = "Please set this before the end-time...";
+      error.error["endTime"] = "...or this after the start-time. Thank you!";
 
-      if (!errorObject.formIntent || !errorObject.message) {
-        generateErrorObjectProps(formDataObject, errorObject);
+      if (!error.errorType || !error.message) {
+        generateErrorProps(error);
       }
     }
   }
@@ -118,14 +117,14 @@ const hasInvalidValue = (formEntry) => {
 };
 
 // TODO: Learn & add jsDOC comments
-const generateErrorPropEntries = (formEntry, missing, errorObject) => {
-  errorObject.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
+const generateErrorPropEntries = (formEntry, missing, error) => {
+  error.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
 };
 
 // TODO: Learn & add jsDOC comments
-const generateErrorObjectProps = (data, errorObject) => {
-  errorObject.errorType = "Input Error";
-  errorObject.message = "Please complete the required fields!";
+const generateErrorProps = (error) => {
+  error.errorType = "Input Error";
+  error.message = "Please complete the required fields!";
 };
 
 // NOTE: (to self,mostly)
@@ -138,30 +137,35 @@ const generateErrorObjectProps = (data, errorObject) => {
 // The `action` returns an error object if missing/invalid input or HTTP error occurs
 
 // TODO: Learn & add jsDOC comments
-export const validateFormDataInAction = (formDataObject, errorObject) => {
-  const formEntries = Object.entries(formDataObject);
+export const validateFormDataInAction = (formData, errorTemplate) => {
+  const formEntries = Object.entries(formData);
+  console.log("entries", formEntries);
 
-  validateCategoryIds(formDataObject, errorObject);
+  const error = { ...errorTemplate };
+  error.error ? error.error : (error.error = {});
+
+  validateCategoryIds(formData, error);
 
   formEntries.map((formEntry) => {
     const missingValue = hasMissingValue(formEntry);
     const invalidValue = hasInvalidValue(formEntry);
 
     if (missingValue) {
-      generateErrorPropEntries(formEntry, missingValue, errorObject);
-      if (!errorObject.formIntent || !errorObject.message) {
-        generateErrorObjectProps(formDataObject, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, error);
+      if (!error.errorType || !error.message) {
+        generateErrorProps(error);
       }
     }
 
     if (invalidValue) {
-      generateErrorPropEntries(formEntry, missingValue, errorObject);
-      if (!errorObject.message || !errorObject.errorType) {
-        generateErrorObjectProps(formDataObject, errorObject);
+      generateErrorPropEntries(formEntry, missingValue, error);
+      if (!error.errorType || !error.message) {
+        generateErrorProps(error);
       }
     }
-    validateStartToEndMismatch(formDataObject, errorObject);
   });
+  validateStartToEndMismatch(formData, error);
+  return error;
 };
 
 // no validation function for HTTP error,
