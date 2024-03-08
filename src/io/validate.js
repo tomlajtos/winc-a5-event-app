@@ -78,8 +78,12 @@ const validateStartToEndMismatch = (formDataObject, errorObject) => {
 };
 
 // TODO: Learn & add jsDOC comments
-const isInvalidString = (entryValue) =>
-  entryValue && typeof entryValue !== "string" && !/\w+/gi.test(entryValue);
+const isInvalidText = (entryValue) => {
+  const isEmpty = entryValue.length < 1;
+  const isString = typeof entryValue === "string";
+  const hasAlphaNumericChar = /\w+/gi.test(entryValue);
+  return !isEmpty && (!isString || !hasAlphaNumericChar);
+};
 
 // TODO: Learn & add jsDOC comments
 const isInvalidUrl = (entryValue) => {
@@ -108,7 +112,7 @@ const hasInvalidValue = (formEntry) => {
       return isInvalidDateTime(formEntry[1]);
     }
     default: {
-      return isInvalidString(formEntry[1]);
+      return isInvalidText(formEntry[1]);
     }
   }
 };
