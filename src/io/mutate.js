@@ -27,10 +27,9 @@ export const action = async ({ request, params, signal }) => {
 
   /* EDIT event */
   if (request.method === "PATCH" && intent === "edit") {
-    const error = validateFormDataInAction(formData, errorTemplate);
-    console.log(error);
     // validate form data before fetch
-    if (Object.keys(error.error).length > 0) {
+    const error = validateFormDataInAction(formData, errorTemplate);
+    if ("errors" in error) {
       log.error(error);
       return error;
     }

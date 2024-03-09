@@ -19,7 +19,7 @@ export const action = async ({ request }) => {
   // validate form data before fetch
   const error = validateFormDataInAction(formData, errorTemplate);
 
-  if (Object.keys(error.error).length > 0) {
+  if ("errors" in error) {
     log.error("Input Error @add.js>action", error);
     return error;
   }
