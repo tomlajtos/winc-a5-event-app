@@ -1,130 +1,195 @@
 // Array of input names that are not required, to make custom required validation coherent accross all inputs
 // mainly is necessary because of custom checkbox group in `CheckboxGrControl` where setting the required attr on the checkbox
 // would make all 3 required, however only one is required at minimum
-
-const notRequiredInputs = ["image"];
+const notRequired = ["image"];
 
 // Helper functions
 // TODO: Learn & add jsDOC comments
-const generateErrorMessage = (inputName, missing) => {
+const formatInputName = (inputName) => {
+  let formattedInputName;
   switch (inputName) {
     case "startTime": {
-      return missing
-        ? "Please type/select a start time!"
-        : "Please type/select a valid start time!";
+      formattedInputName = "start time";
+      break;
     }
     case "endTime": {
-      return missing
-        ? "Please type/select an end time!"
-        : "Please type/select a valid end time!";
-    }
-    case "categoryIds": {
-      return "Plese select at least one category";
+      formattedInputName = "end time";
+      break;
     }
     case "createdBy": {
-      return "Please select a user from the list!";
+      formattedInputName = "user";
+      break;
+    }
+
+    case "categoryIds": {
+      formattedInputName = "category";
+      break;
     }
     case "image": {
-      return missing
-        ? "Please provide an image URL!"
-        : "Please provide a valid URL for the image!";
+      formattedInputName = "image URL";
+      break;
     }
     default: {
-      return missing
-        ? `Please type in an ${inputName}!`
-        : `Please provide a valid ${inputName}!`;
+      formattedInputName = inputName;
     }
   }
+  return formattedInputName;
 };
 
 // TODO: Learn & add jsDOC comments
-const hasMissingValue = (formEntry) =>
+const checkForMissingValue = (formEntry) =>
   (!formEntry[1] || formEntry[1].length === 0) &&
-  !notRequiredInputs.includes(formEntry[0]);
+  !notRequired.includes(formEntry[0]);
 
 // separate validation for checkbox group 'categoryIds'
 // if no selection >>> value is [] >>> entry won't be added to formData
 // TODO: Learn & add jsDOC comments
-const validateCategoryIds = (formData, error) => {
+const checkForMissingCategoryIds = (formData, error) => {
   if (!formData.categoryIds) {
-    const entry = ["categoryIds", ""];
-    generateErrorPropEntries(entry, hasMissingValue(entry), error);
-    if (!error.errorType || !error.message) {
-      generateErrorProps(error);
-    }
+    generateErrorProps(error);
+    generateErrorsPropEntries(["categoryIds"], error, "missing");
+    // }
   }
 };
 
 // separate validation for start time and endt time order
 // called at the end of validateFormDataInAction
 // TODO: Learn & add jsDOC comments
-const validateStartToEndMismatch = (formData, error) => {
+const checkStartToEndMismatch = (formData, error) => {
   const numericStartTime = Date.parse(formData.startTime);
   const numericEndTime = Date.parse(formData.endTime);
 
-  if (!error.error?.startTime && !error.error?.endTime) {
+  if (!error.errors?.startTime && !error.errors?.endTime) {
     if (numericStartTime > numericEndTime) {
-      error.error.startEndMismatch =
+      generateErrorProps(error);
+      error.errors.startEndMismatch =
         "This app only works under normal* space-time conditions! (*in accordance with Einstein's General Relativity)";
-      error.error["startTime"] = "Please set this before the end-time...";
-      error.error["endTime"] = "...or this after the start-time. Thank you!";
+      error.errors["startTime"] = "Please set this before the end-time...";
+      error.errors["endTime"] = "...or this after the start-time. Thank you!";
 
-      if (!error.errorType || !error.message) {
-        generateErrorProps(error);
-      }
+      generateErrorProps(error);
     }
   }
 };
 
 // TODO: Learn & add jsDOC comments
-const isInvalidText = (entryValue) => {
-  const isEmpty = entryValue.length < 1;
-  const isString = typeof entryValue === "string";
-  const hasAlphaNumericChar = /\w+/gi.test(entryValue);
-  return !isEmpty && (!isString || !hasAlphaNumericChar);
+const validateText = (formEntry) => {
+  const name = formatInputName(formEntry[0]);
+  const value = formEntry[1];
+  const isEmpty = !value;
+  const isString = typeof value === "string";
+  const hasAlphaNumericChar = /\w+/gi.test(value);
+
+  if (!isEmpty && (!isString || !hasAlphaNumericChar)) {
+    return { isValid: false, errorPrompt: `Please provide a valid: ${name}` };
+  }
+  return { isValid: true };
 };
 
 // TODO: Learn & add jsDOC comments
-const isInvalidUrl = (entryValue) => {
-  if (entryValue) {
+const validateUrl = (formEntry) => {
+  const [name, value] = formEntry;
+  const formattedName = formatInputName(name);
+  const errorPrompt = `Please provide a valid ${formattedName}`;
+
+  if (value) {
     try {
-      const url = new URL(entryValue);
-      return url ? url.protocol === "http:" : url.protocol !== "https:";
+      const url = new URL(value);
+      return url.protocol === "http:" || url.protocol === "https:"
+        ? { isValid: true }
+        : { isValid: false, errorPrompt: errorPrompt };
     } catch (e) {
-      return true;
+      return { isValid: false, errorPrompt: errorPrompt };
     }
   }
-  return false;
+  // has no value, double check if it is not required
+  // if it is not required it will pass through missing value check
+  if (notRequired.includes(name)) {
+    return { isValid: true };
+  }
 };
 
 // TODO: Learn & add jsDOC comments
-const isInvalidDateTime = (entryValue) => entryValue && !new Date(entryValue);
+const validateDateTime = (formEntry, formIntent) => {
+  const [name, value] = formEntry;
+  const formattedName = formatInputName(name);
+  const isDateString = new Date(value);
+  const errorPrompt = `Please set a future date and time for ${formattedName}`;
+
+  if (isDateString) {
+    const numericEntryValue = Date.parse(value);
+    const numericCurrentDate = Number(Date.now());
+    if (formIntent === "add") {
+      // compare input with current date time, with 5min grace period
+      return numericEntryValue < numericCurrentDate - 5 * 60 * 1000
+        ? {
+            isValid: false,
+            errorPrompt: errorPrompt,
+          }
+        : { isValid: true };
+    }
+    return { isValid: true };
+  }
+
+  return {
+    isValid: false,
+    errorPrompt: errorPrompt,
+  };
+};
 
 // TODO: Learn & add jsDOC comments
-const hasInvalidValue = (formEntry) => {
+const validateValue = (formEntry, formIntent) => {
+  // createdBy and categoryIds are only checked for missing value
+  // since those are select and checkbox inputs
   switch (formEntry[0]) {
     case "image": {
-      return isInvalidUrl(formEntry[1]);
+      return validateUrl(formEntry);
     }
     case "startTime":
     case "endTime": {
-      return isInvalidDateTime(formEntry[1]);
+      return validateDateTime(formEntry, formIntent);
+    }
+    case "title":
+    case "location":
+    case "description": {
+      return validateText(formEntry);
     }
     default: {
-      return isInvalidText(formEntry[1]);
+      return { isValid: true };
     }
   }
 };
 
 // TODO: Learn & add jsDOC comments
-const generateErrorPropEntries = (formEntry, missing, error) => {
-  error.error[formEntry[0]] = generateErrorMessage(formEntry[0], missing);
+const generateErrorsPropEntries = (
+  formEntry,
+  error,
+  inputErrorType,
+  validationResult,
+) => {
+  const errorProp = error.errors;
+  const inputName = formEntry[0];
+  const formattedInputName = formatInputName(inputName);
+  const missingPromptKeyWord = ["createdBy", "categoryIds"].includes(inputName)
+    ? "select"
+    : "provide";
+
+  if (inputErrorType === "missing") {
+    errorProp[inputName] =
+      `Please ${missingPromptKeyWord} a ${formattedInputName}`;
+  }
+  if (inputErrorType === "invalid") {
+    errorProp[inputName] = validationResult.errorPrompt;
+  }
 };
 
 // TODO: Learn & add jsDOC comments
 const generateErrorProps = (error) => {
-  error.errorType = "Input Error";
-  error.message = "Please complete the required fields!";
+  if (error.errorType === "" || error.message === "") {
+    error.errors ? error.errors : (error.errors = {});
+    error.errorType = "Input Error";
+    error.message = "Please complete the required fields!";
+  }
 };
 
 // NOTE: (to self,mostly)
@@ -137,34 +202,47 @@ const generateErrorProps = (error) => {
 // The `action` returns an error object if missing/invalid input or HTTP error occurs
 
 // TODO: Learn & add jsDOC comments
+// Main validation function:
 export const validateFormDataInAction = (formData, errorTemplate) => {
   const formEntries = Object.entries(formData);
-  console.log("entries", formEntries);
-
+  const formIntent = formData.intent;
   const error = { ...errorTemplate };
-  error.error ? error.error : (error.error = {});
 
-  validateCategoryIds(formData, error);
+  // validate separately not in formEntries if missing
+  checkForMissingCategoryIds(formData, error);
 
   formEntries.map((formEntry) => {
-    const missingValue = hasMissingValue(formEntry);
-    const invalidValue = hasInvalidValue(formEntry);
+    // categoryIds was already checked, intent is not a user input
+    if (!["intent", "categoryIds"].includes(formEntry[0])) {
+      const isMissingValue = checkForMissingValue(formEntry);
 
-    if (missingValue) {
-      generateErrorPropEntries(formEntry, missingValue, error);
-      if (!error.errorType || !error.message) {
+      if (isMissingValue) {
         generateErrorProps(error);
+        generateErrorsPropEntries(formEntry, error, "missing");
+        // return early if missing
+        return;
       }
-    }
 
-    if (invalidValue) {
-      generateErrorPropEntries(formEntry, missingValue, error);
-      if (!error.errorType || !error.message) {
-        generateErrorProps(error);
+      // not missing >> validate
+      const valueValidationResult = validateValue(formEntry, formIntent);
+      if (valueValidationResult.isValid) {
+        // return early if valid value
+        return;
       }
+
+      // not valid >> generate error
+      generateErrorProps(error);
+      generateErrorsPropEntries(
+        formEntry,
+        error,
+        "invalid",
+        valueValidationResult,
+      );
     }
   });
-  validateStartToEndMismatch(formData, error);
+
+  checkStartToEndMismatch(formData, error);
+
   return error;
 };
 
@@ -172,7 +250,8 @@ export const validateFormDataInAction = (formData, errorTemplate) => {
 // it is cought if response comes back with an error code in `action`
 // helper function to generate an error object that is returned from the `action` in case of an error
 // TODO: Learn & add jsDOC comments
-export const generateHttpError = (error, response, formData) => {
+export const generateHttpError = (errorTemplate, response, formData) => {
+  const error = { ...errorTemplate };
   error.errorType = "HTTP Error";
   error.status = response.status;
   error.statusText = response.statusText;
