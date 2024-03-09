@@ -18,7 +18,7 @@ export const NewEventPage = () => {
   const toastIdRef = useRef("");
   const toast = useToast();
 
-  const errors = fetcher.data?.error;
+  const errors = fetcher.data?.errors;
   const defaultFormValues = {
     title: "",
     createdBy: "Phantom of The EvnetApp",

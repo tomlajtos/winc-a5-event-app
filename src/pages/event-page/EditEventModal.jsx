@@ -19,12 +19,12 @@ import { EventForm } from "../../components/forms/EventForm";
 import { SaveEditButton } from "../../components/forms/buttons/SaveEditButton";
 // Util and I/O imports
 import { generateDateTimeStr } from "../../util/datetime";
-import { handleResetOnModalClose } from "../../util/uiUtils";
+import { handleErrorPromptResetOnModalClose } from "../../util/uiUtils";
 import { toaster } from "../../util/toaster";
 
 export const EditEventModal = () => {
   const { event, fetcher, editIsOpen, editOnClose, toast } = useEditEvent();
-  const errors = fetcher.data?.error;
+  const errors = fetcher.data?.errors;
   const toastIdRef = useRef(""); // ref to make toasts closable
 
   const defaultFormValues = {
@@ -55,7 +55,9 @@ export const EditEventModal = () => {
   return (
     <Modal
       isOpen={editIsOpen}
-      onClose={() => handleResetOnModalClose(fetcher, event, editOnClose)}
+      onClose={() =>
+        handleErrorPromptResetOnModalClose(fetcher, event, editOnClose)
+      }
       closeOnEsc
       size={["full", null, "lg"]}
     >
@@ -94,7 +96,11 @@ export const EditEventModal = () => {
                 <SaveEditButton errors={errors} />
                 <CancelEditButton
                   onClick={() =>
-                    handleResetOnModalClose(fetcher, event, editOnClose)
+                    handleErrorPromptResetOnModalClose(
+                      fetcher,
+                      event,
+                      editOnClose,
+                    )
                   }
                 />
               </Stack>
