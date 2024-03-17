@@ -1,6 +1,3 @@
-// Util and I/O imports
-import { log } from "../util/log";
-
 // TODO: learn & add jsDOC comments
 const handleHttpError = (response) => {
   if (!response.ok) {
@@ -26,7 +23,7 @@ const handleHttpError = (response) => {
 // TODO: learn & add jsDOC comments
 export const getData = async (endpoint, setState, throwAsyncError) => {
   //example: (endpoint: "/categories", setState: setCategories)
-  const baseUrl = "http://localhost:3003";
+  const baseUrl = "http://localhost:3000";
   const url = `${baseUrl}/${endpoint}`;
   try {
     const response = await fetch(url);
@@ -35,7 +32,6 @@ export const getData = async (endpoint, setState, throwAsyncError) => {
     setState(data);
   } catch (e) {
     console.error(e);
-    log.error(e);
     throwAsyncError(e);
   }
 };
@@ -76,7 +72,7 @@ export const getAllData = (endpoints, setState, throwAsyncError) => {
 
 // TODO: learn & add jsDOC comments
 export const fetchData = async (endpoint) => {
-  const baseUrl = "http://localhost:3003";
+  const baseUrl = "http://localhost:3000";
   const url = `${baseUrl}/${endpoint}`;
 
   try {
@@ -86,7 +82,6 @@ export const fetchData = async (endpoint) => {
     return json;
   } catch (e) {
     console.error(e);
-    log.error(e);
     throw e;
   }
 };
