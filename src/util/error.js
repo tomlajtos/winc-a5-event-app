@@ -1,4 +1,26 @@
 // TODO: learn & add jsDOC comments
+// replaces error.message with user friendly error message
+// replaces error name
+// adds original name and message to stack
+export const addBetterErrorProps = (error) => {
+  const { name, message } = error;
+  // throw if already modified > prevents a messy stack
+  // or changing the error props if error is another manually thrown error
+  console.log(name);
+  if (name === "Error") {
+    return error;
+  }
+  // add original Error's name and message to the stack
+  error.stack = `${name}: ${message}\n  ${error.stack}`;
+  error.name = "Error";
+  error.message = message.toLowerCase().includes("failed to fetch")
+    ? "Cannot reach the server at the moment, please try again later."
+    : "Sorry, but an unexpected error happened, please try again later.";
+
+  return error;
+};
+
+// TODO: learn & add jsDOC comments
 const formatStackLine = (line) => {
   if (/\(http.+\)/.test(line)) {
     // test for string wrapped in parenthesis that starts with 'http'

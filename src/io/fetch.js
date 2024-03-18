@@ -1,5 +1,7 @@
+import { addBetterErrorProps } from "../util/error";
+
 // TODO: learn & add jsDOC comments
-const handleHttpError = (response) => {
+export const handleHttpError = (response) => {
   if (!response.ok) {
     const isServerError = response.status >= 500;
     let errorMessage = "";
@@ -15,7 +17,7 @@ const handleHttpError = (response) => {
       }
     }
     const error = new Error(errorMessage, { cause: response });
-    error.name = "HTTP Error";
+    error.name = "Error";
     throw error;
   }
 };
@@ -65,7 +67,6 @@ export const getAllData = (endpoints, setState, throwAsyncError) => {
       );
     })
     .catch((e) => {
-      console.error(e);
       throwAsyncError(e);
     });
 };
@@ -82,6 +83,6 @@ export const fetchData = async (endpoint) => {
     return json;
   } catch (e) {
     console.error(e);
-    throw e;
+    throw addBetterErrorProps(e);
   }
 };

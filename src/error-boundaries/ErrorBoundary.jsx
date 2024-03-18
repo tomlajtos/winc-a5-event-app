@@ -2,8 +2,10 @@
 import React from "react";
 // Chakra-ui imports
 import { Box } from "@chakra-ui/react";
-// Component imports
+// Error component imports
 import { ErrorUi } from "./ErrorUi";
+// Util and I/O imports
+import { addBetterErrorProps } from "../util/error";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <Box flex="1" className="error-ui-containter_error-boundary">
-          <ErrorUi error={this.state.error} />
+          <ErrorUi error={addBetterErrorProps(this.state.error)} />
         </Box>
       );
     }
