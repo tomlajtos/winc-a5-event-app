@@ -25,7 +25,7 @@ export const handleHttpError = (response) => {
 // TODO: learn & add jsDOC comments
 export const getData = async (endpoint, setState, throwAsyncError) => {
   //example: (endpoint: "/categories", setState: setCategories)
-  const baseUrl = "http://127.0.0.1:3003";
+  const baseUrl = "http://127.0.0.1:3000";
   const url = `${baseUrl}/${endpoint}`;
   try {
     const response = await fetch(url);
