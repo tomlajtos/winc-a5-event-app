@@ -44,7 +44,7 @@ export const action = async ({ request, params, signal }) => {
       }, []);
 
     const response = await fetch(
-      `http://localhost:3000/events/${params.eventId}`,
+      `http://127.0.0.1:3000/events/${params.eventId}`,
       {
         signal,
         method: "PATCH",
@@ -67,7 +67,7 @@ export const action = async ({ request, params, signal }) => {
   /* DELETE event */
   if (request.method === "DELETE") {
     const response = await fetch(
-      `http://localhost:3000/events/${params.eventId}`,
+      `http://127.0.0.1:3000/events/${params.eventId}`,
       {
         method: "DELETE",
       },

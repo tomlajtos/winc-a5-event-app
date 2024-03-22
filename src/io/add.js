@@ -34,7 +34,7 @@ export const action = async ({ request }) => {
       return resArr;
     }, []);
 
-  const response = await fetch("http://localhost:3000/events", {
+  const response = await fetch("http://127.0.0.1:3000/events", {
     method: "POST",
     body: JSON.stringify(formData),
     headers: {

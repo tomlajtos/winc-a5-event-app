@@ -25,7 +25,7 @@ export const handleHttpError = (response) => {
 // TODO: learn & add jsDOC comments
 export const getData = async (endpoint, setState, throwAsyncError) => {
   //example: (endpoint: "/categories", setState: setCategories)
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "http://127.0.0.1:3003";
   const url = `${baseUrl}/${endpoint}`;
   try {
     const response = await fetch(url);
@@ -49,7 +49,7 @@ export const getMultiData = (endpointArr, throwAsyncError) => {
 // TODO: learn & add jsDOC comments
 export const getAllData = (endpoints, setState, throwAsyncError) => {
   //example: (endpoints: ["categories","users"], setState: setData)
-  const baseUrl = "http://localhost:3003";
+  const baseUrl = "http://127.0.0.1:3000";
   const multiFetch = endpoints.map((endpoint) => {
     return () =>
       fetch(`${baseUrl}/${endpoint}`).then((response) => {
@@ -73,7 +73,7 @@ export const getAllData = (endpoints, setState, throwAsyncError) => {
 
 // TODO: learn & add jsDOC comments
 export const fetchData = async (endpoint) => {
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "http://127.0.0.1:3000";
   const url = `${baseUrl}/${endpoint}`;
 
   try {
