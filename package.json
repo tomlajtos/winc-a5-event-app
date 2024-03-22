@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server -p3000 --watch ./data/events.json"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
@@ -25,6 +26,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
+    "json-server": "1.0.0-alpha.23",
     "vite": "^5.1.2"
   }
 }
