@@ -9,7 +9,7 @@ export const EventCategories = ({ event, tagProps, ...props }) => {
   return (
     <Stack direction="row" spacing={2} {...props}>
       {categories.map((category) =>
-        event.categoryIds.includes(category.id) ? (
+        event.categoryIds.includes(Number(category.id)) ? (
           <Tag
             key={category.name}
             variant="solid"

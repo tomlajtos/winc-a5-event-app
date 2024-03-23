@@ -13,7 +13,7 @@ export const EventCardSmall = ({ event }) => {
   const { categories } = useStaticData();
 
   const eventCategories = categories
-    .filter((category) => event.categoryIds.includes(category.id))
+    .filter((category) => event.categoryIds.includes(Number(category.id)))
     .map((cat) => cat.name);
 
   const smallCard = useMemo(() => {
