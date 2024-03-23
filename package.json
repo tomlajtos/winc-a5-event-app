@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "json-server -p3000 --watch ./data/events.json"
+    "server": "json-server -p 3000 -h 127.0.0.1 ./data/events.json"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
