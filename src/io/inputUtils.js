@@ -38,10 +38,13 @@ export const handleCheckboxGroupChange = (grValue, inputValue, setFn) => {
 // TODO: add jsDOC comments
 export const handleFilterChange = (filters, inputValue, setFn) => {
   let newFilters = [...filters];
+  inputValue = Number(inputValue);
+
   if (!newFilters.includes(inputValue)) {
-    newFilters = Array.from(new Set([Number(inputValue), ...newFilters]));
+    newFilters = Array.from(new Set([inputValue, ...newFilters]));
   } else {
-    newFilters = newFilters.filter((q) => q !== Number(inputValue));
+    newFilters = newFilters.filter((val) => val !== inputValue);
   }
+
   setFn(newFilters);
 };
